@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>权限树</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+    <div class="diva">
+        <el-tree
+                :data="treeData"
+                accordion
+                @node-click="handleNodeClick"
+                :icon-class="icon"
+            >
+
+        </el-tree>
+    </div>
+   <script>
+       var vm = new Vue({
+           el:".diva",
+           data:{
+               icon:'el-icon-menu',
+               treeData:[]
+           },
+           created:function(){
+               var _self =this
+               axios.post("/power/tree").then(function(response){
+                 _self.treeData = response.data;
+               })
+           },
+           methods:{
+               handleNodeClick:function(n){
+                   alert(n.label+",url"+n.url);
+               }
+           }
+       })
+   </script>
+</body>
+</html>
