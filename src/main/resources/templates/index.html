@@ -44,12 +44,12 @@
         }
     </style>
 </head>
-<body style="height: 100%;width: 100%;">
+<body>
 <div class="diva">
             <el-container>
-                <el-header style="height: 60px;">Header</el-header>
+                <el-header style="height: 160px;">Header</el-header>
                 <el-container>
-                    <el-aside width="200px" style="height: 747px;">
+                    <el-aside width="200px" style="height: 600px;">
                         <el-tree
                                 :data="treeData"
                                 accordion
@@ -58,7 +58,7 @@
                         >
                         </el-tree>
                     </el-aside>
-                    <el-main style="height: 747px;">
+                    <el-main style="height: 600px;">
                         <el-tabs v-model="editableTabsValue2" type="card" closable @tab-remove="removeTab">
                             <el-tab-pane
                                     v-for="(item, index) in editableTabs2"
@@ -66,7 +66,7 @@
                                     :label="item.title"
                                     :name="item.name"
                             >
-                                 <iframe :src="item.url" style="width:100%;height:700px;border: 0px;" scrolling="auto"  ></iframe>
+                                 <iframe :src="item.url" style="width:100%;height:550px;border: 0px;" scrolling="auto"  ></iframe>
                             </el-tab-pane>
                         </el-tabs>
 
