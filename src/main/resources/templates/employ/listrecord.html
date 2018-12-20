@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>招聘信息</title>
+    <title>应聘信息审核记录</title>
     <!-- 引入样式 -->
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
@@ -20,20 +20,20 @@
     <!--列表顶部搜索和工具条-->
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-            <el-form-item label="所属部门">
-                <el-input v-model="searchForm.department" placeholder="所属部门"></el-input>
-            </el-form-item>
             <el-form-item>
                 <template>
-                    <el-select v-model="searchForm.education" placeholder="学历">
+                    <el-select v-model="searchForm.sex" placeholder="性别">
                         <el-option
                                 v-for="item in options"
-                                :key="item.EDUCATION"
+                                :key="item.sex"
                                 :label="item.value"
                                 :value="item.value">
                         </el-option>
                     </el-select>
                 </template>
+            </el-form-item>
+            <el-form-item label="所属部门">
+                <el-input v-model="searchForm.recruitdp" placeholder="所属部门"></el-input>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
@@ -55,75 +55,88 @@
                     width="55">
             </el-table-column>
             <el-table-column
-                    prop="DEPARTMENT"
-                    label="所属部门"
+                    prop="STID"
+                    label="ID"
+                    align="center"
+                    width="55"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="STNAME"
+                    label="应聘人姓名"
+                    align="center"
+                    width="80"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="SEX"
+                    label="性别"
+                    align="center"
+            >
+            </el-table-column>
+
+            <el-table-column
+                    prop="IDCARD"
+                    label="身份证"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="PHONE"
+                    label="手机号"
+                    align="center"
+            >
+            </el-table-column>
+
+            <el-table-column
+                    prop="RECRUITDP"
+                    label="应聘部门"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="RECRUITPOS"
+                    label="应聘职位"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="EMPLOYTIME"
+                    label="应聘提交时间"
+                    align="center"
+            >
+            </el-table-column>
+            <!--<el-table-column
+                    prop="RESUME"
+                    label="个人简历"
                     align="center"
             >
             </el-table-column>
             <el-table-column
                     prop="RECRUITNUM"
-                    label="招聘人数"
+                    label="还需招聘人数"
                     align="center"
-            >
-            </el-table-column>
-
-            <el-table-column
-                    prop="RELEASETIME"
-                    label="发布时间"
-                    align="center"
-            >
-            </el-table-column>
-            <el-table-column
-                    prop="EDUCATION"
-                    label="学历"
-                    align="center"
-            >
-            </el-table-column>
-
-            <el-table-column
-                    prop="WORKEXER"
-                    label="工作经验"
-                    align="center"
-            >
-            </el-table-column>
-            <el-table-column
-                    prop="JOBS"
-                    label="职称"
-                    align="center"
-            >
-            </el-table-column>
-            <el-table-column
-                    prop="LANGUAGE"
-                    label="语言能力"
-                    align="center"
-            >
-            </el-table-column>
-            <el-table-column
-                    prop="JOBRESPON"
-                    label="岗位职责"
-                    align="center"
-            >
-            </el-table-column>
-            <!--<el-table-column
-                    prop="EMPID"
-                    label="发布人id"
-                    align="center"
+                    width="55"
             >
             </el-table-column>-->
             <el-table-column
-                    prop="EMPNAME"
-                    label="发布人姓名"
+                    prop="STATE"
+                    label="审核结果"
                     align="center"
+                    :formatter="formatSex"
             >
-            </el-table-column>
-            <el-table-column
-                    label="操作">
-                <template scope="scope">
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑</el-button>
-                    <br>
-                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">删除</el-button>
+                <template slot-scope="scope">
+                    <el-tag :type="scope.row.STATE | statusFilter">{{scope.row.STATE | formatStata}}</el-tag>
                 </template>
             </el-table-column>
+            <!--<el-table-column
+                    label="操作">
+                <template scope="scope">
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">审核通过</el-button>
+                    <br>
+                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">审核驳回</el-button>
+                </template>
+            </el-table-column>-->
         </el-table>
     </el-row>
 
@@ -147,76 +160,15 @@
     </el-row>
 
     <!--编辑界面-->
-    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
+    <!--<el-dialog title="应聘人信息填写" :visible.sync="editFormVisible" :close-on-click-modal="false">
         <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-
-            <!--<el-form-item label="所属部门" prop="DEPARTMENT">
-                <el-input v-model="editForm.DEPARTMENT" auto-complete="off"></el-input>
-            </el-form-item>-->
-
-            <el-form-item label="所属部门" prop="DEPARTMENT">
-                <el-select v-model="editForm.DEPARTMENT" placeholder="请选择">
-                    <el-option
-                            v-for="item in optiondept"
-                            :key="item.ID"
-                            :label="item.DNAME"
-                            :value="item.DNAME"></el-option>
-                </el-select>
-            </el-form-item>
-
-            <el-form-item label="招聘人数" prop="RECRUITNUM">
-                <el-input-number v-model="editForm.RECRUITNUM" :min="0" :max="20000"></el-input-number>
-            </el-form-item>
-            <el-form-item label="发布日期"  prop="RELEASETIME">
-                <el-date-picker type="date"  value-format="yyyy-MM-dd" placeholder="选择日期" v-model="editForm.RELEASETIME"></el-date-picker>
-            </el-form-item>
-            <el-form-item label="学历" prop="EDUCATION">
-                <el-select v-model="editForm.EDUCATION" placeholder="请选择">
-                    <el-option
-                               v-for="item in options"
-                               :key="item.EDUCATION"
-                               :label="item.value"
-                               :value="item.value"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="工作经验" prop="WORKEXER">
-                <el-select v-model="editForm.WORKEXER" placeholder="请选择">
-                    <el-option
-                            v-for="item in optionswork"
-                            :key="item.WORKEXER"
-                            :label="item.value"
-                            :value="item.value"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="职称" prop="JOBS">
-            <el-input v-model="editForm.JOBS" auto-complete="off" style="width:220px;"></el-input>
-            </el-form-item>
-            <el-form-item label="语言能力" prop="LANGUAGE">
-                <el-select v-model="editForm.LANGUAGE" placeholder="请选择">
-                    <el-option
-                            v-for="item in optlanguage"
-                            :key="item.LANGUAGE"
-                            :label="item.value"
-                            :value="item.value"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="岗位职责" prop="JOBRESPON">
-                <el-input v-model="editForm.JOBRESPON" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="发布人id" prop="EMPID">
-                <el-input v-model="editForm.EMPID" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="发布人姓名" prop="EMPNAME">
-            <el-input v-model="editForm.EMPNAME" auto-complete="off"></el-input>
-            </el-form-item>
-
 
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
-            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+            &lt;!&ndash;<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>&ndash;&gt;
         </div>
-    </el-dialog>
+    </el-dialog>-->
 
 </div>
 
@@ -225,50 +177,43 @@
     var app = new Vue({
         el: '#app',
         data: {
-            message: '招聘信息'
+            message: '应聘信息审核记录'
         }
     });
 
     var tableView = new Vue({
         el: '#tableView',
+        filters: {
+            // el-tag类型转换
+            statusFilter:function(status) {
+                const statusMap = {
+                    '待审核': 'info',
+                    '审核驳回': 'danger',
+                    '审核通过': 'success'
+                }
+                return statusMap[status]
+            },
+            // 状态显示转换
+            /*formatStata:function(status) {
+                const statusMap = {
+                    1: '待审核',
+                    2: '审核通过',
+                    3: '审核驳回',
+                }
+                return statusMap[status]
+            }*/
+        },
         data: {
+
             //部门select
             optiondept:[],
             options:[
                 {
-                    value: '高中以上',
-                    label: '高中以上'
+                    value: '男',
+                    label: '男'
                 }, {
-                    value: '大专以上',
-                    label: '大专以上'
-                }, {
-                    value: '本科以上',
-                    label: '本科以上'
-                }, {
-                    value: '博士',
-                    label: '博士'
-                }
-            ],
-            optionswork:[{
-                value: '一年以下',
-                label: '一年以下'
-            }, {
-                value: '两年以内',
-                label: '两年以内'
-            }, {
-                value: '两年以上',
-                label: '两年以上'
-            }],
-            optlanguage:[
-                {
-                    value: '普通话',
-                    label: '普通话'
-                }, {
-                    value: '英语',
-                    label: '英语'
-                },{
-                    value: '英语+普通话',
-                    label: '英语+普通话'
+                    value: '女',
+                    label: '女'
                 }
             ],
             //列表数据
@@ -277,8 +222,8 @@
             loading:false,
             //搜索表单
             searchForm: {
-                department: '',
-                releasetime:''
+                sex: '',
+                recruitdp:''
             },
             //多选值
             multipleSelection: [],
@@ -301,16 +246,7 @@
             },
             //编辑界面数据
             editForm: {
-                DEPARTMENT: '',
-                RECRUITNUM: '',
-                RELEASETIME: '',
-                EDUCATION: '',
-                WORKEXER:'',
-                JOBS:'',
-                LANGUAGE:'',
-                JOBRESPON:'',
-                EMPID:'',
-                EMPNAME:''
+                STATE:''
             },
         },
         created:function(){
@@ -318,7 +254,7 @@
             var self = this;
             var start =(this.currentPage-1)*this.pageSize;
             var end =this.currentPage*this.pageSize+1;
-            axios.post('/recruit/page',{'start':start,'end':end}).then(function(response){
+            axios.post('/employ/page',{'start':start,'end':end}).then(function(response){
                 // console.log(response.data);
                 //alert(response.data.total);
                 self.total=response.data.total;
@@ -329,14 +265,21 @@
             axios.post('/dept/list').then(function(response){
                 self.optiondept=response.data;
             })
+
         },
         methods: {
-            /* formatterColumn:function (row, column) {
-                if(row.DSTATUS==1){
-                    return "可用"
-                }else{
-                    return "不可用"
-                }
+            /*formatStata: function (STATE) {
+                console.log(STATE)
+                return row.STATE === '审核通过' ? '审核通过' : row.STATE === '审核驳回' ? '审核驳回' : '未知';
+            },*/
+            /*editor:function(row) {
+                this.dialogTableVisible = true;
+                this.id = row.id;
+                var item = this.tableData[this.id - 1];
+                this.form.name = item.name;
+                this.form.mobi = item.mobi;
+                this.form.account = item.account;
+                this.form.line = item.line;
             },*/
             //表格重新加载数据
             loadingData: function () {
@@ -349,11 +292,11 @@
                 var searchForm = {
                     'start': start,
                     'end': end,
-                    'department': this.searchForm.department,
-                    'releasetime': this.searchForm.releasetime
+                    'sex': this.searchForm.sex,
+                    'recruitdp': this.searchForm.recruitdp
                 };
                 //alert(JSON.stringify(searchForm));
-                axios.post('/recruit/page', searchForm).then(function (response) {
+                axios.post('/employ/page', searchForm).then(function (response) {
                     console.log(response.data);
                     // alert(222);
                     _self.total = response.data.total;
@@ -368,18 +311,33 @@
             },
             //表格编辑事件
             editClick: function (row) {
-                this.goUrl = "/recruit/update";
-                this.editFormVisible = true;
-                this.editForm = Object.assign({}, row);
+                var _self = this;
+                this.goUrl = "/employ/tgupdate";
+                /*this.editFormVisible = true;*/
+                /*this.editForm = Object.assign({}, row);*/
+                axios.post(this.goUrl, {STATE:'审核通过',STID:row.STID}).then(function (response) {
+
+                        //alert(response.data)
+                    if (response.data > 0) {
+                       _self.tableData.state='审核通过';
+                        _self.loadingData();//重新加载数据
+                    }else{
+                        _self.$message({
+                            message: '审核失败',
+                            type: 'error'
+                        });
+                        _self.loadingData();//重新加载数据
+                    }
+                })
             },
 
-            deleteClick: function (row) {
+           /* deleteClick: function (row) {
                 //alert(JSON.stringify(row));
                 var _self = this;
                 this.$confirm('确认删除' + row.ID + '吗?', '提示', {
                     type: 'warning'
                 }).then(function () {
-                    var url = "/recruit/delete/" + row.ID;
+                    var url = "/employ/delete/" + row.ID;
                     axios.get(url).then(function (response) {
                         //alert(url);
                         if (response.data > 0) {
@@ -394,7 +352,8 @@
                     if (e != "cancel")
                         console.log("出现错误：" + e);
                 });
-            },
+            },*/
+
             //刷新页面
             returnClick: function () {
                 return location.href = location.href;
@@ -402,10 +361,11 @@
             //新建事件
             addClick: function () {
                 //alert(111);
-                this.goUrl = "/recruit/add";
+                this.goUrl = "/employ/add";
                 var _self = this;
                 //清空缓冲数据
                 this.editForm = {
+                    STID:'',
                     DEPARTMENT: '',
                     RECRUITNUM: '',
                     RELEASETIME: '',
@@ -434,46 +394,6 @@
                 this.multipleSelection = val;
                 console.info(val);
             },
-            //删除所选，批量删除
-            removeSelection: function () {
-                var _self = this;
-                var multipleSelection = this.multipleSelection;
-                if (multipleSelection.length < 1) {
-                    _self.$message({
-                        message: '请至少选中一条记录',
-                        type: 'error'
-                    });
-                    return;
-                }
-                var ids = "";
-                for (var i = 0; i < multipleSelection.length; i++) {
-                    var row = multipleSelection[i];
-                    ids += row.ID + ","
-                }
-                this.$confirm('确认删除' + ids + '吗?', '提示', {
-                    type: 'warning'
-                }).then(function () {
-                    var url = "/user/batchDel/" + ids;
-                    axios.get(url).then(function (response) {
-                        //alert(response.data);
-                        var temp = "";
-                        if (response.data > 0) {
-                            temp = "删除成功";
-                        } else {
-                            temp = "删除失败";
-                        }
-                        _self.$message({
-                            message: ids + temp,
-                            type: 'success'
-                        });
-                        _self.loadingData();//重新加载数据
-                    });
-
-                }).catch(function (e) {
-                    if (e != "cancel")
-                        console.log("出现错误：" + e);
-                });
-            },
             //分页大小修改事件
             pageSizeChange: function (val) {
                 console.log('每页 ' + val + ' 条');
@@ -488,20 +408,27 @@
                 var _self = this;
                 _self.loadingData();//重新加载数据
             },
-            //保存点击事件
+            //保存点击事件（审核通过）
             editSubmit: function () {
                 var _self = this;
                 _self.loading = true;
                 var formData = this.editForm;
-                //alert(formData);
-                var goUrl = this.goUrl;
+                alert(JSON.stringify(formData));
+                var goUrl = "/employ/tgupdate";
                 //alert(goUrl);
                 //alert(JSON.stringify(formData));
                 axios.post(goUrl, formData).then(function (response) {
                     //alert(222);
+                    alert(response.data)
                     if (response.data > 0) {
+                        _self.tableData.state='审核通过';
                         //alert(111);
-                        _self.editFormVisible = false;
+                        _self.loadingData();//重新加载数据
+                    }else{
+                        _self.$message({
+                            message: '审核失败',
+                            type: 'error'
+                        });
                         _self.loadingData();//重新加载数据
                     }
                 })

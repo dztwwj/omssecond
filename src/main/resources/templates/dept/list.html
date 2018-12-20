@@ -23,23 +23,23 @@
             <el-form-item label="部门名称">
                 <el-input v-model="searchForm.dname" placeholder="部门名称"></el-input>
             </el-form-item>
-           <!-- <el-form-item label="状态">
-                <el-input v-model="searchForm.dstatus" placeholder="状态"></el-input>
-            </el-form-item>
-            <el-form-item label="描述">
-                <el-input v-model="searchForm.describes" placeholder="描述"></el-input>
-            </el-form-item>-->
-                <!--<template>
-                    <el-select v-model="searchForm.deptNo" placeholder="请选择所在部门">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.DEPTNO"
-                                :label="item.DNAME"
-                                :value="item.DEPTNO">
-                        </el-option>
-                    </el-select>
-                </template>
-            </el-form-item>-->
+            <!-- <el-form-item label="状态">
+                 <el-input v-model="searchForm.dstatus" placeholder="状态"></el-input>
+             </el-form-item>
+             <el-form-item label="描述">
+                 <el-input v-model="searchForm.describes" placeholder="描述"></el-input>
+             </el-form-item>-->
+            <!--<template>
+                <el-select v-model="searchForm.deptNo" placeholder="请选择所在部门">
+                    <el-option
+                            v-for="item in options"
+                            :key="item.DEPTNO"
+                            :label="item.DNAME"
+                            :value="item.DEPTNO">
+                    </el-option>
+                </el-select>
+            </template>
+        </el-form-item>-->
             <el-form-item>
                 <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
                 <el-button type="success" icon="plus" @click="addClick">新增</el-button>
@@ -97,9 +97,9 @@
 
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
-       <!-- <el-col :span="6" >
-            <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
-        </el-col>-->
+        <!-- <el-col :span="6" >
+             <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
+         </el-col>-->
         <el-col :span="18" >
             <el-pagination
                     style="float: right"
