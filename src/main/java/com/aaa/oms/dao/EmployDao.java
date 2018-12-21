@@ -21,7 +21,7 @@ public interface EmployDao {
      */
     @Select("<script>select stid,stname,sex,idcard,phone,recruitdp,recruitpos,to_char(employtime,'yyyy-mm-dd') as employtime,resume,recruitnum,state,reason from \n" +
             "(select rownum rn,stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,recruitnum,state,reason from recruitstaff \n" +
-            "where rownum &lt; #{end}  " +
+            "where rownum &lt; #{end}  and  state in(${STATE}) " +
             "<if test=\"sex!=null and sex!=''\"> and sex=#{sex}</if>" +
             "<if test=\"recruitdp!=null and recruitdp!=''\"> and recruitdp like '%'||#{recruitdp}||'%'</if>" +
             " )a where a.rn &gt; #{start} </script>")
@@ -32,7 +32,7 @@ public interface EmployDao {
      * @param map
      * @return
      */
-    @Select("<script> select count(*) from recruitstaff <where> " +
+    @Select("<script> select count(*) from recruitstaff <where>  and  state in(${STATE}) " +
             "<if test=\"sex!=null and sex!=''\"> and sex=#{sex}</if>" +
             "<if test=\"recruitdp!=null and recruitdp!=''\"> and recruitdp like '%'||#{recruitdp}||'%'</if>" +
             " </where></script>")
@@ -63,7 +63,7 @@ public interface EmployDao {
      * @param map
      * @return
      */
-    @Update(value = "update recruitstaff set reason=#{REASON}} where stid=#{STID}")
+    @Update(value = "update recruitstaff set state=#{STATE},reason=#{REASON} where stid=#{STID}")
     int rsupdate(Map map);
 
     /**

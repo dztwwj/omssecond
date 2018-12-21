@@ -37,7 +37,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
-                <el-button type="success" icon="plus" @click="addClick">新增</el-button>
+                <el-button type="success" icon="plus" @click="addClick">应聘</el-button>
                 <el-button type="success" icon="plus" @click="returnClick">刷新</el-button>
             </el-form-item>
         </el-form>
@@ -142,9 +142,9 @@
 
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
-       <!-- <el-col :span="6" >
-            <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
-        </el-col>-->
+        <!-- <el-col :span="6" >
+             <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
+         </el-col>-->
         <el-col :span="18" >
             <el-pagination
                     style="float: right"
@@ -181,7 +181,7 @@
             <el-form-item label="手机号" prop="PHONE">
                 <el-input v-model="editForm.PHONE" auto-complete="off"></el-input>
             </el-form-item>
-            <!--<el-form-item label="应聘部门" prop="RECRUITDP">
+            <el-form-item label="应聘部门" prop="RECRUITDP">
                 <el-select v-model="editForm.RECRUITDP" placeholder="请选择">
                     <el-option
                             v-for="item in optiondept"
@@ -189,15 +189,9 @@
                             :label="item.DNAME"
                             :value="item.DNAME"></el-option>
                 </el-select>
-            </el-form-item>-->
-            <el-form-item label="应聘部门" prop="RECRUITDP">
-                <el-input v-model="editForm.RECRUITDP"  :disabled="true"></el-input>
             </el-form-item>
-            <!--<el-form-item label="应聘职位" prop="RECRUITPOS">
-                <el-input v-model="editForm.RECRUITPOS" auto-complete="off"></el-input>
-            </el-form-item>-->
             <el-form-item label="应聘职位" prop="RECRUITPOS">
-                <el-input v-model="editForm.RECRUITPOS"  :disabled="true"></el-input>
+                <el-input v-model="editForm.RECRUITPOS" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="发布日期"  prop="EMPLOYTIME">
                 <el-date-picker type="date"  value-format="yyyy-MM-dd" placeholder="选择日期" v-model="editForm.EMPLOYTIME"></el-date-picker>
@@ -226,23 +220,23 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
-            <el-button type="primary" @click.native="edittiSubmit" :loading="editLoading">提交</el-button>
+            <el-button type="primary" @click.native="edittiSubmit('editForm')" :loading="editLoading">提交</el-button>
         </div>
     </el-dialog>
 
-    <!--<el-dialog title="驳回理由填写" :visible.sync="editFormVisible" :close-on-click-modal="false">
-        <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+    <el-dialog title="驳回理由填写" :visible.sync="liyouVisible" :close-on-click-modal="false">
+        <el-form :model="liyouForm" label-width="80px" :rules="editFormRules">
 
             <el-form-item label="驳回理由" prop="REASON">
-                <el-input v-model="editForm.REASON" auto-complete="off"></el-input>
+                <el-input v-model="liyouForm.REASON" auto-complete="off"></el-input>
             </el-form-item>
 
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button @click.native="editFormVisible = false">取消</el-button>
-            <el-button type="primary" @click.native="rejectSubmit" :loading="editLoading">提交</el-button>
+            <el-button @click.native="liyouVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="liyouSubmit" :loading="editLoading">提交</el-button>
         </div>
-    </el-dialog>-->
+    </el-dialog>
 
 </div>
 
@@ -279,6 +273,12 @@
         },
         data: {
 
+
+            liyouVisible:false,
+            liyouForm:{
+                STATE:'',
+                REASON:''
+            },
             //部门select
             optiondept:[],
             options:[
@@ -313,11 +313,11 @@
             editFormVisible: false,
             editLoading: false,
             goUrl:'',
-            editFormRules: {
+            /*editFormRules: {
                 name: [
                     { required: true, message: '请输入部门', trigger: 'blur' }
                 ]
-            },
+            },*/
             //编辑界面数据
             editForm: {
                 STNAME: '',
@@ -331,13 +331,35 @@
                 RECRUITNUM: '',
                 STATE:''
             },
+            editFormRules:{
+                STNAME: [
+                    { required: true, message: '请输入应聘人姓名', trigger: 'blur' },
+                    { min: 2, max: 4, message: '长度在 2 到 4 个字符', trigger: 'blur' }
+                ],
+                /*SEX: [
+                    { required: true, message: '请输入应聘人姓名', trigger: 'blur' },
+                    { min: 1, max: 1, message: '长度在 1个字符', trigger: 'blur' }
+                ],*/
+                IDCARD: [
+                    { required: true, trigger: 'blur',message: '请输入正确的身份证号'},
+                    {pattern:'^[1-9]\\d{5}(18|19|2([0-9]))\\d{2}(0[0-9]|10|11|12)([0-2][1-9]|30|31)\\d{3}[0-9Xx]$',message: '请输入正确的身份证号'}
+                ],
+                PHONE: [
+                    { required: true, trigger: 'blur',message: '请输入正确的手机号'},
+                    {pattern:'^1+[35678]+\\d{9}',message: '请输入正确的手机号(1\35678)'}
+                ],
+                /*DESCRIBES: [
+                    { required: true, message: '请输入部门描述', trigger: 'blur' },
+                    { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+                ]*/
+            },
         },
         created:function(){
             //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
             var self = this;
             var start =(this.currentPage-1)*this.pageSize;
             var end =this.currentPage*this.pageSize+1;
-            axios.post('/employ/page',{'start':start,'end':end}).then(function(response){
+            axios.post('/employ/page',{'start':start,'end':end,'STATE':"'待审核'"}).then(function(response){
                 // console.log(response.data);
                 //alert(response.data.total);
                 self.total=response.data.total;
@@ -364,7 +386,8 @@
                     'start': start,
                     'end': end,
                     'sex': this.searchForm.sex,
-                    'recruitdp': this.searchForm.recruitdp
+                    'recruitdp': this.searchForm.recruitdp,
+                    'STATE':"'待审核'"
                 };
                 //alert(JSON.stringify(searchForm));
                 axios.post('/employ/page', searchForm).then(function (response) {
@@ -388,52 +411,44 @@
                 /*this.editForm = Object.assign({}, row);*/
                 axios.post(this.goUrl, {STATE:'审核通过',STID:row.STID}).then(function (response) {
 
-                        //alert(response.data)
+                    //alert(response.data)
                     if (response.data > 0) {
-                       _self.tableData.state='审核通过';
+                        _self.tableData.state='审核通过';
                         _self.loadingData();//重新加载数据
                     }else{
                         _self.$message({
                             message: '审核失败',
                             type: 'error'
                         });
+
                         _self.loadingData();//重新加载数据
                     }
                 })
             },
-            downClick: function (row) {
-                this.goUrl = "/employ/tgupdate";
-                this.editFormVisible = true;
-                this.editForm = Object.assign({}, row);
-            },
-
-           /* deleteClick: function (row) {
-                //alert(JSON.stringify(row));
-                var _self = this;
-                this.$confirm('确认删除' + row.ID + '吗?', '提示', {
-                    type: 'warning'
-                }).then(function () {
-                    var url = "/employ/delete/" + row.ID;
-                    axios.get(url).then(function (response) {
-                        //alert(url);
-                        if (response.data > 0) {
-                            _self.$message({
-                                message: row.ID + '删除成功',
-                                type: 'success'
-                            });
-                            _self.loadingData();//重新加载数据
-                        }
-                    });
-                }).catch(function (e) {
-                    if (e != "cancel")
-                        console.log("出现错误：" + e);
-                });
-            },*/
-
-          /*  addClick: function(){
+            /* deleteClick: function (row) {
+                 //alert(JSON.stringify(row));
+                 var _self = this;
+                 this.$confirm('确认删除' + row.ID + '吗?', '提示', {
+                     type: 'warning'
+                 }).then(function () {
+                     var url = "/employ/delete/" + row.ID;
+                     axios.get(url).then(function (response) {
+                         //alert(url);
+                         if (response.data > 0) {
+                             _self.$message({
+                                 message: row.ID + '删除成功',
+                                 type: 'success'
+                             });
+                             _self.loadingData();//重新加载数据
+                         }
+                     });
+                 }).catch(function (e) {
+                     if (e != "cancel")
+                         console.log("出现错误：" + e);
+                 });
+             },*/
 
 
-            },*/
             //刷新页面
             returnClick: function () {
                 return location.href = location.href;
@@ -441,10 +456,10 @@
             //新建事件
             addClick: function () {
                 //alert(111);
-               /* this.goUrl = "/employ/add";*/
+                this.goUrl = "/employ/add";
                 var _self = this;
                 //清空缓冲数据
-               /* this.editForm = {
+                this.editForm = {
                     STNAME: '',
                     SEX: '',
                     IDCARD: '',
@@ -454,18 +469,18 @@
                     EMPLOYTIME: '',
                     RESUME: '',
                     RECRUITNUM: ''
-                }*/
-                alert("11111");
-                var self = this;
-                var goUrl = "/employ/chaxun";
-                axios.post(goUrl).then(function (response) {
-                    alert(response.data);
-                    alert("222222222");
-                    self.editForm.RECRUITDP= response.data.department;
-                    self.editForm.recruitdp = response.data.DEPARTMENT;
-                })
+                },
+                    //显示隐藏的form表单
+                    this.editFormVisible = true;
+                _self.loadingData();//重新加载数据
+            },
+            downClick: function (row) {
+                //alert(111);
+                this.goUrl = "/employ/rsupdate";
+                this.liyouForm = Object.assign({}, row)
+                var _self = this;
                 //显示隐藏的form表单
-                this.editFormVisible = true;
+                this.liyouVisible = true;
                 _self.loadingData();//重新加载数据
             },
             //表格查询事件
@@ -496,25 +511,54 @@
                 _self.loadingData();//重新加载数据
             },
 
-            edittiSubmit: function () {
+            //审核驳回点击事件
+            liyouSubmit: function () {
                 var _self = this;
                 _self.loading = true;
-                var formData = this.editForm;
+                this.liyouForm.STATE='审核驳回';
+                var formData = this.liyouForm;
+
                 //alert(formData);
-                //var goUrl = this.goUrl;
-                var goUrl = "/employ/add";
+                var goUrl = "/employ/rsupdate";
                 //alert(goUrl);
                 //alert(JSON.stringify(formData));
                 axios.post(goUrl, formData).then(function (response) {
                     //alert(222);
                     if (response.data > 0) {
+
                         //alert(111);
-                        _self.editFormVisible = false;
+                        _self.liyouVisible = false;
                         _self.loadingData();//重新加载数据
                     }
                 })
+                console.info(this.liyouForm);
+            },
+            edittiSubmit: function (formName) {
+                var _self = this;
+                _self.loading = true;
+                var formData = this.editForm;
+                //alert(formData);
+                var goUrl = "/employ/add";
+                //alert(goUrl);
+                //alert(JSON.stringify(formData));
+
+                this.$refs[formName].validate((valid) => {
+                    //alert("11111111111")
+                    if (valid) {
+                        axios.post(goUrl, formData).then(function (response) {
+                            //alert(222);
+                            if (response.data > 0) {
+                                //alert("3333333333");
+                                _self.editFormVisible = false;
+                                _self.loadingData();//重新加载数据
+                            }
+                        })
+                    }
+                    _self.loadingData();//重新加载数据
+                })
                 console.info(this.editForm);
             },
+
             //保存点击事件（审核通过）
             editSubmit: function () {
                 var _self = this;
@@ -541,34 +585,6 @@
                 })
                 console.info(this.editForm);
             },
-            //审核驳回保存点击事件
-            rejectSubmit: function () {
-                var _self = this;
-                _self.loading = true;
-                var formData = this.editForm;
-                alert(JSON.stringify(formData));
-                //alert(formData);
-                //var goUrl = this.goUrl;
-                var goUrl = "/employ/tgupdate";
-                //alert(goUrl);
-                //alert(JSON.stringify(formData));
-                axios.post(goUrl, formData).then(function (response) {
-                    //alert(222);
-                    alert(response.data)
-                    if (response.data > 0) {
-                        _self.tableData.state='审核驳回';
-                        //alert(111);
-                        _self.loadingData();//重新加载数据
-                    }else{
-                        _self.$message({
-                            message: '审核失败',
-                            type: 'error'
-                        });
-                        _self.loadingData();//重新加载数据
-                    }
-                })
-                console.info(this.editForm);
-            }
         }
     })
 </script>

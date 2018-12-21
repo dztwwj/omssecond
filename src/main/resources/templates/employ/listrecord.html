@@ -37,7 +37,6 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
-                <el-button type="success" icon="plus" @click="addClick">新增</el-button>
                 <el-button type="success" icon="plus" @click="returnClick">刷新</el-button>
             </el-form-item>
         </el-form>
@@ -129,22 +128,14 @@
                     <el-tag :type="scope.row.STATE | statusFilter">{{scope.row.STATE | formatStata}}</el-tag>
                 </template>
             </el-table-column>
-            <!--<el-table-column
-                    label="操作">
-                <template scope="scope">
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">审核通过</el-button>
-                    <br>
-                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">审核驳回</el-button>
-                </template>
-            </el-table-column>-->
         </el-table>
     </el-row>
 
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
-       <!-- <el-col :span="6" >
-            <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
-        </el-col>-->
+        <!-- <el-col :span="6" >
+             <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
+         </el-col>-->
         <el-col :span="18" >
             <el-pagination
                     style="float: right"
@@ -158,17 +149,6 @@
             </el-pagination>
         </el-col>
     </el-row>
-
-    <!--编辑界面-->
-    <!--<el-dialog title="应聘人信息填写" :visible.sync="editFormVisible" :close-on-click-modal="false">
-        <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click.native="editFormVisible = false">取消</el-button>
-            &lt;!&ndash;<el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>&ndash;&gt;
-        </div>
-    </el-dialog>-->
 
 </div>
 
@@ -254,7 +234,7 @@
             var self = this;
             var start =(this.currentPage-1)*this.pageSize;
             var end =this.currentPage*this.pageSize+1;
-            axios.post('/employ/page',{'start':start,'end':end}).then(function(response){
+            axios.post('/employ/page',{'start':start,'end':end,'STATE':"'审核驳回','审核通过'"}).then(function(response){
                 // console.log(response.data);
                 //alert(response.data.total);
                 self.total=response.data.total;
@@ -268,19 +248,7 @@
 
         },
         methods: {
-            /*formatStata: function (STATE) {
-                console.log(STATE)
-                return row.STATE === '审核通过' ? '审核通过' : row.STATE === '审核驳回' ? '审核驳回' : '未知';
-            },*/
-            /*editor:function(row) {
-                this.dialogTableVisible = true;
-                this.id = row.id;
-                var item = this.tableData[this.id - 1];
-                this.form.name = item.name;
-                this.form.mobi = item.mobi;
-                this.form.account = item.account;
-                this.form.line = item.line;
-            },*/
+
             //表格重新加载数据
             loadingData: function () {
                 var _self = this;
@@ -293,7 +261,8 @@
                     'start': start,
                     'end': end,
                     'sex': this.searchForm.sex,
-                    'recruitdp': this.searchForm.recruitdp
+                    'recruitdp': this.searchForm.recruitdp,
+                    'STATE':"'审核驳回','审核通过'"
                 };
                 //alert(JSON.stringify(searchForm));
                 axios.post('/employ/page', searchForm).then(function (response) {
@@ -317,9 +286,9 @@
                 /*this.editForm = Object.assign({}, row);*/
                 axios.post(this.goUrl, {STATE:'审核通过',STID:row.STID}).then(function (response) {
 
-                        //alert(response.data)
+                    //alert(response.data)
                     if (response.data > 0) {
-                       _self.tableData.state='审核通过';
+                        _self.tableData.state='审核通过';
                         _self.loadingData();//重新加载数据
                     }else{
                         _self.$message({
@@ -331,28 +300,7 @@
                 })
             },
 
-           /* deleteClick: function (row) {
-                //alert(JSON.stringify(row));
-                var _self = this;
-                this.$confirm('确认删除' + row.ID + '吗?', '提示', {
-                    type: 'warning'
-                }).then(function () {
-                    var url = "/employ/delete/" + row.ID;
-                    axios.get(url).then(function (response) {
-                        //alert(url);
-                        if (response.data > 0) {
-                            _self.$message({
-                                message: row.ID + '删除成功',
-                                type: 'success'
-                            });
-                            _self.loadingData();//重新加载数据
-                        }
-                    });
-                }).catch(function (e) {
-                    if (e != "cancel")
-                        console.log("出现错误：" + e);
-                });
-            },*/
+
 
             //刷新页面
             returnClick: function () {
@@ -407,32 +355,6 @@
                 console.log('当前页: ' + val);
                 var _self = this;
                 _self.loadingData();//重新加载数据
-            },
-            //保存点击事件（审核通过）
-            editSubmit: function () {
-                var _self = this;
-                _self.loading = true;
-                var formData = this.editForm;
-                alert(JSON.stringify(formData));
-                var goUrl = "/employ/tgupdate";
-                //alert(goUrl);
-                //alert(JSON.stringify(formData));
-                axios.post(goUrl, formData).then(function (response) {
-                    //alert(222);
-                    alert(response.data)
-                    if (response.data > 0) {
-                        _self.tableData.state='审核通过';
-                        //alert(111);
-                        _self.loadingData();//重新加载数据
-                    }else{
-                        _self.$message({
-                            message: '审核失败',
-                            type: 'error'
-                        });
-                        _self.loadingData();//重新加载数据
-                    }
-                })
-                console.info(this.editForm);
             }
         }
     })
