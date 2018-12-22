@@ -200,21 +200,6 @@
             <el-form-item label="发布日期"  prop="EMPLOYTIME">
                 <el-date-picker type="date"  value-format="yyyy-MM-dd" placeholder="选择日期" v-model="editForm.EMPLOYTIME"></el-date-picker>
             </el-form-item>
-            <!--<el-form-item label="应聘部门" prop="RECRUITDP">
-                <el-select v-model="editForm.RECRUITDP" placeholder="请选择">
-                    <el-option
-                            v-for="item in optiondept"
-                            :key="item.ID"
-                            :label="item.DNAME"
-                            :value="item.DNAME"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="应聘职位" prop="RECRUITPOS">
-                <el-input v-model="editForm.RECRUITPOS" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="发布日期"  prop="EMPLOYTIME">
-                <el-date-picker type="date"  value-format="yyyy-MM-dd" placeholder="选择日期" v-model="editForm.EMPLOYTIME"></el-date-picker>
-            </el-form-item>-->
             <el-form-item label="个人简历" prop="RESUME">
                 <el-input v-model="editForm.RESUME" auto-complete="off"></el-input>
             </el-form-item>
@@ -413,6 +398,13 @@
                 this.goUrl = "/employ/tgupdate";
                 /*this.editFormVisible = true;*/
                 /*this.editForm = Object.assign({}, row);*/
+                if(row.RECRUITNUM<0){
+                    _self.$message({
+                        message: '此岗位已招满',
+                        type: 'error'
+                    });
+                    return;
+                }
                 axios.post(this.goUrl, {STATE:'审核通过',STID:row.STID}).then(function (response) {
 
                     //alert(response.data)
