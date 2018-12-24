@@ -3,16 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>员工信息列表</title>
+    <title>晋升发布列表</title>
     <!-- 引入样式 -->
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="../css/elementui.css">
     <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+    <link rel="stylesheet" href="../css/elementui.css">
     <!-- 引入组件库 -->
-    <script src="../js/elementui.js"></script>
     <!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+    <script src="../js/elementui.js"></script>
 </head>
 <body>
 <div id="app">
@@ -23,9 +23,9 @@
     <!--列表顶部搜索和工具条-->
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-            <el-form-item label="员工名称">
-                <el-input v-model="searchForm.ENAME" placeholder="员工名称"></el-input>
-            </el-form-item>
+            <!--<el-form-item label="员工名称">-->
+                <!--<el-input v-model="searchForm.ENAME" placeholder="员工名称"></el-input>-->
+            <!--</el-form-item>-->
            <!-- <el-form-item label="状态">
                 <el-input v-model="searchForm.dstatus" placeholder="状态"></el-input>
             </el-form-item>
@@ -44,7 +44,7 @@
                 </template>
             </el-form-item>-->
             <el-form-item>
-                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+                <!--<el-button type="primary" icon="search" @click="searchClick">查询</el-button>-->
                 <el-button type="success" icon="plus" @click="addClick">新增</el-button>
             </el-form-item>
         </el-form>
@@ -62,38 +62,39 @@
                     >
             </el-table-column>
             <el-table-column
-                    prop="EMPNUM"
-                    label="工号"
+                    prop="ID"
+                    label="编号"
                     >
             </el-table-column>
             <el-table-column
-                    prop="ENAME"
-                    label="姓名"
+                    prop="POSITIONNAME"
+                    label="职位名称"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="EMPNAME"
+                    label="发布人姓名"
                     >
             </el-table-column>
             <el-table-column
-                    prop="EMPSEX"
-                    label="性别"
+                    prop="ENDAPPLY"
+                    label="申请结束时间"
                     >
             </el-table-column>
             <el-table-column
-                    prop="EMPBIRTHDAY"
-                    label="生日"
+                    prop="JOBCONTENT"
+                    label="工作内容"
+                    >
+            </el-table-column>
+
+            <el-table-column
+                    prop="DEMANDNUM"
+                    label="所需人数"
                     >
             </el-table-column>
             <el-table-column
-                    prop="TELEPHONE"
-                    label="电话号码"
-                    >
-            </el-table-column>
-            <el-table-column
-                    prop="IDCARD"
-                    label="身份证号码"
-                    >
-            </el-table-column>
-            <el-table-column
-                    prop="EMILADDR"
-                    label="邮箱"
+                    prop="REQUIREMENTS"
+                    label="职位要求"
                     >
             </el-table-column>
             </el-table-column>
@@ -129,37 +130,56 @@
     <!--编辑界面-->
     <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
         <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-            <el-form-item label="姓名" prop="ENAME">
-                <el-input v-model="editForm.ENAME" auto-complete="off"></el-input>
-            </el-form-item>
-
-            <!--<el-form-item label="状态">-->
-                <!--<template>-->
-                    <!--<el-select v-model="editForm.DSTATUS" placeholder="请选择所在员工">-->
-                        <!--<el-option-->
-                                <!--v-for="item in options"-->
-                                <!--:key="item.DSTATUS"-->
-                                <!--:label="item.value"-->
-                                <!--:value="item.DSTATUS">-->
-                        <!--</el-option>-->
-                    <!--</el-select>-->
-                <!--</template>-->
+            <!--<el-form-item label="职位名称" prop="POSITIONNAME">-->
+                <!--<el-input v-model="editForm.POSITIONNAME" auto-complete="off"></el-input>-->
             <!--</el-form-item>-->
 
-            <el-form-item label="性别" prop="EMPSEX">
-                <el-input v-model="editForm.EMPSEX" auto-complete="off"></el-input>
+            <!--<el-form-item label="编号" prop="ID">-->
+                <el-input v-model="editForm.ID" auto-complete="off" type="hidden" prop="ID"></el-input><!--disabled 禁用，不可编辑-->
+            <!--</el-form-item>-->
+            <el-form-item label="职位名称">
+                <template>
+                    <el-select v-model="editForm.POSITIONNAME" placeholder="请选择角色">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.ID"
+                                :label="item.POSITIONNAME"
+                                :value="item.ID">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-form-item>
+
+            <el-form-item label="所需人数" prop="DEMANDNUM">
+                <el-input v-model="editForm.DEMANDNUM" auto-complete="off" ></el-input><!--disabled 禁用，不可编辑-->
             </el-form-item>
             <!--<el-form-item label="生日" prop="EMPBIRTHDAY">-->
                 <!--<el-input v-model="editForm.EMPBIRTHDAY" auto-complete="off"></el-input>-->
             <!--</el-form-item>-->
-            <el-form-item label="电话号码" prop="TELEPHONE">
-                <el-input v-model="editForm.TELEPHONE" auto-complete="off"></el-input>
+            <!--<el-form-item label="申请期限" prop="DAY">-->
+                <!--<el-input v-model="editForm.DAY" auto-complete="off"></el-input>-->
+            <!--</el-form-item>-->
+            <el-form-item label="申请期限" prop="ENDAPPLY">
+                <!--<el-date-picker-->
+                        <!--v-model="ENDAPPLY"-->
+                        <!--type="datetime"-->
+                        <!--placeholder="选择日期时间"-->
+                        <!--align="right">-->
+                <!--</el-date-picker>-->
+                <el-date-picker type="datetime"
+
+                                placeholder="选择日期"
+                                v-model="editForm.ENDAPPLY"
+                                ><!--:picker-options="pickerOptions"-->
+                </el-date-picker>
+
             </el-form-item>
-            <el-form-item label="身份证号码" prop="IDCARD">
-                <el-input v-model="editForm.IDCARD" auto-complete="off"></el-input>
+
+            <el-form-item label="工作内容" prop="JOBCONTENT">
+                <el-input v-model="editForm.JOBCONTENT" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="邮箱" prop="EMILADDR">
-                <el-input v-model="editForm.EMILADDR" auto-complete="off"></el-input>
+            <el-form-item label="职位要求" prop="REQUIREMENTS">
+                <el-input v-model="editForm.REQUIREMENTS" auto-complete="off"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -182,8 +202,8 @@
     var tableView = new Vue({
         el: '#tableView',
         data: {
-            //员工select
-           // options:[{DSTATUS:1,value:'可用'},{DSTATUS:2,value:'不可用'}],
+            //职位下拉框查询
+            options:[],
             //列表数据
             tableData: [],
             //显示加载中样式
@@ -192,6 +212,7 @@
             searchForm: {
                 ENAME: ''
             },
+
             //多选值
             multipleSelection: [],
             //当前页
@@ -213,12 +234,12 @@
             },
             //编辑界面数据
             editForm: {
-                ENAME: '',
-                EMPSEX: '',
-                EMPBIRTHDAY: '',
-                TELEPHONE: '',
-                EMILADDR: '',
-                IDCARD: '',
+                POSITIONNAME: '',
+                DEMANDNUM: '',
+                EMPNAME: '',
+                ENDAPPLY:'',
+                JOBCONTENT: '',
+                REQUIREMENTS: ''
 
             },
         },
@@ -227,7 +248,7 @@
             var self = this;
             var start =(this.currentPage-1)*this.pageSize;
             var end =this.currentPage*this.pageSize+1;
-            axios.post('/user/page',{'start':start,'end':end}).then(function(response){
+            axios.post('/promote/page',{'start':start,'end':end,'STATE':'0'}).then(function(response){
                 // console.log(response.data);
                 //alert(response.data.total);
                 self.total=response.data.total;
@@ -235,9 +256,9 @@
                 // alert(JSON.stringify(response.data.pageData));
                 // self.multipleSelection=response.data.data;
             });
-            /*axios.post('/user/list').then(function(response){
+            axios.post('/promote/selectPosition').then(function(response){
                 self.options=response.data;
-            })*/
+            })
         },
         methods:{
             //表格重新加载数据
@@ -248,9 +269,9 @@
                 var start =(this.currentPage-1)*this.pageSize;
                 var end =this.currentPage*this.pageSize+1;
                 //  alert(this.searchForm.id);
-                var searchForm={'start':start,'end':end,'ENAME':this.searchForm.ENAME};
+                var searchForm={'start':start,'end':end,'STATE':'0'};
                 //alert(JSON.stringify(searchForm));
-                axios.post('/user/page',searchForm).then(function(response){
+                axios.post('/promote/page',searchForm).then(function(response){
                     console.log(response.data);
                     // alert(222);
                     _self.total=response.data.total;
@@ -265,24 +286,24 @@
             },
             //表格编辑事件
             editClick:function(row) {
-                this.goUrl="/user/update";
+                this.goUrl="/promote/update";
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
             },
 
             deleteClick:function(row) {
                 //alert(JSON.stringify(row));
-                alert(row.EMPNUM);
+                alert(row.ID);
                 var _self = this;
-                this.$confirm('确认删除' + row.EMPNUM +'吗?', '提示', {
+                this.$confirm('确认删除' + row.ID +'吗?', '提示', {
                     type: 'warning'
                 }).then(function(){
-                    var  url="/user/delete/"+row.EMPNUM;
+                    var  url="/promote/delete/"+row.ID;
                     axios.get(url).then(function (response) {
                         //alert(url);
                         if(response.data>0){
                             _self.$message({
-                                message: row.EMPNUM + '删除成功',
+                                message: row.ID + '删除成功',
                                 type: 'success'
                             });
                             _self.loadingData();//重新加载数据
@@ -296,26 +317,26 @@
             //新建事件
             addClick:function() {
                 //alert(111);
-                this.goUrl="/user/add";
+                this.goUrl="/promote/add";
                 var _self = this;
                 //清空缓冲数据
                 this.editForm={
-                    ENAME: '',
-                    EMPSEX: '',
-                    EMPBIRTHDAY: '',
-                    TELEPHONE: '',
-                    EMILADDR: '',
-                    IDCARD: ''
+                    POSITIONNAME: '',
+                    DEMANDNUM: '',
+                    EMPNAME: '',
+                    ENDAPPLY:'',
+                    JOBCONTENT: '',
+                    REQUIREMENTS: ''
                 }
                 //显示隐藏的form表单
                 this.editFormVisible = true;
                 _self.loadingData();//重新加载数据
             },
             //表格查询事件
-            searchClick:function() {
-                var self = this;
-                self.loadingData();//重新加载数据
-            },
+            // searchClick:function() {
+            //     var self = this;
+            //     self.loadingData();//重新加载数据
+            // },
             //表格勾选事件
             selectionChange:function(val) {
                 for(var i=0;i<val.length;i++) {
@@ -338,12 +359,13 @@
                 var ids = "";
                 for(var i=0;i<multipleSelection.length;i++) {
                     var row = multipleSelection[i];
-                    ids += row.EMPNUM + ","
+                    ids += row.ID + ","
+
                 }
                 this.$confirm('确认删除' + ids +'吗?', '提示', {
                     type: 'warning'
                 }).then(function(){
-                    var  url="/user/delete/"+ids;
+                    var  url="/promote/delete/"+ids;
                     axios.get(url).then(function (response) {
                         //alert(response.data);
                         var temp="";
@@ -385,7 +407,7 @@
                 var formData =this.editForm;
                 //alert(formData);
                 var goUrl=this.goUrl;
-                //alert(goUrl);
+                alert(goUrl);
                 //alert(JSON.stringify(formData));
                 axios.post(goUrl,formData).then(function(response){
                     // console.log(response.data);

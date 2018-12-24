@@ -29,6 +29,7 @@ public class UserController {
      */
     @RequestMapping("/toList")
     public String toList(){
+
         return "user/list";
     }
 
@@ -43,6 +44,7 @@ public class UserController {
         Map resultmap = new HashMap();
         resultmap.put("pageData",userService.getPageParam(map));
         resultmap.put("total",userService.getPageCount(map));//total 当前分页的总数量
+        System.out.println(resultmap);
         return resultmap;
     }
 
@@ -69,6 +71,7 @@ public class UserController {
     @RequestMapping("/update")
     public Object update(@RequestBody Map map){
         System.out.println(map);
+
         return userService.update(map);
     }
 
