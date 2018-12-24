@@ -54,11 +54,13 @@ public interface EmployService {
 
     /**
      * 部门查询
-     * @param map
+     * @param
      * @return
      */
-    int chaxun(Map map);
+    List<Map> chaxun(Map map);
 
+
+    List<Map> getdept();
     /**
      * 部门的更新
      * @param map

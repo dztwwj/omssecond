@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aaa.oms.dao.LoginDao">
+    <select id="findByName" parameterType="String" resultType="com.aaa.oms.entity.User" >
+        select eid,empnum,epassword from cu_emp where empnum=#{value}
+    </select>
+    <!--<select id="findById" parameterType="int" resultType="user">
+        select eid,empnum,epassword,perms from cu_emp where eid=#{value}
+    </select>-->
+</mapper>

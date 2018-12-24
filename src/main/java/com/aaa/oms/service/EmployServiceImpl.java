@@ -47,7 +47,12 @@ public class EmployServiceImpl implements EmployService {
     }
 
     @Override
-    public int chaxun(Map map) {
+    public List<Map> chaxun(Map map) {
         return employDao.chaxun(map);
+    }
+
+    @Override
+    public List<Map> getdept() {
+        return employDao.getdept();
     }
 }
