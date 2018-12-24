@@ -22,22 +22,22 @@ public interface UserDao {
      * @return
      */
     @Select("<script>select empnum,ename,telephone,empsex,\n" +
-            "empbirthday,emiladdr,idcard from\n" +
+            "to_char(empbirthday,'yyyy-mm-dd') empbirthday,emiladdr,idcard from\n" +
             "(select rownum rn,empnum,ename,telephone,empsex,\n" +
             "empbirthday,emiladdr,idcard\n" +
-            " from cu_emp where rownum &lt; #{end}\n" +
+            " from cu_emp where ISEFFECTIVE=0 and rownum &lt; #{end}\n" +
             "<if test=\"ENAME!=null and ENAME!=''\"> and ename like '%'||#{ENAME}||'%'</if>\n" +
             ") a where a.rn &gt; #{start}</script>")
     List<Map> getPageParam(Map map);
-
     /**
      * 查询分页总数量
      * @param map
      * @return
      */
-    @Select("<script> select count(*) from cu_emp <where> " +
+    @Select("<script> select count(*) from cu_emp " +
+            "<where> " +
             "<if test=\"ENAME!=null and ENAME!=''\"> and ENAME like '%'||#{ENAME}||'%'</if>\n" +
-            "</where></script>")
+            "and ISEFFECTIVE = 0</where></script>")
     int getPageCount(Map map);
     /**
      * 员工的添加
