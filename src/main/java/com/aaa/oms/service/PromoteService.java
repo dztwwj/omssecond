@@ -46,6 +46,18 @@ public interface PromoteService {
 
 
     /**
+     * 晋升通过
+     * @param map
+     * @return
+     */
+    int updateTG(Map map);
+    /**
+     * 晋升驳回
+     * @param map
+     * @return
+     */
+    int updateNoTG(Map map);
+    /**
      * 晋升信息的更新
      * @param map
      * @return

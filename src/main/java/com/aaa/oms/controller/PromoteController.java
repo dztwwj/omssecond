@@ -109,16 +109,33 @@ public class PromoteController {
     @ResponseBody
     @RequestMapping("/update")
     public int update(@RequestBody Map map){
-        System.out.println(map);
+        //System.out.println("aaa"+map);
         return promoteService.update(map);
+    }
+    /**
+     * 晋升通过
+     */
+    @ResponseBody
+    @RequestMapping("/updateTG")
+    public int updateTG(@RequestBody Map map){
+        System.out.println("阿大大"+map);
+        return promoteService.updateTG(map);
+    }/**
+     * 晋升驳回
+     */
+    @ResponseBody
+    @RequestMapping("/updateNoTG")
+    public int updateNoTG(@RequestBody Map map){
+        System.out.println("驳回"+map);
+        return promoteService.updateNoTG(map);
     }
     /**
      * 删除晋升信息
      */
     @ResponseBody
-    @RequestMapping("//delete/{ID}")
+    @RequestMapping("/delete/{ID}")
     public int delete(@PathVariable("ID") int id){//@PathVariable可以用来映射URL中的占位符到目标方法的参数中
-        System.out.println(id+"idididididididididiiddiidid");
+        //System.out.println(id+"idididididididididiiddiidid");
         return promoteService.delete(id);
     }
 }

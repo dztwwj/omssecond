@@ -62,8 +62,8 @@
                     >
             </el-table-column>
             <el-table-column
-                    prop="EMPNUM"
-                    label="工号"
+                    prop="ID"
+                    label="编号"
                     >
             </el-table-column>
             <el-table-column
@@ -142,8 +142,9 @@
     <!--编辑界面-->
     <el-dialog title="确定信息" :visible.sync="editFormVisible" :close-on-click-modal="false">
         <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-            <el-form-item label="工号" prop="EMPNUM">
-                <el-input v-model="editForm.EMPNUM" auto-complete="off" disabled></el-input>
+
+            <el-form-item label="编号" prop="ID">
+                <el-input v-model="editForm.ID" auto-complete="off" disabled></el-input>
             </el-form-item>
             <el-form-item label="姓名" prop="ENAME">
                 <el-input v-model="editForm.ENAME" auto-complete="off" disabled ></el-input><!--disabled 禁用，不可编辑-->
