@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+   <h3>新闻列表</h3>
+      <table border="1">
+          <a href="/sb/news/toAdd">添加</a>
+          <h4><span th:value="${info}"></span></h4>
+          <tr><td>标题</td><td> 内容 </td><td> 类型 </td><td> 图片 </td><td> 操作 </td> </tr>
+          <tr th:each="news : ${newsList}">
+
+              <td th:text="${news.TITLE}"> </td>
+              <td th:text="${news.CONTENT}"> </td>
+              <td th:text="${news.TYPEID}"></td>
+              <td> <img width="30" th:src="'/sboot/news/show?fileName='+${news.PICPATH}"> <a th:href="'/sb/news/downLoad?fileName='+${news.PICPATH}">下载</a>
+                  </img>
+              <td> <a th:href="'/sb/news/getone?newsId='+${news.NEWSID}">更新</a><a th:href="'/sb/news/delete?newsId='+${news.NEWSID}"> 删除</a></td>
+          </tr>
+      </table>
+</body>
+</html>

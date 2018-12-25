@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>新闻列表</h3>
+<form action="/sb/news/update" method="post" enctype="multipart/form-data">
+    <table border="1">
+
+        <tr><td>标题</td>
+            <input th:value="${news.NEWSID}" type="hidden" th:name="newsId">
+            <td><input th:value="${news.TITLE}" type="text" th:name="title"> </td> </tr>
+        <tr><td>内容</td>
+            <td><input th:value="${news.CONTENT}" type="text" th:name="content"> </td> </tr>
+        <tr><td>类型</td>
+            <td><input th:value="${news.TYPEID}" type="text" th:name="type"> </td> </tr>
+        <tr><td>图片</td>
+            <td><IMG src="/........
+              files://D:/files/Jin.jpg"> </td></tr>
+        <tr> <td colspan="2"><input th:type="submit" th:value="更新"> </td> </tr>
+    </table>
+</form>
+</body>
+</html>
