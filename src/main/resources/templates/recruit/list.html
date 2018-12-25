@@ -172,7 +172,7 @@
                 <el-input-number v-model="editForm.RECRUITNUM" :min="0" :max="20000"></el-input-number>
             </el-form-item>
             <el-form-item label="发布日期"  prop="RELEASETIME">
-                <el-date-picker type="date"  value-format="yyyy-MM-dd" placeholder="选择日期" v-model="editForm.RELEASETIME"></el-date-picker>
+                <el-date-picker type="date"  value-format="yyyy-MM-dd" :picker-options="pickerOptions0" placeholder="选择日期" v-model="editForm.RELEASETIME"></el-date-picker>
             </el-form-item>
             <el-form-item label="学历" prop="EDUCATION">
                 <el-select v-model="editForm.EDUCATION" placeholder="请选择">
@@ -236,6 +236,11 @@
     var tableView = new Vue({
         el: '#tableView',
         data: {
+            pickerOptions0: {
+                disabledDate(time) {
+                    return time.getTime() < Date.now()-8.64e7;
+                }
+            },
             //部门select
             optiondept:[],
             options:[

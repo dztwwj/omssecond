@@ -54,8 +54,8 @@ public interface EmployDao {
      * @param map
      * @return
      */
-    @Insert(value = "insert into recruitstaff(stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,recruitnum) " +
-            " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},#{RECRUITDP},#{RECRUITPOS},to_date(#{EMPLOYTIME},'yyyy-mm-dd'),#{RESUME},#{RECRUITNUM})")
+    @Insert(value = "insert into recruitstaff(stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,recruitnum,id) " +
+            " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},#{RECRUITDP},#{RECRUITPOS},to_date(#{EMPLOYTIME},'yyyy-mm-dd'),#{RESUME},#{RECRUITNUM},#{ID})")
     int add(Map map);
 
     /**
@@ -71,9 +71,20 @@ public interface EmployDao {
      * @param map
      * @return
      */
-    @Select(value = "select * from recruit")
-    int chaxun(Map map);
+    /*@Select(value = "select * from recruit")
+    List<Map> chaxun(Map map);*/
+    @Select(value = "select * from recruit where id=#{ID}")
+    List<Map> chaxun(Map map);
 
+    /*@Select(value = "select * from recruit")
+    List<Map> getrecruit(Map map);*/
+
+    /**
+     * 部门列表查询
+     * @return
+     */
+    @Select(value = "select * from recruit")
+    List<Map> getdept();
 
     /**
      * 部门的更新
