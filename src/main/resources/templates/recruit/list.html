@@ -159,12 +159,12 @@
             </el-form-item>-->
 
             <el-form-item label="所属部门" prop="DEPARTMENT">
-                <el-select v-model="editForm.DEPARTMENT" placeholder="请选择">
+                <el-select v-model="editForm.DEPARTMENT" @change="getRecruiitdpInfo" placeholder="请选择">
                     <el-option
                             v-for="item in optiondept"
                             :key="item.ID"
                             :label="item.DNAME"
-                            :value="item.DNAME"></el-option>
+                            :value="item.ID"></el-option>
                 </el-select>
             </el-form-item>
 
@@ -192,9 +192,21 @@
                             :value="item.value"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="职称" prop="JOBS">
+            <!--    <el-form-item label="职称" prop="JOBS">
             <el-input v-model="editForm.JOBS" auto-complete="off" style="width:220px;"></el-input>
+
+              </el-form-item>-->
+
+            <el-form-item label="职称" prop="JOBS">
+                <el-select v-model="editForm.JOBS"  placeholder="请选择">
+                    <el-option
+                            v-for="item in optionjobs"
+                            :key="item.ID"
+                            :label="item.POSITIONNAME"
+                            :value="item.POSITIONNAME"></el-option>
+                </el-select>
             </el-form-item>
+
             <el-form-item label="语言能力" prop="LANGUAGE">
                 <el-select v-model="editForm.LANGUAGE" placeholder="请选择">
                     <el-option
@@ -243,6 +255,7 @@
             },
             //部门select
             optiondept:[],
+            optionjobs:[],
             options:[
                 {
                     value: '高中以上',
@@ -337,7 +350,7 @@
             });
             axios.post('/dept/list').then(function(response){
                 self.optiondept=response.data;
-            })
+            });
         },
         methods: {
             /* formatterColumn:function (row, column) {
@@ -347,6 +360,25 @@
                     return "不可用"
                 }
             },*/
+            getRecruiitdpInfo:function(row){
+                alert(JSON.stringify(row));
+                /*this.editForm.ID=JSON.stringify(row);*/
+                var self = this;
+                alert(JSON.stringify(row));
+                var url="/recruit/chaxun/"+JSON.stringify(row);
+                axios.post(url).then(function(response){
+                    alert(JSON.stringify(response.data));
+                    self.optionjobs=response.data;
+                });
+                //axios.post("/recruit/chaxun",{DEPTID:row}).then(function (response) {
+                    //alert(response.data+","+JSON.stringify(response.data));
+                    //alert(response.data[0]);
+                    //alert(response.data[0].RECRUITNUM);
+                 //   alert(response.data[0].DEPTID)
+                    //self.editForm.ID=response.data[0].ID;
+                    //self.editForm.RECRUITNUM=response.data[0].RECRUITNUM;
+               // })
+            },
             //表格重新加载数据
             loadingData: function () {
                 var _self = this;

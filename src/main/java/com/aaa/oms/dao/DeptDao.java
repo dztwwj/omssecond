@@ -19,8 +19,8 @@ public interface DeptDao {
      * @param map
      * @return
      */
-    @Select("<script>select id, dname,dstatus,describes,phone from \n" +
-                    "(select rownum rn,id,dname,dstatus,describes,phone from dept\n" +
+    @Select("<script>select id, dname,dstatus,describes,phone,(select count(e.gid) from cu_emp e where e.gid in (select gid from cu_group where deptid = a.id)) num from \n" +
+                    "(select rownum rn,id,dname,dstatus,describes,phone,num from dept d \n" +
                     "where rownum &lt; #{end}  " +
                     "<if test=\"dname!=null and dname!=''\"> and dname like '%'||#{dname}||'%'</if>" +
                     " )a where a.rn &gt; #{start} </script>")
@@ -40,7 +40,8 @@ public interface DeptDao {
      * @param map
      * @return
      */
-    @Insert(value = "insert into dept values(seq_dept_id.nextval,#{DNAME},#{DSTATUS},#{DESCRIBES},#{PHONE})")
+    @Insert(value = "insert into dept(id,dname,describes,phone) " +
+            "values(seq_dept_id.nextval,#{DNAME},#{DESCRIBES},#{PHONE})")
     int add(Map map);
 
 
@@ -50,7 +51,7 @@ public interface DeptDao {
      * @param map
      * @return
      */
-    @Update(value = "update dept set dname=#{DNAME},dstatus=#{DSTATUS},describes=#{DESCRIBES},phone=#{PHONE} where id=#{ID}")
+    @Update(value = "update dept set dname=#{DNAME},describes=#{DESCRIBES},phone=#{PHONE} where id=#{ID}")
     int update(Map map);
 
     /**
@@ -61,10 +62,13 @@ public interface DeptDao {
     @Delete(value = "delete from dept where id=#{id}")
     int delete(int id);
 
+
     /**
      * 部门列表查询
      * @return
      */
     @Select(value = "select * from dept")
-    List<Map> getList();
+    List<Map> getList(Map map);
+
+
 }

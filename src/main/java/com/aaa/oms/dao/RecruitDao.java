@@ -42,14 +42,13 @@ public interface RecruitDao {
     int getPageCount(Map map);
 
     /**
-     *
+     *添加招聘信息
      * @param map
      * @return
      */
-    @Insert(value = "insert into recruit values(sql_recruit_id.nextval,#{DEPARTMENT},#{RECRUITNUM},to_date(#{RELEASETIME},'yyyy-mm-dd'),#{EDUCATION}," +
+    @Insert(value = "insert into recruit values(sql_recruit_id.nextval,(select dname from dept where id=#{DEPARTMENT}),#{RECRUITNUM},to_date(#{RELEASETIME},'yyyy-mm-dd'),#{EDUCATION}," +
             "#{WORKEXER},#{JOBS},#{LANGUAGE},#{JOBRESPON},#{EMPID},#{EMPNAME})")
     int add(Map map);
-
     /**
      * 更新招聘信息
      * @param map
@@ -66,4 +65,20 @@ public interface RecruitDao {
      */
     @Delete(value = "delete from recruit where id=#{id}")
     int delete(int id);
+
+    /**
+     * 更改招聘信息状态
+     * @param map
+     * @return
+     */
+    /*@Update(value = "update dept set state=#{STATE} where stid=#{STID}")
+    List<Map> getnum(Map map);*/
+
+    /**
+     * 根据部门ID查询数据
+     * @param id
+     * @return
+     */
+    @Select(value = "select * from CU_POSITION where deptid=#{id}")
+    List<Map> chaxun(Integer id);
 }

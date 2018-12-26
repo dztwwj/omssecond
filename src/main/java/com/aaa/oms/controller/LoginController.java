@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
+
 /**
  * className:LoginController
  * discription:
@@ -59,7 +61,7 @@ public class LoginController {
     }
 
     @RequestMapping("/indexht")
-    public String indexht(String empnum,String epassword,Model model){
+    public String indexht(String empnum, String epassword, Model model, HttpSession session){
         System.out.println("name="+empnum);
         System.out.println(empnum+"================"+epassword);
         //使用shiro编写认证操作
@@ -71,6 +73,7 @@ public class LoginController {
         //执行登录方法
         try {
             subject.login(token);
+            session.setAttribute("userName",token.getUsername());
             return "redirect:/index/toHome";
             //登录成功
         } catch (UnknownAccountException e) {

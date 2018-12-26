@@ -44,4 +44,11 @@ public class RecruitServiceImpl implements RecruitService {
     public int delete(int id) {
         return recruitDao.delete(id);
     }
+
+    @Override
+    public List<Map> chaxun(Integer id) {
+        return recruitDao.chaxun(id);
+    }
+
+
 }

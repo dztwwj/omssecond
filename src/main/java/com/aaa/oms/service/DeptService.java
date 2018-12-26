@@ -54,5 +54,6 @@ public interface DeptService {
      * 部门列表查询
      * @return
      */
-    List<Map> getList();
+    List<Map> getList(Map map);
+
 }

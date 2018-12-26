@@ -130,9 +130,9 @@
                     prop="RECRUITNUM"
                     label="还需招聘人数"
                     align="center"
-                    width="55"
             >
             </el-table-column>
+
             <el-table-column
                     prop="STATE"
                     label="审核状态"
@@ -197,15 +197,26 @@
             <el-form-item label="应聘部门" prop="RECRUITDP">
                 <el-select v-model="editForm.RECRUITDP" @change="getRecruiitdpInfo" placeholder="请选择">
                     <el-option
-                            v-for="item in optiondept"
+                            v-for="item in optionrec"
                             :key="item.ID"
                             :label="item.DEPARTMENT"
                             :value="item.ID"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="应聘职位" prop="RECRUITPOS">
+            <!--<el-form-item label="应聘职位" prop="RECRUITPOS">
                 <el-input v-model="editForm.RECRUITPOS" auto-complete="off"></el-input>
+            </el-form-item>-->
+
+            <el-form-item label="应聘职称" prop="RECRUITPOS">
+                <el-select v-model="editForm.RECRUITPOS"  placeholder="请选择">
+                    <el-option
+                            v-for="item in optionrec"
+                            :key="item.ID"
+                            :label="item.JOBS"
+                            :value="item.JOBS"></el-option>
+                </el-select>
             </el-form-item>
+
             <el-form-item label="发布日期"  prop="EMPLOYTIME">
                 <el-date-picker type="date"
                                 value-format="yyyy-MM-dd"
@@ -233,15 +244,16 @@
                 </el-upload>
             </el-form-item>
 
-            <el-form-item label="招聘人数" prop="RECRUITNUM">
+            <!--<el-form-item label="招聘人数" prop="RECRUITNUM">
                 <el-input-number v-model="editForm.RECRUITNUM" :min="0" :max="20000"></el-input-number>
-            </el-form-item>
-        </el-form>
+            </el-form-item>-->
+                </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
             <el-button type="primary" @click.native="edittiSubmit('editForm')" :loading="editLoading">提交</el-button>
         </div>
     </el-dialog>
+
 
     <el-dialog title="驳回理由填写" :visible.sync="liyouVisible" :close-on-click-modal="false">
         <el-form :model="liyouForm" label-width="80px" :rules="editFormRules">
@@ -308,7 +320,8 @@
                 REASON:''
             },
             //部门select
-            optiondept:[],
+            optionrec:[],
+            /*optionpos:[],*/
             options:[
                 {
                     value: '男',
@@ -397,7 +410,7 @@
                 // self.multipleSelection=response.data.data;
             });
             axios.post('/employ/deptt').then(function(response){
-                self.optiondept=response.data;
+                self.optionrec=response.data;
             })
 
         },
@@ -417,6 +430,7 @@
                     alert(response.data[0].ID)
                     self.editForm.ID=response.data[0].ID;
                     self.editForm.RECRUITNUM=response.data[0].RECRUITNUM;
+                    self.editForm.RECRUITPOS=response.data[0].JOBS;
                 })
             },
             //表格重新加载数据
@@ -454,27 +468,21 @@
                 this.goUrl = "/employ/tgupdate";
                 /*this.editFormVisible = true;*/
                 /*this.editForm = Object.assign({}, row);*/
-                if(row.RECRUITNUM<0){
+                if(row.RECRUITNUM==0){
                     _self.$message({
                         message: '此岗位已招满',
                         type: 'error'
                     });
                     return;
                 }
-                axios.post(this.goUrl, {STATE:'审核通过',STID:row.STID}).then(function (response) {
+                axios.post(this.goUrl, {STATE:'审核通过',STID:row.STID,ID:row.ID}).then(function (response) {
 
                     //alert(response.data)
-                    if (response.data > 0) {
+                    if (response.data >0) {
                         _self.tableData.state='审核通过';
                         _self.loadingData();//重新加载数据
-                    }else{
-                        _self.$message({
-                            message: '审核失败',
-                            type: 'error'
-                        });
-
-                        _self.loadingData();//重新加载数据
                     }
+                        _self.loadingData();//重新加载数据
                 })
             },
             //刷新页面
