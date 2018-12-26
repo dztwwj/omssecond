@@ -251,6 +251,8 @@
             axios.post('/promote/page',{'start':start,'end':end,'STATE':'0'}).then(function(response){
                 // console.log(response.data);
                 //alert(response.data.total);
+                // alert(response.data);
+
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
                 // alert(JSON.stringify(response.data.pageData));
@@ -289,6 +291,7 @@
                 this.goUrl="/promote/update";
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
+
             },
 
             deleteClick:function(row) {

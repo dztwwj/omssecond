@@ -4,11 +4,15 @@ import com.aaa.oms.service.PromoteService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,10 +66,13 @@ public class PromoteController {
      */
     @ResponseBody
     @RequestMapping("/page")
-    public Object page(@RequestBody Map map){
+    public Object page(@RequestBody Map map, Model model, HttpSession session){
+        model.addAttribute("aaa","abababababab");
         Map resultmap = new HashMap();
         resultmap.put("pageData",promoteService.getPageParam(map));
         resultmap.put("total",promoteService.getPageCount(map));//total 当前分页的总数量
+        resultmap.put("aaaa","ssssssss");
+        session.setAttribute("empnum","empnum");
         return resultmap;
     }
     /**
@@ -76,6 +83,7 @@ public class PromoteController {
     @ResponseBody
     @RequestMapping("/audit")
     public Object audit(@RequestBody Map map){
+
         Map resultmap = new HashMap();
         resultmap.put("pageData",promoteService.auditPromote(map));
         resultmap.put("total",promoteService.auditPromoteCount(map));//total 当前分页的总数量
