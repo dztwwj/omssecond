@@ -57,4 +57,14 @@ public class PromoteServiceImpl implements PromoteService {
     public int auditPromoteCount(Map map) {
         return promoteDao.auditPromoteCount(map);
     }
+
+    @Override
+    public int updateTG(Map map) {
+        return promoteDao.updateTG(map);
+    }
+
+    @Override
+    public int updateNoTG(Map map) {
+        return promoteDao.updateNoTG(map);
+    }
 }
