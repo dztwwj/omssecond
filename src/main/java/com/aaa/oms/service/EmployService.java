@@ -35,7 +35,7 @@ public interface EmployService {
      * @param map
      * @return
      */
-    int tgupdate(Map map);
+    Map tgupdate(Map map);
 
     /**
      * 部门的添加
@@ -53,14 +53,14 @@ public interface EmployService {
     int rsupdate(Map map);
 
     /**
-     * 部门查询
+     * 根据ID查询
      * @param
      * @return
      */
     List<Map> chaxun(Map map);
 
 
-    List<Map> getdept();
+    List<Map> getdept(Map map);
     /**
      * 部门的更新
      * @param map

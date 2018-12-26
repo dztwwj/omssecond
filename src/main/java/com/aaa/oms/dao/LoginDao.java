@@ -1,6 +1,11 @@
 package com.aaa.oms.dao;
 
+
 import com.aaa.oms.entity.User;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
 
 /**
  * className:PowerController
@@ -11,4 +16,8 @@ import com.aaa.oms.entity.User;
 public interface LoginDao {
 
     public User findByName(String empnum);
+
+    /*List<User> findByName(String empnum);
+
+    List<User> findByid(Integer eid);*/
 }

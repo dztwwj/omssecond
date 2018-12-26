@@ -19,8 +19,8 @@ public interface EmployDao {
      * @param map
      * @return
      */
-    @Select("<script>select stid,stname,sex,idcard,phone,recruitdp,recruitpos,to_char(employtime,'yyyy-mm-dd') as employtime,resume,recruitnum,state,reason from \n" +
-            "(select rownum rn,stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,recruitnum,state,reason from recruitstaff \n" +
+    @Select("<script>select stid,stname,sex,idcard,phone,recruitdp,recruitpos,to_char(employtime,'yyyy-mm-dd') as employtime,resume,recruitnum,state,reason,id from \n" +
+            "(select rownum rn,stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,recruitnum,state,reason,id from recruitstaff \n" +
             "where rownum &lt; #{end}  and  state in(${STATE}) " +
             "<if test=\"sex!=null and sex!=''\"> and sex=#{sex}</if>" +
             "<if test=\"recruitdp!=null and recruitdp!=''\"> and recruitdp like '%'||#{recruitdp}||'%'</if>" +
@@ -43,19 +43,27 @@ public interface EmployDao {
      * @param map
      * @return
      */
-    @Update(value = "update recruitstaff set state=#{STATE},recruitnum=recruitnum-1 where stid=#{STID}")
+    @Update(value = "update recruitstaff set state=#{STATE} where stid=#{STID}")
     int tgupdate(Map map);
+
+    /**
+     * 审核状态通过
+     * @param map
+     * @return
+     */
+    @Update(value = "update recruitstaff set recruitnum=recruitnum-1 where id=#{ID}")
+    int tgupdate1(Map map);
 
 
 
 
     /**
-     * 部门的添加
+     * 应聘员工信息添加
      * @param map
      * @return
      */
     @Insert(value = "insert into recruitstaff(stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,recruitnum,id) " +
-            " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},#{RECRUITDP},#{RECRUITPOS},to_date(#{EMPLOYTIME},'yyyy-mm-dd'),#{RESUME},#{RECRUITNUM},#{ID})")
+            " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},(select department from recruit where id=#{RECRUITDP}),#{RECRUITPOS},to_date(#{EMPLOYTIME},'yyyy-mm-dd'),#{RESUME},#{RECRUITNUM},#{ID})")
     int add(Map map);
 
     /**
@@ -67,7 +75,7 @@ public interface EmployDao {
     int rsupdate(Map map);
 
     /**
-     * 部门查询
+     * 根据ID查询
      * @param map
      * @return
      */
@@ -84,7 +92,7 @@ public interface EmployDao {
      * @return
      */
     @Select(value = "select * from recruit")
-    List<Map> getdept();
+    List<Map> getdept(Map map);
 
     /**
      * 部门的更新
@@ -101,5 +109,8 @@ public interface EmployDao {
      */
     //@Delete(value = "delete from recruitstaff where stid=#{stid}")
     //int delete(int stid);
+
+   /* @Select()
+    List<Map> getjob(Map map);*/
 
 }

@@ -6,7 +6,7 @@
     <select id="findByName" parameterType="String" resultType="com.aaa.oms.entity.User" >
         select eid,empnum,epassword from cu_emp where empnum=#{value}
     </select>
-    <!--<select id="findById" parameterType="int" resultType="user">
+    <select id="findById" parameterType="int" resultType="user">
         select eid,empnum,epassword,perms from cu_emp where eid=#{value}
-    </select>-->
+    </select>
 </mapper>

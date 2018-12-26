@@ -69,7 +69,7 @@ public class EmployController {
     @ResponseBody
     @RequestMapping("/tgupdate")
     public Object tgupdate(@RequestBody Map map){
-        //System.out.println(map);
+        System.out.println("dddddddddd"+map);
         return employService.tgupdate(map);
     }
     @ResponseBody
@@ -81,6 +81,7 @@ public class EmployController {
     @ResponseBody
     @RequestMapping("/rsupdate")
     public Object rsupdate(@RequestBody Map map){
+        System.out.println(employService.rsupdate(map));
         return employService.rsupdate(map);
     }
 
@@ -93,9 +94,9 @@ public class EmployController {
 
     @ResponseBody
     @RequestMapping("/deptt")
-    public Object getdept(){
+    public Object getdept(Map map){
         //System.out.println(map+"......");
-        return employService.getdept();
+        return employService.getdept(map);
     }
     /**
      * 上传方法

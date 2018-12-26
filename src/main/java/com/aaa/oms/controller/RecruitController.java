@@ -74,4 +74,12 @@ public class RecruitController {
     public Object delete(@PathVariable("id") int id){//@PathVariable可以用来映射URL中的占位符到目标方法的参数中
         return recruitService.delete(id);
     }
+
+
+    @ResponseBody
+    @RequestMapping("/chaxun/{id}")
+    public Object chaxun(@PathVariable("id") Integer id ){
+        //System.out.println(id+"......");
+        return recruitService.chaxun(id);
+    }
 }
