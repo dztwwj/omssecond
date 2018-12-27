@@ -55,6 +55,8 @@ public class shiroConfig {
         //放行indexht页面
         //filterMap.put("/shiro/indexht","anon");
         filterMap.put("/indexht","anon");
+        filterMap.put("/qiantai","anon");
+
 
 
         filterMap.put("/images/**","anon");
@@ -62,6 +64,7 @@ public class shiroConfig {
         filterMap.put("/images/**","anon");
         //filterMap.put("/*","authc");
         //filterMap.put("/*/*","anon");
+        filterMap.put("/recruit/employ","anon");
         //拦截所有请求
         filterMap.put("/**","authc");
         //修改跳转页面

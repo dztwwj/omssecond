@@ -57,6 +57,15 @@ public class LoginController {
      */
 
     /**
+     * 跳转前台页面
+     * @return
+     */
+    @RequestMapping("/qiantai")
+    public String qiantai(){
+        return "zhaopin";
+    }
+
+    /**
      * 跳转登录页面
      * @return
      */
@@ -64,6 +73,7 @@ public class LoginController {
     public String toLogin(){
         return "/indexht";
     }
+
 
     @RequestMapping("/indexht")
     public String indexht(String empnum, String epassword, Model model, HttpSession session){
