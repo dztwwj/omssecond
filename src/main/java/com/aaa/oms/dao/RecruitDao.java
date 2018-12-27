@@ -2,6 +2,7 @@ package com.aaa.oms.dao;
 
 import org.apache.ibatis.annotations.*;
 import org.mybatis.caches.redis.RedisCache;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Map;
  * author:HPY
  * createTime:2018-12-15 10:52
  */
+@Component
 @CacheNamespace(implementation = RedisCache.class)
 public interface RecruitDao {
 
@@ -58,6 +60,8 @@ public interface RecruitDao {
             "workexer=#{WORKEXER},jobs=#{JOBS},language=#{LANGUAGE},jobrespon=#{JOBRESPON} where id=#{ID}")
     int update(Map map);
 
+
+
     /**
      * 删除招聘信息
      * @param id
@@ -81,4 +85,14 @@ public interface RecruitDao {
      */
     @Select(value = "select * from CU_POSITION where deptid=#{id}")
     List<Map> chaxun(Integer id);
+
+
+    /**
+     * 应聘员工信息添加
+     * @param map
+     * @return
+     */
+    @Insert(value = "insert into recruitstaff(stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,recruitnum,id) " +
+            " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},#{DEPARTMENT},#{JOBS},to_date(#{EMPLOYTIME},'yyyy-mm-dd'),#{RECRUITNUM},#{ID})")
+    int addEmploy(Map map);
 }

@@ -53,4 +53,11 @@ public interface RecruitService {
      * @return
      */
     List<Map> chaxun(Integer id);
+
+    /**
+     * 应聘员工信息添加
+     * @param map
+     * @return
+     */
+    int addEmploy(Map map);
 }

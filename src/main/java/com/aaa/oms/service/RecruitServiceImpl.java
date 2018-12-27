@@ -1,9 +1,11 @@
 package com.aaa.oms.service;
 
 import com.aaa.oms.dao.RecruitDao;
+import com.aaa.oms.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +22,9 @@ public class RecruitServiceImpl implements RecruitService {
     @Autowired
     private RecruitDao recruitDao;
 
+    @Autowired
+    private HttpSession session;
+
     @Override
     public List<Map> getPageParam(Map map) {
         return recruitDao.getPageParam(map);
@@ -32,6 +37,9 @@ public class RecruitServiceImpl implements RecruitService {
 
     @Override
     public int add(Map map) {
+        User user=(User)session.getAttribute("user");
+        map.put("EMPID",user.getEid());
+        map.put("EMPNAME",user.getEname());
         return recruitDao.add(map);
     }
 
@@ -51,4 +59,8 @@ public class RecruitServiceImpl implements RecruitService {
     }
 
 
+    @Override
+    public int addEmploy(Map map) {
+        return recruitDao.addEmploy(map);
+    }
 }

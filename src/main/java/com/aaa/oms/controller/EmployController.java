@@ -51,6 +51,12 @@ public class EmployController {
     public String ListRecord(){
         return "/employ/listrecord";
     }
+
+    @RequestMapping("/entry")
+    public String entry(){
+        return "/employ/entry";
+    }
+
     /**
      * 分页
      * @param map

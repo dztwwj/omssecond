@@ -5,10 +5,14 @@
     <title>zhute</title>
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
-    <!-- 引入样式 -->
+    <!--&lt;!&ndash; 引入样式 &ndash;&gt;
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    &lt;!&ndash; 引入组件库 &ndash;&gt;
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/elementui.css">
     <!-- 引入组件库 -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="../js/elementui.js"></script>
     <style>
         .el-header, .el-footer {
             background-color: #B3C0D1;
@@ -77,6 +81,7 @@
 <script>
     var vm = new Vue({
         el:".diva",
+
         data:{
             icon:'el-icon-menu',
             treeData:[],
