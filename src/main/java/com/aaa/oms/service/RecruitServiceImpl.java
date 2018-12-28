@@ -59,8 +59,5 @@ public class RecruitServiceImpl implements RecruitService {
     }
 
 
-    @Override
-    public int addEmploy(Map map) {
-        return recruitDao.addEmploy(map);
-    }
+
 }

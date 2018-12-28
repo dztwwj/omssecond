@@ -1,8 +1,6 @@
 package com.aaa.oms.controller;
 
 import com.aaa.oms.service.EmployService;
-import com.aaa.oms.util.FtpConfig;
-import com.aaa.oms.util.FtpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
@@ -23,13 +21,13 @@ import java.util.Map;
 @RequestMapping("/employ")
 public class EmployController {
 
-    //依赖注入ftp工具类
+  /*  //依赖注入ftp工具类
     @Autowired
     private FtpUtil ftpUtil;
 
     @Autowired
     private FtpConfig ftpConfig;
-
+*/
     @Autowired
     private ResourceLoader resourceLoader;
 
@@ -65,7 +63,7 @@ public class EmployController {
     @ResponseBody//返回json数据
     @RequestMapping("/page")
     public Object page(@RequestBody Map map){
-        //System.out.println(map);
+        System.out.println("aaa"+map);
         Map resultmap = new HashMap();
         resultmap.put("pageData",employService.getPageParam(map));
         resultmap.put("total",employService.getPageCount(map));
@@ -78,11 +76,11 @@ public class EmployController {
         System.out.println("dddddddddd"+map);
         return employService.tgupdate(map);
     }
-    @ResponseBody
+   /* @ResponseBody
     @RequestMapping("/add")
     public Object add(@RequestBody Map map){
         return employService.add(map);
-    }
+    }*/
 
     @ResponseBody
     @RequestMapping("/rsupdate")
@@ -109,19 +107,19 @@ public class EmployController {
      * @param file
      * @return
      */
-    @ResponseBody
+    /*@ResponseBody
     @RequestMapping("/upLoadPic")
     public Object upLoadPic(@RequestParam MultipartFile file){
         System.out.println("jinru up");
         String s = ftpUtil.upLoad(file);//调用上传方法
         return s;
-    }
+    }*/
     /**
      * 显示Ftp图片
      * @param fileName
      * @return
      */
-    @RequestMapping("show")
+    /*@RequestMapping("show")
     public ResponseEntity show(String fileName){
         try {
             //  ftp://192.168.1.14/98f20a5d-7304-41c7-ac5a-db07d2aaffd3.png
@@ -130,5 +128,30 @@ public class EmployController {
             return ResponseEntity.notFound().build();
         }
 
+    }*/
+
+    /**
+     * 入职新员工完善信息
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/perfect")
+    public Object perfectadd(@RequestBody Map map){
+        //System.out.println(map+"......");
+        return employService.perfectadd(map);
+    }
+
+
+    /**
+     * 添加应聘人员
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/addEmploy")
+    public Object addemploy(@RequestBody Map map){
+        System.out.println(map);
+        return employService.addEmploy(map);
     }
 }

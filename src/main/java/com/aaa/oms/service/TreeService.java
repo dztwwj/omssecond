@@ -20,7 +20,7 @@ public interface TreeService {
 
     /**
      * 根据ID获取集合对象
-     * @param parentid
+     * @param roleid
      * @return
      */
     List<Map<String,Object>> getById(int roleid);

@@ -91,10 +91,5 @@ public class RecruitController {
         //System.out.println(id+"......");
         return recruitService.chaxun(id);
     }
-    @ResponseBody
-    @RequestMapping("/addEmploy")
-    public Object addemploy(@RequestBody Map map){
-        System.out.println(map);
-        return recruitService.addEmploy(map);
-    }
+
 }

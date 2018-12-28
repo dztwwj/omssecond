@@ -57,14 +57,17 @@ public class shiroConfig {
         filterMap.put("/indexht","anon");
         filterMap.put("/qiantai","anon");
 
-
+        filterMap.put("/recruit/employ","anon");
+        filterMap.put("/recruit/page","anon");
+        filterMap.put("/dept/list","anon");
+        filterMap.put("/employ/addEmploy","anon");
 
         filterMap.put("/images/**","anon");
         filterMap.put("/js/**","anon");
         filterMap.put("/images/**","anon");
         //filterMap.put("/*","authc");
         //filterMap.put("/*/*","anon");
-        filterMap.put("/recruit/employ","anon");
+
         //拦截所有请求
         filterMap.put("/**","authc");
         //修改跳转页面

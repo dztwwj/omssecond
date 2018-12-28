@@ -28,7 +28,7 @@ public interface RecruitDao {
             "(select rownum rn,id,department,recruitnum,releasetime,education,workexer,jobs,language,jobrespon,empid,empname from recruit \n" +
             "where rownum &lt; #{end}  " +
             "<if test=\"department!=null and department!=''\"> and department like '%'||#{department}||'%'</if>" +
-            "<if test=\"releasetime!=null and releasetime!=''\"> and releasetime like '%'||#{releasetime}||'%'</if> " +
+            "<if test=\"education!=null and education!=''\"> and education like '%'||#{education}||'%'</if> " +
             ")a where a.rn &gt; #{start} </script>")
     List<Map> getPageParam(Map map);
 
@@ -37,7 +37,7 @@ public interface RecruitDao {
      * @param map
      * @return
      */
-    @Select("<script> select count(*) from recruit <where> " +
+    @Select("<script> select count(*) from recruit <where>   " +
             "<if test=\"department!=null and department!=''\"> and department like '%'||#{department}||'%'</if>" +
             "<if test=\"releasetime!=null and releasetime!=''\"> and releasetime like '%'||#{releasetime}||'%'</if>" +
             " </where></script>")
@@ -48,7 +48,7 @@ public interface RecruitDao {
      * @param map
      * @return
      */
-    @Insert(value = "insert into recruit values(sql_recruit_id.nextval,(select dname from dept where id=#{DEPARTMENT}),#{RECRUITNUM},to_date(#{RELEASETIME},'yyyy-mm-dd'),#{EDUCATION}," +
+    @Insert(value = "insert into recruit values(sql_recruit_id.nextval,(select dname from dept where id=#{DEPARTMENT}),#{RECRUITNUM},SYSDATE,#{EDUCATION}," +
             "#{WORKEXER},#{JOBS},#{LANGUAGE},#{JOBRESPON},#{EMPID},#{EMPNAME})")
     int add(Map map);
     /**
@@ -87,12 +87,5 @@ public interface RecruitDao {
     List<Map> chaxun(Integer id);
 
 
-    /**
-     * 应聘员工信息添加
-     * @param map
-     * @return
-     */
-    @Insert(value = "insert into recruitstaff(stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,recruitnum,id) " +
-            " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},#{DEPARTMENT},#{JOBS},to_date(#{EMPLOYTIME},'yyyy-mm-dd'),#{RECRUITNUM},#{ID})")
-    int addEmploy(Map map);
+
 }
