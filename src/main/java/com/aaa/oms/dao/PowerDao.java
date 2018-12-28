@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * className:PowerDao
  * discription:
- * author:zz
+ * author:zz00000
  * createTime:2018-12-11 09:22
  */
 public interface PowerDao {

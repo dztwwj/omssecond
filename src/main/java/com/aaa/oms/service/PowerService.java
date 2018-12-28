@@ -4,6 +4,7 @@ import com.aaa.oms.entity.Node;
 
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * className:PowerService
@@ -18,4 +19,5 @@ public interface PowerService {
      * @return
      */
     List<Node> getList();
+
 }
