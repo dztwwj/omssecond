@@ -1,7 +1,5 @@
 package com.aaa.oms.service;
 
-import org.apache.ibatis.annotations.Select;
-
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +9,7 @@ import java.util.Map;
  * author:HPY
  * createTime:2018-12-11 10:24
  */
-public interface RecruitService {
+public interface PositionService {
     /**
      * 带参分页查询
      * @param map
@@ -25,39 +23,32 @@ public interface RecruitService {
      * @return
      */
     int getPageCount(Map map);
+
     /**
-     *
+     * 职称的添加
      * @param map
      * @return
      */
     int add(Map map);
 
+
     /**
-     * 更新招聘信息
+     * 更新职称信息
      * @param map
      * @return
      */
     int update(Map map);
 
     /**
-     * 删除招聘信息
+     * 删除职称信息
      * @param id
      * @return
      */
     int delete(int id);
-
-
     /**
-     * 根据部门ID查询数据
-     * @param id
+     * 根据id查询部门名称
+     * @param
      * @return
      */
-    List<Map> chaxun(Integer id);
-
-    /**
-     * 审核状态通过
-     * @param map
-     * @return
-     */
-    /*Map tgupdate(Map map);*/
+    List<Map> getdname();
 }

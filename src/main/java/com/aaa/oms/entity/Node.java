@@ -1,5 +1,6 @@
 package com.aaa.oms.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * author:zz
  * createTime:2018-12-11 09:24
  */
-public class Node {
+public class Node implements Serializable{
 
     private Integer id;
     private String label;//节点名称

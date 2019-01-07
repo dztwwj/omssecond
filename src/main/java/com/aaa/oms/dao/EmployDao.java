@@ -1,7 +1,6 @@
 package com.aaa.oms.dao;
 
 import org.apache.ibatis.annotations.*;
-import org.mybatis.caches.redis.RedisCache;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
  * author:HPY
  * createTime:2018-12-17 11:19
  */
-@CacheNamespace(implementation = RedisCache.class)
+//@CacheNamespace(implementation = RedisCache.class)
 public interface EmployDao {
     /**
      * 带参分页查询
@@ -20,7 +19,7 @@ public interface EmployDao {
      * @return
      */
     @Select("<script>select stid,stname,sex,idcard,phone,recruitdp,recruitpos,to_char(employtime,'yyyy-mm-dd') as employtime,resume,recruitnum,state,reason,id,email from \n" +
-            "(select rownum rn,stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,recruitnum,state,reason,id,email from recruitstaff \n" +
+            "(select rownum rn,stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,(select numbers from recruit where id=61) recruitnum,state,reason,id,email from recruitstaff \n" +
             "where rownum &lt; #{end}  and  state in (${STATE})   and phone not in(select a.telephone from cu_emp a)  " +
             "<if test=\"sex!=null and sex!=''\"> and sex=#{sex} </if> " +
             "<if test=\"recruitdp!=null and recruitdp!=''\"> and recruitdp like '%'||#{recruitdp}||'%'</if>" +
@@ -51,7 +50,7 @@ public interface EmployDao {
      * @param map
      * @return
      */
-    @Update(value = "update recruitstaff set recruitnum=recruitnum-1 where id=#{ID}")
+    @Update(value = "update recruit set numbers=numbers-1 where id=#{ID}")
     int tgupdate1(Map map);
 
 
@@ -71,8 +70,8 @@ public interface EmployDao {
      * @param map
      * @return
      */
-    @Insert(value = "insert into recruitstaff(stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,recruitnum,id,email) " +
-            " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},#{DEPARTMENT},#{JOBS},SYSDATE,#{RECRUITNUM},#{ID},#{EMAIL})")
+    @Insert(value = "insert into recruitstaff(stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,recruitnum,id,email,resume) " +
+            " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},#{DEPARTMENT},#{JOBS},SYSDATE,#{NUMBERS},#{ID},#{EMAIL},#{RESUME})")
     int addEmploy(Map map);
 
 
@@ -98,7 +97,7 @@ public interface EmployDao {
      * @param map
      * @return
      */
-    @Select(value = "select * from recruit where id=#{ID}")
+    @Select(value = "select numbers from recruit where id=#{ID}")
     List<Map> chaxun(Map map);
 
 
@@ -109,4 +108,17 @@ public interface EmployDao {
     @Select(value = "select * from recruit")
     List<Map> getdept(Map map);
 
+    /**
+     * 班组查询
+     * @return
+     */
+    @Select(value = "select * from cu_group ")
+    List<Map> getgid();
+
+    /**
+     * 查询职称
+     * @return
+     */
+    @Select(value = "select * from cu_position")
+    List<Map> getposid();
 }

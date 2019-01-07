@@ -20,4 +20,12 @@ public interface PowerService {
      */
     List<Node> getList();
 
+    List<Node> getChecktree(Map map);
+
+    /**
+     * 分权保存
+     * @param map
+     * @return
+     */
+    int savePower(Map map);
 }

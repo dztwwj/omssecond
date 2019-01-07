@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>权限管理</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.4.11/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/element-ui@2.4.11/lib/index.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!--微笑弹框-->
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
+    <script src="/js/sweetalert2.all.min.js"></script>
+    <script src="/js/sweetalert2.min.js"></script>
+    <link rel="stylesheet" href="/css/sweetalert2.min.css"/>
+</head>
+<style>
+    .custom-tree-node {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        padding-right: 8px;
+    }
+</style>
+<body>
+<div id="app" v-loading="loading1" element-loading-background="rgba(0, 0, 0, 0.8)" element-loading-text="拼命加载中">
+    <div class="custom-tree-container">
+        <div class="block">
+            <template>
+                <el-button type="success" size="small" @click="() => append(data)">
+                    添加
+                </el-button>
+            </template>
+            <el-tree :data="data4" show-checkbox="" node-key="id" default-expand-all :expand-on-click-node="false">
+						<span class="custom-tree-node" slot-scope="{ node, data }">
+       					<span>{{ node.label }}</span>
+						<span>
+				          	<el-button type="text" size="mini" @click="() => update(data)">
+				            	更改
+				          	</el-button>
+				         	<el-button type="text" size="mini" @click="() => remove(node, data)">
+				            	删除
+				          	</el-button>
+        				</span>
+						</span>
+            </el-tree>
+        </div>
+    </div>
+
+    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="100px" ref="editForm">
+            <el-form-item label="子节点名称" prop="LABEL">
+                <el-input v-model="editForm.LABEL" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="父节点">
+                <template>
+                    <el-select v-model="editForm.PARENTID" placeholder="请选择">
+                        <el-option
+                                v-for="item in pTree"
+                                :key="item.ID"
+                                :label="item.NAME"
+                                :value="item.ID">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-form-item>
+            <el-form-item label="子节点URL" prop="URL">
+                <el-input v-model="editForm.URL" auto-complete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="editFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+        </div>
+    </el-dialog>
+</div>
+</body>
+<script>
+    let id = 1000;
+    var Main = {
+        data() {
+            return {
+                data4: [],
+                editForm: {
+                    ID: '',
+                    PARENTID: '',
+                    LABEL: '',
+                    URL: ''
+                },
+                editFormVisible: false,
+                //加载中的特效
+                loading1: false,
+                pTree: [],
+                goUrl: '',
+                editLoading: false
+            }
+        },
+        created: function () {
+            var self = this;
+            axios.post('/power/tree').then(function (response) {
+                self.data4 = response.data;
+            })
+            //当页面加载时，弹出弹框的下拉框的值
+            axios.post('/treee/fucha', {'PARENTID': 0}).then(function (response) {
+                self.pTree = response.data;
+            })
+        },
+        methods: {
+            reLoading: function () {
+                var self = this;
+                axios.post('/power/tree').then(function (response) {
+                    //alert(JSON.stringify(response.data))
+                    self.data4 = response.data;
+                })
+                self.loading1 = true;
+                //设置loading1的显示拼命加载的动态效果
+                setTimeout(() => {
+                    console.info("加载数据成功");
+                    self.loading1 = false;
+                }, 2000);
+            },
+            //添加弹框
+            append() {
+                //修改添加修改点击取消，再点添加没有清空数据的bug
+                this.editForm = {
+                    ID: '',
+                    PARENTID: '',
+                    LABEL: '',
+                    URL: ''
+                };
+                this.goUrl = '/treee/add';
+                this.editFormVisible = true;
+            },
+            //修改弹框
+            update(data) {
+                this.goUrl = '/treee/update';
+
+                this.editForm.ID = data.id;
+                this.editForm.LABEL = data.label;
+                this.editForm.PARENTID = data.parentid;
+                this.editForm.URL = data.url;
+
+                this.editFormVisible = true;
+            },
+            //保存按钮
+            editSubmit() {
+                var self = this;
+                //插入数据
+                axios.post(self.goUrl, self.editForm).then(function (response) {
+                    //alert(response);
+                    if (response != 0) {
+                        //关闭弹出框
+                        self.editFormVisible = false;
+                        self.reLoading();
+                    }else {
+                        Swal({
+                            type: '错误',
+                            title: '添加失败',
+                            text: '错误码：mx'
+                        })
+                    }
+                })
+
+            },
+
+            remove(node, data) {
+                alert('remove的data是：' + JSON.stringify(data));
+                alert('data.id:----' + JSON.stringify(data.id));
+                //微笑弹框开始
+                const swalWithBootstrapButtons = Swal.mixin({
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger',
+                    buttonsStyling: false,
+                })
+
+                swalWithBootstrapButtons({
+                    title: '确认要删除吗?',
+                    text: "警告：删除不可恢复!",
+                    type: '提示',
+                    showCancelButton: true,
+                    confirmButtonText: '确定删除',
+                    cancelButtonText: '取消删除',
+                    reverseButtons: true
+                }).then((result) => {
+                    //确定删除
+                    if (result.value) {
+                        //微笑弹框结束
+                        var self = this;
+                        axios.post('/treee/delete', {'ID': data.id}).then(function (response) {
+                            if (response!=0){
+                                self.reLoading();
+                            }
+                        })
+                        swalWithBootstrapButtons(
+                            '删除',
+                            '树节点已被删除',
+                            '已删除'
+                        )
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {//取消删除
+                        swalWithBootstrapButtons(
+                            '取消',
+                            '取消',
+                            '错误'
+                        )
+                    }
+                })
+            }
+        }
+    };
+    var Ctor = Vue.extend(Main)
+    new Ctor().$mount('#app')
+</script>
+
+</html>

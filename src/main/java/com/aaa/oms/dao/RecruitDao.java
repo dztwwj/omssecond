@@ -15,7 +15,7 @@ import java.util.Map;
  * createTime:2018-12-15 10:52
  */
 @Component
-@CacheNamespace(implementation = RedisCache.class)
+//@CacheNamespace(implementation = RedisCache.class)
 public interface RecruitDao {
 
 
@@ -24,8 +24,8 @@ public interface RecruitDao {
      * @param map
      * @return
      */
-    @Select("<script>select id,department,recruitnum,to_char(releasetime,'yyyy-mm-dd') as releasetime,education,workexer,jobs,language,jobrespon,empid,empname from \n" +
-            "(select rownum rn,id,department,recruitnum,releasetime,education,workexer,jobs,language,jobrespon,empid,empname from recruit \n" +
+    @Select("<script>select id,department,recruitnum,to_char(releasetime,'yyyy-mm-dd') as releasetime,education,workexer,jobs,language,jobrespon,empid,empname,numbers from \n" +
+            "(select rownum rn,id,department,recruitnum,releasetime,education,workexer,jobs,language,jobrespon,empid,empname,numbers from recruit \n" +
             "where rownum &lt; #{end}  " +
             "<if test=\"department!=null and department!=''\"> and department like '%'||#{department}||'%'</if>" +
             "<if test=\"education!=null and education!=''\"> and education like '%'||#{education}||'%'</if> " +
@@ -48,8 +48,9 @@ public interface RecruitDao {
      * @param map
      * @return
      */
-    @Insert(value = "insert into recruit values(sql_recruit_id.nextval,(select dname from dept where id=#{DEPARTMENT}),#{RECRUITNUM},SYSDATE,#{EDUCATION}," +
-            "#{WORKEXER},#{JOBS},#{LANGUAGE},#{JOBRESPON},#{EMPID},#{EMPNAME})")
+    @Insert(value = "insert into recruit(id,department,recruitnum,releasetime,education,workexer,jobs,language,jobrespon,empid,empname,numbers) " +
+            "values(sql_recruit_id.nextval,(select dname from dept where id=#{DEPARTMENT}),#{RECRUITNUM},SYSDATE,#{EDUCATION}," +
+            "#{WORKEXER},#{JOBS},#{LANGUAGE},#{JOBRESPON},#{EMPID},#{EMPNAME},#{RECRUITNUM})")
     int add(Map map);
     /**
      * 更新招聘信息
@@ -86,6 +87,12 @@ public interface RecruitDao {
     @Select(value = "select * from CU_POSITION where deptid=#{id}")
     List<Map> chaxun(Integer id);
 
-
+    /**
+     * 审核状态通过
+     * @param map
+     * @return
+     */
+    /*@Update(value = "update resuit set numbers=numbers-1 where id=#{ID}")
+    int tgupdate1(Map map);*/
 
 }
