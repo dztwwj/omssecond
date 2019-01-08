@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>晋升发布管理</title>
+    <title>离职审核</title>
     <!-- 引入样式 -->
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
@@ -45,7 +45,7 @@
             </el-form-item>-->
             <el-form-item>
                 <!--<el-button type="primary" icon="search" @click="searchClick">查询</el-button>-->
-                <el-button type="success" icon="plus" @click="addClick">新增</el-button>
+                <!--<el-button type="success" icon="plus" @click="addClick">新增</el-button>-->
             </el-form-item>
         </el-form>
     </el-row>
@@ -57,52 +57,63 @@
                 border
                 @selection-change="selectionChange"
                 style="width: 100%">
+            <!--<el-table-column-->
+                    <!--type="selection"-->
+                    <!--&gt;-->
+            <!--</el-table-column>-->
             <el-table-column
-                    type="selection"
+                    prop="EMPNUM"
+                    label="申请人工号"
                     >
             </el-table-column>
             <el-table-column
-                    prop="ID"
-                    label="编号"
-                    >
-            </el-table-column>
-            <el-table-column
-                    prop="POSITIONNAME"
-                    label="职位名称"
+                    prop="ENAME"
+                    label="申请人姓名"
             >
             </el-table-column>
             <el-table-column
-                    prop="EMPNAME"
-                    label="发布人姓名"
-                    >
+                    prop="DNAME"
+                    label="所在部门"
+            >
             </el-table-column>
             <el-table-column
-                    prop="ENDAPPLY"
-                    label="申请结束时间"
-                    >
+                    prop="position"
+                    label="职位"
+            >
             </el-table-column>
             <el-table-column
-                    prop="JOBCONTENT"
-                    label="工作内容"
-                    >
+                    prop="APPLYTIME"
+                    label="申请时间"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="DEPARTUREREASON"
+                    label="申请理由"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="INTENTION"
+                    label="离职意向"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="OPINION"
+                    label="对公司的建议"
+            >
             </el-table-column>
 
-            <el-table-column
-                    prop="DEMANDNUM"
-                    label="所需人数"
-                    >
-            </el-table-column>
-            <el-table-column
-                    prop="REQUIREMENTS"
-                    label="职位要求"
-                    >
-            </el-table-column>
+            <!--<el-table-column class-name="status-col" label="状态" width="110" sortable prop="STATE">-->
+                <!--<template slot-scope="scope">-->
+                    <!--<el-tag :type="scope.row.STATE | statusFilter">{{scope.row.STATE | formatStata}}</el-tag>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
+
             </el-table-column>
             <el-table-column
                     label="操作">
                 <template scope="scope">
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑</el-button>
-                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">删除</el-button>
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">审核通过</el-button>
+                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">审核驳回</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -110,9 +121,9 @@
 
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
-        <el-col :span="6" >
-            <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
-        </el-col>
+        <!--<el-col :span="6" >-->
+            <!--<el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>-->
+        <!--</el-col>-->
         <el-col :span="18" >
             <el-pagination
                     style="float: right"
@@ -128,63 +139,26 @@
     </el-row>
 
     <!--编辑界面-->
-    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
+    <el-dialog title="确定信息" :visible.sync="editFormVisible" :close-on-click-modal="false">
         <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-            <!--<el-form-item label="职位名称" prop="POSITIONNAME">-->
-                <!--<el-input v-model="editForm.POSITIONNAME" auto-complete="off"></el-input>-->
-            <!--</el-form-item>-->
 
-            <!--<el-form-item label="编号" prop="ID">-->
-                <el-input v-model="editForm.ID" auto-complete="off" type="hidden" prop="ID"></el-input><!--disabled 禁用，不可编辑-->
-            <!--</el-form-item>-->
-            <el-form-item label="职位名称">
-                <template>
-                    <el-select v-model="editForm.POSITIONNAME" placeholder="请选择角色">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.ID"
-                                :label="item.POSITIONNAME"
-                                :value="item.ID">
-                        </el-option>
-                    </el-select>
-                </template>
+
+
+
+            <el-form-item label="申请人" prop="ENAME">
+                <el-input v-model="editForm.ENAME" auto-complete="off" disabled></el-input>
+                <el-input v-model="editForm.ID" auto-complete="off" type="hidden"></el-input>
+            </el-form-item>
+            <el-form-item label="审核人意见" prop="AOPINIONA">
+                <el-input v-model="editForm.AOPINIONA" auto-complete="off" ></el-input>
             </el-form-item>
 
-            <el-form-item label="所需人数" prop="DEMANDNUM">
-                <el-input v-model="editForm.DEMANDNUM" auto-complete="off" ></el-input><!--disabled 禁用，不可编辑-->
-            </el-form-item>
-            <!--<el-form-item label="生日" prop="EMPBIRTHDAY">-->
-                <!--<el-input v-model="editForm.EMPBIRTHDAY" auto-complete="off"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="申请期限" prop="DAY">-->
-                <!--<el-input v-model="editForm.DAY" auto-complete="off"></el-input>-->
-            <!--</el-form-item>-->
-            <el-form-item label="申请期限" prop="ENDAPPLY">
-                <!--<el-date-picker-->
-                        <!--v-model="ENDAPPLY"-->
-                        <!--type="datetime"-->
-                        <!--placeholder="选择日期时间"-->
-                        <!--align="right">-->
-                <!--</el-date-picker>-->
-                <el-date-picker type="date"
 
-                                placeholder="选择日期"
-                                v-model="editForm.ENDAPPLY"
-                                ><!--:picker-options="pickerOptions"-->
-                </el-date-picker>
 
-            </el-form-item>
-
-            <el-form-item label="工作内容" prop="JOBCONTENT">
-                <el-input v-model="editForm.JOBCONTENT" auto-complete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="职位要求" prop="REQUIREMENTS">
-                <el-input v-model="editForm.REQUIREMENTS" auto-complete="off"></el-input>
-            </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
-            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">确定</el-button>
         </div>
     </el-dialog>
 
@@ -194,8 +168,28 @@
 <script type="text/javascript">
     var app = new Vue({
         el: '#app',
+        // filters: {
+        //     // el-tag类型转换
+        //     statusFilter(status) {
+        //         const statusMap = {
+        //             0: 'info',
+        //             2: 'danger',
+        //             1: 'success'
+        //         }
+        //         return statusMap[status]
+        //     },
+        //     // 状态显示转换
+        //     formatStata(status) {
+        //         const statusMap = {
+        //             0: '未审核',
+        //             1: '审核通过',
+        //             2: '审核不通过',
+        //         }
+        //         return statusMap[status]
+        //     }
+        // },
         data: {
-            message: '晋升发布管理'
+            message: '离职管理页面'
         }
     });
 
@@ -234,13 +228,13 @@
             },
             //编辑界面数据
             editForm: {
+                EMPNUM: '',
+                ENAME: '',
+                TELEPHONE: '',
+                EMILADDR:'',
                 POSITIONNAME: '',
-                DEMANDNUM: '',
-                EMPNAME: '',
-                ENDAPPLY:'',
-                JOBCONTENT: '',
-                REQUIREMENTS: ''
-
+                BEFOREPNAME: '',
+                APPLYNAME:''
             },
         },
         created:function(){
@@ -248,11 +242,9 @@
             var self = this;
             var start =(this.currentPage-1)*this.pageSize;
             var end =this.currentPage*this.pageSize+1;
-            axios.post('/promote/page',{'start':start,'end':end,'STATE':'0'}).then(function(response){
+            axios.post('/departure/page',{'start':start,'end':end}).then(function(response){
                 // console.log(response.data);
                 //alert(response.data.total);
-                // alert(response.data);
-
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
                 // alert(JSON.stringify(response.data.pageData));
@@ -271,9 +263,9 @@
                 var start =(this.currentPage-1)*this.pageSize;
                 var end =this.currentPage*this.pageSize+1;
                 //  alert(this.searchForm.id);
-                var searchForm={'start':start,'end':end,'STATE':'0'};
+                var searchForm={'start':start,'end':end};
                 //alert(JSON.stringify(searchForm));
-                axios.post('/promote/page',searchForm).then(function(response){
+                axios.post('/departure/page',searchForm).then(function(response){
                     console.log(response.data);
                     // alert(222);
                     _self.total=response.data.total;
@@ -286,36 +278,21 @@
                     _self.loading = false;
                 },300);
             },
-            //表格编辑事件
+            //格式化状态
+            formatState: function (row, column) {
+                return row.STATE === 0 ? '未审核' : row.STATE === 1 ? '审核通过' : '审核未通过'
+            },
+            //晋升通过事件
             editClick:function(row) {
-                this.goUrl="/promote/update";
+                this.goUrl="/leave/updateTG";
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
-
             },
-
+            //晋升驳回事件
             deleteClick:function(row) {
-                //alert(JSON.stringify(row));
-                alert(row.ID);
-                var _self = this;
-                this.$confirm('确认删除' + row.ID +'吗?', '提示', {
-                    type: 'warning'
-                }).then(function(){
-                    var  url="/promote/delete/"+row.ID;
-                    axios.get(url).then(function (response) {
-                        //alert(url);
-                        if(response.data>0){
-                            _self.$message({
-                                message: row.ID + '删除成功',
-                                type: 'success'
-                            });
-                            _self.loadingData();//重新加载数据
-                        }
-                    });
-                }).catch(function(e){
-                    if(e != "cancel")
-                        console.log("出现错误：" + e);
-                });
+                this.goUrl="/leave/updateNoTG";
+                this.editFormVisible = true;
+                this.editForm = Object.assign({}, row);
             },
             //新建事件
             addClick:function() {
@@ -324,12 +301,13 @@
                 var _self = this;
                 //清空缓冲数据
                 this.editForm={
+                    EMPNUM: '',
+                    ENAME: '',
+                    TELEPHONE: '',
+                    EMILADDR:'',
                     POSITIONNAME: '',
-                    DEMANDNUM: '',
-                    EMPNAME: '',
-                    ENDAPPLY:'',
-                    JOBCONTENT: '',
-                    REQUIREMENTS: ''
+                    BEFOREPNAME: '',
+                    APPLYNAME:''
                 }
                 //显示隐藏的form表单
                 this.editFormVisible = true;
