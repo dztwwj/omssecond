@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * className:PromoteController
- * discription:
+ * discription:晋升模块
  * author:LiuQian
  * createTime:2018-12-17 21:24:49
  */
@@ -49,7 +49,7 @@ public class PromoteController {
         return "promote/promoteInfo";
     }
     /**
-     * 跳转晋升发布历史页面
+     * 跳转晋升审核页面
      * @return
      */
     @RequestMapping("/auditList")
@@ -57,10 +57,19 @@ public class PromoteController {
 
         return "promote/audit";
     }
+    /**
+     * 跳转晋升审核历史页面
+     * @return
+     */
+    @RequestMapping("/auditHistory")
+    public String auditListInfo(){
+
+        return "promote/auditHistory";
+    }
 
 
     /**
-     * 分页
+     * 晋升发布页面分页
      * @param map
      * @return
      */
@@ -83,7 +92,7 @@ public class PromoteController {
     @ResponseBody
     @RequestMapping("/audit")
     public Object audit(@RequestBody Map map){
-
+        System.out.println("sss"+map);
         Map resultmap = new HashMap();
         resultmap.put("pageData",promoteService.auditPromote(map));
         resultmap.put("total",promoteService.auditPromoteCount(map));//total 当前分页的总数量
