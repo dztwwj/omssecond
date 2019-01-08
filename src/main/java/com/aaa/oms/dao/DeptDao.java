@@ -62,7 +62,6 @@ public interface DeptDao {
     @Delete(value = "delete from dept where id=#{id}")
     int delete(int id);
 
-
     /**
      * 部门列表查询
      * @return

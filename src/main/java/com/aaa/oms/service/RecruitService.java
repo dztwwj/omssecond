@@ -53,4 +53,11 @@ public interface RecruitService {
      * @return
      */
     List<Map> chaxun(Integer id);
+
+    /**
+     * 审核状态通过
+     * @param map
+     * @return
+     */
+    /*Map tgupdate(Map map);*/
 }

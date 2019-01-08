@@ -67,4 +67,5 @@ public class PromoteServiceImpl implements PromoteService {
     public int updateNoTG(Map map) {
         return promoteDao.updateNoTG(map);
     }
+
 }

@@ -29,7 +29,6 @@ public class EmployController {
 
     @Autowired
     private FtpConfig ftpConfig;
-
     @Autowired
     private ResourceLoader resourceLoader;
 
@@ -51,6 +50,12 @@ public class EmployController {
     public String ListRecord(){
         return "/employ/listrecord";
     }
+
+    @RequestMapping("/entry")
+    public String entry(){
+        return "/employ/entry";
+    }
+
     /**
      * 分页
      * @param map
@@ -59,7 +64,7 @@ public class EmployController {
     @ResponseBody//返回json数据
     @RequestMapping("/page")
     public Object page(@RequestBody Map map){
-        //System.out.println(map);
+        System.out.println("aaa"+map);
         Map resultmap = new HashMap();
         resultmap.put("pageData",employService.getPageParam(map));
         resultmap.put("total",employService.getPageCount(map));
@@ -72,11 +77,11 @@ public class EmployController {
         System.out.println("dddddddddd"+map);
         return employService.tgupdate(map);
     }
-    @ResponseBody
+   /* @ResponseBody
     @RequestMapping("/add")
     public Object add(@RequestBody Map map){
         return employService.add(map);
-    }
+    }*/
 
     @ResponseBody
     @RequestMapping("/rsupdate")
@@ -103,11 +108,12 @@ public class EmployController {
      * @param file
      * @return
      */
-    @ResponseBody
+   @ResponseBody
     @RequestMapping("/upLoadPic")
     public Object upLoadPic(@RequestParam MultipartFile file){
-        System.out.println("jinru up");
+        System.out.println(file);
         String s = ftpUtil.upLoad(file);//调用上传方法
+       System.out.println("新文件的名称："+s);
         return s;
     }
     /**
@@ -124,5 +130,50 @@ public class EmployController {
             return ResponseEntity.notFound().build();
         }
 
+    }
+
+    /**
+     * 入职新员工完善信息
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/perfect")
+    public Object perfectadd(@RequestBody Map map){
+        //System.out.println(map+"......");
+        return employService.perfectadd(map);
+    }
+
+
+    /**
+     * 添加应聘人员
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/addEmploy")
+    public Object addemploy(@RequestBody Map map){
+        System.out.println(map);
+        return employService.addEmploy(map);
+    }
+
+    /**
+     * 班组查询
+     * @param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/gid")
+    public Object getgid(){
+        return employService.getgid();
+    }
+
+    /**
+     * 职称查询
+     */
+    @ResponseBody
+    @RequestMapping("/posid")
+    public Object getposid(){
+        return employService.getposid();
     }
 }

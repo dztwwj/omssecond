@@ -42,22 +42,36 @@ public class shiroConfig {
         Map<String, String> filterMap = new LinkedHashMap<>();
         /*filterMap.put("/add","authc");
         filterMap.put("/update","authc");*/
-/**
- * toLogin、indexht放行
- *
- *
- */
+        /**
+         * toLogin、indexht放行
+         *
+         *
+         */
+
+
+        //filterMap.put("/dept/toList","authc");
+        //filterMap.put("/shiro/toLogin","anon");
         filterMap.put("/toLogin","anon");
         //放行indexht页面
+        //filterMap.put("/shiro/indexht","anon");
         filterMap.put("/indexht","anon");
+        filterMap.put("/qiantai","anon");
 
+        filterMap.put("/recruit/employ","anon");
+        filterMap.put("/recruit/page","anon");
+        filterMap.put("/dept/list","anon");
+        filterMap.put("/employ/addEmploy","anon");
+
+        filterMap.put("/images/**","anon");
         filterMap.put("/js/**","anon");
         filterMap.put("/images/**","anon");
+        //filterMap.put("/*","authc");
+        //filterMap.put("/*/*","anon");
 
-        filterMap.put("/*","authc");
-        filterMap.put("/*/*","authc");
-
+        //拦截所有请求
+        filterMap.put("/**","authc");
         //修改跳转页面
+        //shiroFilterFactoryBean.setLoginUrl("/shiro/toLogin");
         shiroFilterFactoryBean.setLoginUrl("/toLogin");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);

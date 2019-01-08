@@ -31,6 +31,15 @@ public class RecruitController {
     public Object toList(Map map){
         return "recruit/list";
     }
+    /**·
+     * 跳转应聘分页列表
+     * @param map
+     * @return
+     */
+    @RequestMapping("/employ")
+    public Object employ(Map map){
+        return "recruit/employ";
+    }
     /**
      * 分页
      * @param map
@@ -48,7 +57,7 @@ public class RecruitController {
     @ResponseBody
     @RequestMapping("/add")
     public Object add(@RequestBody Map map){
-        //System.out.println(map);
+        System.out.println(map);
         return recruitService.add(map);
     }
 
@@ -82,4 +91,5 @@ public class RecruitController {
         //System.out.println(id+"......");
         return recruitService.chaxun(id);
     }
+
 }

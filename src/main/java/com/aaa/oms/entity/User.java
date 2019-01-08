@@ -11,6 +11,7 @@ public class User {
     private Integer eid;
     private String empnum;
     private String epassword;
+    private String ename;
 
 
     public Integer getEid() {
@@ -35,5 +36,13 @@ public class User {
 
     public void setEpassword(String epassword) {
         this.epassword = epassword;
+    }
+
+    public String getEname() {
+        return ename;
+    }
+
+    public void setEname(String ename) {
+        this.ename = ename;
     }
 }

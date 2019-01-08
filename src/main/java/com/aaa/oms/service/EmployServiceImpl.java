@@ -39,11 +39,11 @@ public class EmployServiceImpl implements EmployService {
         return map1;
     }
 
-    @Override
+    /*@Override
     public int add(Map map) {
         System.out.println(map);
         return employDao.add(map);
-    }
+    }*/
 
     @Override
     public int rsupdate(Map map) {
@@ -58,5 +58,24 @@ public class EmployServiceImpl implements EmployService {
     @Override
     public List<Map> getdept(Map map) {
         return employDao.getdept(map);
+    }
+
+    @Override
+    public int perfectadd(Map map) {
+        return employDao.perfectadd(map);
+    }
+    @Override
+    public int addEmploy(Map map) {
+        return employDao.addEmploy(map);
+    }
+
+    @Override
+    public List<Map> getgid() {
+        return employDao.getgid();
+    }
+
+    @Override
+    public List<Map> getposid() {
+        return employDao.getposid();
     }
 }
