@@ -8,7 +8,7 @@ import java.util.Map;
 
 /**
  * className:PromoteDao
- * discription:晋升信息的Dao层
+ * discription:离职信息的Dao层
  * author:LiuQian
  * createTime:2018-12-17 21:25:31
  */
@@ -19,33 +19,51 @@ public interface DepartureDao {
      * @return
      */
     @Select("<script>select * from(\n" +
-            "select id,empnum,applytime,DEPARTURETIME,DEPARTURESTATUS,DEPARTUREREASON,INTENTION,OPINION,SHENHERENID,rownum rn，\n" +
+            "select id,advice,empnum,applytime,DEPARTURETIME,DEPARTURESTATUS,DEPARTUREREASON,INTENTION,OPINION,SHENHERENID,rownum rn，\n" +
             "(select ename from cu_emp where empnum = dt.empnum) ename,\n" +
             "(select dname from dept where id = (select deptid from cu_position where id = (select position from cu_emp where empnum = dt.empnum))) dname,\n" +
             "(select positionname from cu_position where id = (select position from cu_emp where empnum = dt.empnum)) position \n" +
-            "from cu_departure dt  where rownum &lt; #{end} and DEPARTURESTATUS = 0 order by id) a where a.rn &gt; #{start}</script>")
+            "from cu_departure dt  where rownum &lt; #{end} and DEPARTURESTATUS in (${status}) " +
+            "<if test=\"STATE!=null and STATE!=''\"> and DEPARTURESTATUS = #{STATE}</if>" +
+            " order by id) a where a.rn &gt; #{start}</script>")
     List<Map> getPageParam(Map map);
     /**
      * 查询分页总数量
      * @param map
      * @return
      */
-    @Select("<script>select count(*)  from cu_departure where  DEPARTURESTATUS=0 </script>")
+    @Select("<script>select count(*)  from cu_departure where  DEPARTURESTATUS in (${status}) <if test=\"STATE!=null and STATE!=''\"> and DEPARTURESTATUS = #{STATE}</if> </script>")
     int getPageCount(Map map);
 
     /**
-     * 请假通过
+     * 离职通过 改变数据库状态
      * @param map
      * @return
      */
-    @Update(value = "update cu_leave_apply set isallow = 1,aopinion = #{AOPINIONA} where id = #{ID}")
+    @Update(value = "update cu_departure set departurestatus = 2 where id = ${ID}")
     int updateTG(Map map);
+
     /**
-     * 请假驳回
+     * 离职审核，添加的建议
      * @param map
      * @return
      */
-    @Update(value = "update cu_leave_apply set isallow = 2,aopinion = #{AOPINIONA} where id = #{ID}")
+    @Update(value = "update cu_departure set advice = '${ADVICE}' where id = ${ID}")
+    int updatee(Map map);
+
+    /**
+     * 离职成功，修改员工表的在职状态
+     * @param map
+     * @return
+     */
+    @Update(value = "update cu_emp set ISEFFECTIVE = 1 where empnum = ${EMPNUM}")
+    int updateEmp(Map map);
+    /**
+     * 离职驳回，改变数据库状态
+     * @param map
+     * @return
+     */
+    @Update(value = "update cu_departure set departurestatus = 1 where id = ${ID}")
     int updateNoTG(Map map);
 
 }

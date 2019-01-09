@@ -33,11 +33,14 @@ public class DepartureServiceImpl implements DepartureService {
 
     @Override
     public int updateTG(Map map) {
+        departureDao.updatee(map);
+        departureDao.updateEmp(map);
         return departureDao.updateTG(map);
     }
 
     @Override
     public int updateNoTG(Map map) {
+        departureDao.updatee(map);
         return departureDao.updateNoTG(map);
     }
 }

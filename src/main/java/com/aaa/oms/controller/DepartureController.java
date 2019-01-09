@@ -33,6 +33,14 @@ public class DepartureController {
         return "departure/departureManage";
     }
     /**
+     * 跳转离职历史页面
+     * @return
+     */
+    @RequestMapping("/departureHistory")
+    public String departureHistory(){
+        return "departure/departureHistory";
+    }
+    /**
      * 跳转离职前台页面
      * @return
      */
@@ -42,13 +50,14 @@ public class DepartureController {
     }
 
     /**
-     * 请假审核页面分页
+     * 离职审核页面分页
      * @param map
      * @return
      */
     @ResponseBody
     @RequestMapping("/page")
     public Object page(@RequestBody Map map){
+        System.out.println("sss"+map);
         Map resultmap = new HashMap();
         resultmap.put("pageData",departureService.getPageParam(map));
         resultmap.put("total",departureService.getPageCount(map));//total 当前分页的总数量

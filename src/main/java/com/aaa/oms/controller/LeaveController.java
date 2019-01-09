@@ -30,6 +30,14 @@ public class LeaveController {
     public String leaveManage(){
         return "leave/leaveManage";
     }
+    /**
+     * 跳转请假历史记录页面
+     * @return
+     */
+    @RequestMapping("/leaveHistory")
+    public String leaveHistory(){
+        return "leave/leaveHistory";
+    }
 
     /**
      * 请假审核页面分页

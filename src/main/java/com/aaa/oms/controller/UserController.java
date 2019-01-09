@@ -41,10 +41,10 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/page")
     public Object page(@RequestBody Map map){
+        System.out.println("SSSSS"+map);
         Map resultmap = new HashMap();
         resultmap.put("pageData",userService.getPageParam(map));
         resultmap.put("total",userService.getPageCount(map));//total 当前分页的总数量
-        System.out.println(resultmap);
         return resultmap;
     }
 

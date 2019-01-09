@@ -91,7 +91,7 @@ public interface PromoteDao{
      * 晋升的角色查询
      * @return
      */
-    @Select(value = "select POSITIONNAME,ID,RANK,POSTSEGMENT from cu_position where RANK > 1 and RANK < 98")
+    @Select(value = "select POSITIONNAME,ID,RANK from cu_position where RANK > 1 and RANK < 98")
     List<Map> selectPosition();
 
     /**

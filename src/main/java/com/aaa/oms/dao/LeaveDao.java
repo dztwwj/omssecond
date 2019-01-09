@@ -29,7 +29,7 @@ public interface LeaveDao {
             "(select dname from dept where id = (select deptid from cu_position where id = (select position from cu_emp where empnum = la.empnumb))) dname,"+
             "(select deptid from cu_position where id = (select position from cu_emp where empnum = la.empnumb)) deptid,\n"+
             "(select positionname from cu_position where id = (select position from cu_emp where empnum = la.auditornum)) aupositionname \n" +
-            "from cu_leave_apply la where la.isallow = 0 and rownum &lt; #{end}) a " +
+            "from cu_leave_apply la where la.isallow in (${isallow}) and rownum &lt; #{end} <if test=\"STATE!=null and STATE!=''\"> and la.ISALLOW = #{STATE}</if>) a " +
             "where a.rn &gt; #{start}</script>")
     List<Map> getPageParam(Map map);
     /**
@@ -37,7 +37,7 @@ public interface LeaveDao {
      * @param map
      * @return
      */
-    @Select("<script>select count(*)  from cu_leave_apply la where la.isallow = 0 </script>")
+    @Select("<script>select count(*)  from cu_leave_apply la where la.isallow in (${isallow}) <if test=\"STATE!=null and STATE!=''\"> and ISALLOW = #{STATE}</if> </script>")
     int getPageCount(Map map);
 
     /**
@@ -45,8 +45,10 @@ public interface LeaveDao {
      * @param map
      * @return
      */
-    @Update(value = "update cu_leave_apply set isallow = 1,aopinion = #{AOPINIONA} where id = #{ID}")
+    @Update(value = "update cu_leave_apply set isallow = 1,aopinion = #{AOPINIONA} where id = ${ID}")
     int updateTG(Map map);
+
+
     /**
      * 请假驳回
      * @param map

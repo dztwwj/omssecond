@@ -21,23 +21,30 @@ public interface UserDao {
      * @param map
      * @return
      */
-    @Select("<script>select empnum,ename,telephone,empsex,\n" +
-            "to_char(empbirthday,'yyyy-mm-dd') empbirthday,emiladdr,idcard from\n" +
-            "(select rownum rn,empnum,ename,telephone,empsex,\n" +
-            "empbirthday,emiladdr,idcard\n" +
-            " from cu_emp where ISEFFECTIVE=0 and rownum &lt; #{end}\n" +
-            "<if test=\"ENAME!=null and ENAME!=''\"> and ename like '%'||#{ENAME}||'%'</if>\n" +
-            ") a where a.rn &gt; #{start}</script>")
+    @Select("<script>select * from (\n" +
+            "select eid,rownum rn,empnum,ename,ISEFFECTIVE,ADDEMPNUM,TELEPHONE,EMPSEX,to_char(empbirthday,'yyyy-mm-dd') empbirthday,ISLOCK,LOCKTIME,GID,EMILADDR,IDCARD,EMPFACE,LOGINNUM,POSITION,\n" +
+            "DEPARTURETIME,LEAVINGREASON,to_char(INDUCTIONTIME,'yyyy-mm-dd') INDUCTIONTIME,BATCH,PERMS,DEPTID,to_char(to_date((substr(idcard,7,8)),'yyyy-mm-dd'),'yyyy-mm-dd') birthday ,\n" +
+            "(select dname from dept where id = (select deptid from cu_position p where id = e.position)) dname,\n" +
+            "(select positionname from cu_position where id =e.position) pname,\n" +
+            "(select gname from cu_group where gid = e.gid) gname\n" +
+            "from cu_emp e where iseffective = 0 and rownum &lt; #{end}" +
+            "<if test=\"ENAME!=null and ENAME!=''\"> and ename like '%'||#{ENAME}||'%'</if>" +
+            "<if test=\"EMPNUM!=null and EMPNUM!=''\"> and EMPNUM = #{EMPNUM} </if>" +
+            "<if test=\"ISEFFECTIVE!=null and ISEFFECTIVE!=''\"> and ISEFFECTIVE = #{ISEFFECTIVE}</if>" +
+            " order by eid\n" +
+            ") a where a.rn  &gt; #{start}</script>")
+//    <if test="ENAME!=null and ENAME!=''"> and ename like '%'||#{ENAME}||'%'</if>
     List<Map> getPageParam(Map map);
     /**
      * 查询分页总数量
      * @param map
      * @return
      */
-    @Select("<script> select count(*) from cu_emp " +
-            "<where> " +
-            "<if test=\"ENAME!=null and ENAME!=''\"> and ENAME like '%'||#{ENAME}||'%'</if>\n" +
-            "and ISEFFECTIVE = 0</where></script>")
+    @Select("<script> select count(*) from cu_emp <where>" +
+            "<if test=\"ENAME!=null and ENAME!=''\"> and ename like '%'||#{ENAME}||'%'</if>" +
+            "<if test=\"EMPNUM!=null and EMPNUM!=''\"> and EMPNUM = #{EMPNUM} </if>" +
+            "<if test=\"ISEFFECTIVE!=null and ISEFFECTIVE!=''\"> and ISEFFECTIVE = #{ISEFFECTIVE}</if> </where>" +
+            "</script>")
     int getPageCount(Map map);
     /**
      * 员工的添加
