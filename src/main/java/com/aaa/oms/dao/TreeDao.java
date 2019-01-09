@@ -15,7 +15,7 @@ import java.util.Map;
  * createTime:2018-12-11 10:24
  */
 @Component
-@CacheNamespace(implementation = RedisCache.class)
+//@CacheNamespace(implementation = RedisCache.class)
 public interface TreeDao {
 
 
