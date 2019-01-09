@@ -91,7 +91,7 @@ public interface PromoteDao{
      * 晋升的角色查询
      * @return
      */
-    @Select(value = "select POSITIONNAME,ID,ROLEID,RANK,POSTSEGMENT from cu_position where RANK > 1 and RANK < 98")
+    @Select(value = "select POSITIONNAME,ID,RANK from cu_position where RANK > 1 and RANK < 98")
     List<Map> selectPosition();
 
     /**
@@ -107,19 +107,15 @@ public interface PromoteDao{
             "(select dname from dept where id=(select deptid from cu_group where gid=e.gid)) dname," +
             "(select positionname from cu_position where ID=s.positionid) applyname " +
             "from cu_emp e,cu_promotion_apply p,cu_promotion_release s " +
-           " where e.empnum=p.applyemp and p.rid=s.id and p.state in(${STA})" +
-
-            ") a where a.rn &gt; #{start} and a.rn &lt; #{end}</script>")
+           " where e.empnum=p.applyemp and p.rid=s.id and p.state in(${STA}) and rownum &lt; #{end} " +
+            "<if test=\"STATE!=null and STATE!=''\"> and p.STATE = #{STATE}</if>" +
+            ") a where a.rn &gt; #{start} </script>")
     List<Map> auditPromote(Map map);
     /**
      * 查询审核管理总数量
      * @param map
      * @return
      */
-    @Select("<script>" +
-            "select count(*)" +
-            "from cu_emp e,cu_promotion_apply p,cu_promotion_release s " +
-            " where e.empnum=p.applyemp and p.rid=s.id and p.state in(${STA})" +
-            "</script>")
+    @Select("<script>select count(*) from cu_promotion_apply p where p.state in (${STA})</script>")
     int auditPromoteCount(Map map);
 }
