@@ -45,4 +45,19 @@ public interface RecruitService {
      * @return
      */
     int delete(int id);
+
+
+    /**
+     * 根据部门ID查询数据
+     * @param id
+     * @return
+     */
+    List<Map> chaxun(Integer id);
+
+    /**
+     * 审核状态通过
+     * @param map
+     * @return
+     */
+    /*Map tgupdate(Map map);*/
 }

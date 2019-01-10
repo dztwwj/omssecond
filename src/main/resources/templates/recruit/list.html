@@ -151,28 +151,25 @@
     </el-row>
 
     <!--编辑界面-->
-    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
-        <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+    <el-dialog title="编辑1" :visible.sync="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="80px" :rules="editFormRuless" ref="editForm">
 
             <!--<el-form-item label="所属部门" prop="DEPARTMENT">
                 <el-input v-model="editForm.DEPARTMENT" auto-complete="off"></el-input>
             </el-form-item>-->
 
             <el-form-item label="所属部门" prop="DEPARTMENT">
-                <el-select v-model="editForm.DEPARTMENT" placeholder="请选择">
+                <el-select v-model="editForm.DEPARTMENT" @change="getRecruiitdpInfo" placeholder="请选择">
                     <el-option
                             v-for="item in optiondept"
                             :key="item.ID"
                             :label="item.DNAME"
-                            :value="item.DNAME"></el-option>
+                            :value="item.ID"></el-option>
                 </el-select>
             </el-form-item>
 
             <el-form-item label="招聘人数" prop="RECRUITNUM">
                 <el-input-number v-model="editForm.RECRUITNUM" :min="0" :max="20000"></el-input-number>
-            </el-form-item>
-            <el-form-item label="发布日期"  prop="RELEASETIME">
-                <el-date-picker type="date"  value-format="yyyy-MM-dd" :picker-options="pickerOptions0" placeholder="选择日期" v-model="editForm.RELEASETIME"></el-date-picker>
             </el-form-item>
             <el-form-item label="学历" prop="EDUCATION">
                 <el-select v-model="editForm.EDUCATION" placeholder="请选择">
@@ -192,9 +189,21 @@
                             :value="item.value"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="职称" prop="JOBS">
+            <!--    <el-form-item label="职称" prop="JOBS">
             <el-input v-model="editForm.JOBS" auto-complete="off" style="width:220px;"></el-input>
+
+              </el-form-item>-->
+
+            <el-form-item label="职称" prop="JOBS">
+                <el-select v-model="editForm.JOBS"  placeholder="请选择">
+                    <el-option
+                            v-for="item in optionjobs"
+                            :key="item.ID"
+                            :label="item.POSITIONNAME"
+                            :value="item.POSITIONNAME"></el-option>
+                </el-select>
             </el-form-item>
+
             <el-form-item label="语言能力" prop="LANGUAGE">
                 <el-select v-model="editForm.LANGUAGE" placeholder="请选择">
                     <el-option
@@ -207,18 +216,18 @@
             <el-form-item label="岗位职责" prop="JOBRESPON">
                 <el-input v-model="editForm.JOBRESPON" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="发布人id" prop="EMPID">
+            <!--<el-form-item label="发布人id" prop="EMPID">
                 <el-input v-model="editForm.EMPID" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="发布人姓名" prop="EMPNAME">
             <el-input v-model="editForm.EMPNAME" auto-complete="off"></el-input>
-            </el-form-item>
+            </el-form-item>-->
 
 
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
-            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+            <el-button type="primary" @click.native="editSubmit('editForm')" :loading="editLoading">提交</el-button>
         </div>
     </el-dialog>
 
@@ -229,7 +238,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            message: '招聘信息'
+            message: '招聘信息发布'
         }
     });
 
@@ -243,6 +252,7 @@
             },
             //部门select
             optiondept:[],
+            optionjobs:[],
             options:[
                 {
                     value: '高中以上',
@@ -303,11 +313,6 @@
             editFormVisible: false,
             editLoading: false,
             goUrl:'',
-            editFormRules: {
-                name: [
-                    { required: true, message: '请输入部门', trigger: 'blur' }
-                ]
-            },
             //编辑界面数据
             editForm: {
                 DEPARTMENT: '',
@@ -321,6 +326,12 @@
                 EMPID:'',
                 EMPNAME:''
             },
+            editFormRuless: {
+                JOBRESPON: [
+                    { required: true, message: '请输入职责', trigger: 'blur' },
+                    { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+                ]
+            }
         },
         created:function(){
             //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
@@ -337,7 +348,7 @@
             });
             axios.post('/dept/list').then(function(response){
                 self.optiondept=response.data;
-            })
+            });
         },
         methods: {
             /* formatterColumn:function (row, column) {
@@ -347,6 +358,25 @@
                     return "不可用"
                 }
             },*/
+            getRecruiitdpInfo:function(row){
+                //alert(JSON.stringify(row));
+                /*this.editForm.ID=JSON.stringify(row);*/
+                var self = this;
+                //alert(JSON.stringify(row));
+                var url="/recruit/chaxun/"+JSON.stringify(row);
+                axios.post(url).then(function(response){
+                    //alert(JSON.stringify(response.data));
+                    self.optionjobs=response.data;
+                });
+                //axios.post("/recruit/chaxun",{DEPTID:row}).then(function (response) {
+                    //alert(response.data+","+JSON.stringify(response.data));
+                    //alert(response.data[0]);
+                    //alert(response.data[0].RECRUITNUM);
+                 //   alert(response.data[0].DEPTID)
+                    //self.editForm.ID=response.data[0].ID;
+                    //self.editForm.RECRUITNUM=response.data[0].RECRUITNUM;
+               // })
+            },
             //表格重新加载数据
             loadingData: function () {
                 var _self = this;
@@ -498,7 +528,7 @@
                 _self.loadingData();//重新加载数据
             },
             //保存点击事件
-            editSubmit: function () {
+            editSubmit: function (formName) {
                 var _self = this;
                 _self.loading = true;
                 var formData = this.editForm;
@@ -506,14 +536,20 @@
                 var goUrl = this.goUrl;
                 //alert(goUrl);
                 //alert(JSON.stringify(formData));
-                axios.post(goUrl, formData).then(function (response) {
-                    //alert(222);
-                    if (response.data > 0) {
-                        //alert(111);
-                        _self.editFormVisible = false;
-                        _self.loadingData();//重新加载数据
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        axios.post(goUrl, formData).then(function (response) {
+                            //alert(222);
+                            if (response.data > 0) {
+                                //alert(111);
+                                _self.editFormVisible = false;
+                                _self.loadingData();//重新加载数据
+                            }
+                        })
                     }
+                    _self.loadingData();//重新加载数据
                 })
+
                 console.info(this.editForm);
             }
         }

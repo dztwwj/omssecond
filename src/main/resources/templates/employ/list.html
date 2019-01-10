@@ -41,7 +41,7 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
-                <el-button type="success" icon="plus" @click="addClick">应聘</el-button>
+                <!--<el-button type="success" icon="plus" @click="addClick">应聘</el-button>-->
                 <el-button type="success" icon="plus" @click="returnClick">刷新</el-button>
             </el-form-item>
         </el-form>
@@ -121,18 +121,33 @@
             <el-table-column
                     prop="RESUME"
                     label="个人简历">
-                <template>
-                    <img slot="reference" :src="path+editForm.RESUME" height="100" min-width="70">
+                <!--<template scope="scope">
+                    <img slot="reference" :src="path+scope.row.RESUME" height="100" min-width="70">
+                </template>-->
+
+                <template scope="scope">
+                    <el-popover placement="right" title="个人简历" trigger="hover">
+                        <img :src="path+scope.row.RESUME" width="270" height="170"/>
+                        <img slot="reference" :src="path+scope.row.RESUME" height="100" min-width="100">
+                    </el-popover>
                 </template>
+
             </el-table-column>
 
             <el-table-column
                     prop="RECRUITNUM"
                     label="还需招聘人数"
                     align="center"
-                    width="55"
             >
             </el-table-column>
+            <!--<el-table-column
+                    prop="RESUME"
+                    label="个人简历"
+                    align="center"
+            >
+                <img :src="path+RESUME" width="270" height="170"/>
+            </el-table-column>-->
+
             <el-table-column
                     prop="STATE"
                     label="审核状态"
@@ -149,6 +164,12 @@
                     <br>
                     <el-button :plain="true" type="danger" size="small" icon="delete" @click="downClick(scope.row)">审核驳回</el-button>
                 </template>
+            </el-table-column>
+            <el-table-column
+                    prop="EMAIL"
+                    label="邮箱"
+                    align="center"
+            >
             </el-table-column>
         </el-table>
     </el-row>
@@ -173,7 +194,7 @@
     </el-row>
 
     <!--新增编辑界面-->
-    <el-dialog title="应聘人信息填写" :visible.sync="editFormVisible" :close-on-click-modal="false">
+    <!--<el-dialog title="应聘人信息填写" :visible.sync="editFormVisible" :close-on-click-modal="false">
         <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
 
             <el-form-item label="姓名" prop="STNAME">
@@ -197,32 +218,43 @@
             <el-form-item label="应聘部门" prop="RECRUITDP">
                 <el-select v-model="editForm.RECRUITDP" @change="getRecruiitdpInfo" placeholder="请选择">
                     <el-option
-                            v-for="item in optiondept"
+                            v-for="item in optionrec"
                             :key="item.ID"
                             :label="item.DEPARTMENT"
                             :value="item.ID"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="应聘职位" prop="RECRUITPOS">
+            &lt;!&ndash;<el-form-item label="应聘职位" prop="RECRUITPOS">
                 <el-input v-model="editForm.RECRUITPOS" auto-complete="off"></el-input>
+            </el-form-item>&ndash;&gt;
+
+            <el-form-item label="应聘职称" prop="RECRUITPOS">
+                <el-select v-model="editForm.RECRUITPOS"  placeholder="请选择">
+                    <el-option
+                            v-for="item in optionrec"
+                            :key="item.ID"
+                            :label="item.JOBS"
+                            :value="item.JOBS"></el-option>
+                </el-select>
             </el-form-item>
-            <el-form-item label="发布日期"  prop="EMPLOYTIME">
+
+            <el-form-item label="应聘日期"  prop="EMPLOYTIME">
                 <el-date-picker type="date"
                                 value-format="yyyy-MM-dd"
                                 placeholder="选择日期"
                                 v-model="editForm.EMPLOYTIME"
                                 :picker-options="pickerOptions0"></el-date-picker>
             </el-form-item>
-            <!--<el-form-item label="个人简历" prop="RESUME">
+            &lt;!&ndash;<el-form-item label="个人简历" prop="RESUME">
                 <el-input v-model="editForm.RESUME" auto-complete="off"></el-input>
-            </el-form-item>-->
+            </el-form-item>&ndash;&gt;
             <el-form-item label="个人简历"  prop="RESUME">
-            <!--<el-upload
+            &lt;!&ndash;<el-upload
                     class="avatar-uploader"
                     action="employ/upLoadPic"
                     :show-file-list="false"
                     :on-success="handleAvatarSuccess">
-            </el-upload>-->
+            </el-upload>&ndash;&gt;
                 <el-upload
                         action="/employ/upLoadPic"
                         list-type="picture-card"
@@ -233,18 +265,19 @@
                 </el-upload>
             </el-form-item>
 
-            <el-form-item label="招聘人数" prop="RECRUITNUM">
+            &lt;!&ndash;<el-form-item label="招聘人数" prop="RECRUITNUM">
                 <el-input-number v-model="editForm.RECRUITNUM" :min="0" :max="20000"></el-input-number>
-            </el-form-item>
-        </el-form>
+            </el-form-item>&ndash;&gt;
+                </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
             <el-button type="primary" @click.native="edittiSubmit('editForm')" :loading="editLoading">提交</el-button>
         </div>
-    </el-dialog>
+    </el-dialog>-->
+
 
     <el-dialog title="驳回理由填写" :visible.sync="liyouVisible" :close-on-click-modal="false">
-        <el-form :model="liyouForm" label-width="80px" :rules="editFormRules">
+        <el-form :model="liyouForm" label-width="80px" >
 
             <el-form-item label="驳回理由" prop="REASON">
                 <el-input v-model="liyouForm.REASON" auto-complete="off"></el-input>
@@ -280,20 +313,9 @@
                 }
                 return statusMap[status]
             },
-            // 状态显示转换
-            /*formatStata:function(status) {
-                const statusMap = {
-                    1: '待审核',
-                    2: '审核通过',
-                    3: '审核驳回',
-                }
-                return statusMap[status]
-            }*/
         },
         data: {
-            imagess:'',//获取文件名
-            path:"/employ/show?fileName=",
-
+            path:'/employ/show?fileName=',
             //时间选择
             pickerOptions0: {
                 disabledDate(time) {
@@ -308,7 +330,8 @@
                 REASON:''
             },
             //部门select
-            optiondept:[],
+            optionrec:[],
+            /*optionpos:[],*/
             options:[
                 {
                     value: '男',
@@ -360,15 +383,15 @@
                 STATE:'',
                 ID:''
             },
-            editFormRules:{
+            /*editFormRules:{
                 STNAME: [
                     { required: true, message: '请输入应聘人姓名', trigger: 'blur' },
                     { min: 2, max: 4, message: '长度在 2 到 4 个字符', trigger: 'blur' }
                 ],
-                /*SEX: [
+                /!*SEX: [
                     { required: true, message: '请输入应聘人姓名', trigger: 'blur' },
                     { min: 1, max: 1, message: '长度在 1个字符', trigger: 'blur' }
-                ],*/
+                ],*!/
                 IDCARD: [
                     { required: true, trigger: 'blur',message: '请输入正确的身份证号'},
                     {pattern:'^[1-9]\\d{5}(18|19|2([0-9]))\\d{2}(0[0-9]|10|11|12)([0-2][1-9]|30|31)\\d{3}[0-9Xx]$',message: '请输入正确的身份证号'}
@@ -377,11 +400,11 @@
                     { required: true, trigger: 'blur',message: '请输入正确的手机号'},
                     {pattern:'^1+[35678]+\\d{9}',message: '请输入正确的手机号(1\35678)'}
                 ],
-                /*DESCRIBES: [
+                /!*DESCRIBES: [
                     { required: true, message: '请输入部门描述', trigger: 'blur' },
                     { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
-                ]*/
-            },
+                ]*!/
+            },*/
         },
         created:function(){
             //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
@@ -390,14 +413,14 @@
             var end =this.currentPage*this.pageSize+1;
             axios.post('/employ/page',{'start':start,'end':end,'STATE':"'待审核'"}).then(function(response){
                 // console.log(response.data);
-                //alert(response.data.total);
+                alert(response.data.total);
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
-                // alert(JSON.stringify(response.data.pageData));
+                alert(JSON.stringify(response.data.pageData));
                 // self.multipleSelection=response.data.data;
             });
             axios.post('/employ/deptt').then(function(response){
-                self.optiondept=response.data;
+                self.optionrec=response.data;
             })
 
         },
@@ -416,7 +439,8 @@
                     //alert(response.data[0].RECRUITNUM);
                     alert(response.data[0].ID)
                     self.editForm.ID=response.data[0].ID;
-                    self.editForm.RECRUITNUM=response.data[0].RECRUITNUM;
+                    self.editForm.RECRUITNUM=response.data[0].NUMBERS;
+                    self.editForm.RECRUITPOS=response.data[0].JOBS;
                 })
             },
             //表格重新加载数据
@@ -454,27 +478,21 @@
                 this.goUrl = "/employ/tgupdate";
                 /*this.editFormVisible = true;*/
                 /*this.editForm = Object.assign({}, row);*/
-                if(row.RECRUITNUM<0){
+                if(row.RECRUITNUM==0){
                     _self.$message({
                         message: '此岗位已招满',
                         type: 'error'
                     });
                     return;
                 }
-                axios.post(this.goUrl, {STATE:'审核通过',STID:row.STID}).then(function (response) {
+                axios.post(this.goUrl, {STATE:'审核通过',STID:row.STID,ID:row.ID}).then(function (response) {
 
                     //alert(response.data)
-                    if (response.data > 0) {
+                    if (response.data >0) {
                         _self.tableData.state='审核通过';
                         _self.loadingData();//重新加载数据
-                    }else{
-                        _self.$message({
-                            message: '审核失败',
-                            type: 'error'
-                        });
-
-                        _self.loadingData();//重新加载数据
                     }
+                        _self.loadingData();//重新加载数据
                 })
             },
             //刷新页面
@@ -482,7 +500,7 @@
                 return location.href = location.href;
             },
             //新建事件
-            addClick: function () {
+            /*addClick: function () {
                 //alert(111);
                 this.goUrl = "/employ/add";
                 var _self = this;
@@ -501,7 +519,7 @@
                     //显示隐藏的form表单
                     this.editFormVisible = true;
                 _self.loadingData();//重新加载数据
-            },
+            },*/
             downClick: function (row) {
                 //alert(111);
                 this.goUrl = "/employ/rsupdate";

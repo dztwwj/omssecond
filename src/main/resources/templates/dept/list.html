@@ -69,13 +69,13 @@
                     align="center"
             >
             </el-table-column>
-            <el-table-column
+            <!--<el-table-column
                     prop="DSTATUS"
                     label="状态"
                     :formatter="formatterColumn"
                     align="center"
             >
-            </el-table-column>
+            </el-table-column>-->
 
             <el-table-column
                     prop="DESCRIBES"
@@ -89,6 +89,14 @@
                     align="center"
             >
             </el-table-column>
+
+            <el-table-column
+                    prop="NUM"
+                    label="该部门下人数"
+                    align="center"
+            >
+            </el-table-column>
+
             <el-table-column
                     label="操作">
                 <template scope="scope">
@@ -125,18 +133,6 @@
                 <el-input v-model="editForm.DNAME" auto-complete="off"></el-input>
             </el-form-item>
 
-            <el-form-item label="状态">
-                <template>
-                    <el-select v-model="editForm.DSTATUS" placeholder="请选择部门状态">
-                        <el-option
-                                v-for="item in options"
-                                :key="item.DSTATUS"
-                                :label="item.value"
-                                :value="item.DSTATUS">
-                        </el-option>
-                    </el-select>
-                </template>
-            </el-form-item>
 
             <el-form-item label="描述" prop="DESCRIBES">
                 <el-input v-model="editForm.DESCRIBES" auto-complete="off"></el-input>
@@ -166,7 +162,7 @@
         el: '#tableView',
         data: {
             //部门select
-            options:[{DSTATUS:1,value:'可用'},{DSTATUS:2,value:'不可用'}],
+            /*options:[{DSTATUS:1,value:'可用'},{DSTATUS:2,value:'不可用'}],*/
             //列表数据
             tableData: [],
             //显示加载中样式
@@ -262,18 +258,26 @@
                 setTimeout(function(){
                     console.info("加载数据成功");
                     _self.loading = false;
-                },300);
+                });
             },
             //表格编辑事件
             editClick:function(row) {
                 this.goUrl="/dept/update";
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
+
             },
 
             deleteClick:function(row) {
                 alert(JSON.stringify(row));
                 var _self = this;
+                if(row.NUM>0){
+                    _self.$message({
+                        message: '该部门下还有员工，处理后再来操作',
+                        type: 'error'
+                    });
+                    return;
+                }
                 this.$confirm('确认删除' + row.ID +'吗?', '提示', {
                     type: 'warning'
                 }).then(function(){
@@ -340,27 +344,6 @@
                 var _self = this;
                 _self.loadingData();//重新加载数据
             },
-            //保存点击事件
-            /*editSubmit:function(){
-                var _self = this;
-                _self.loading = true;
-                var formData =this.editForm;
-                //alert(formData);
-                var goUrl=this.goUrl;
-                //alert(goUrl);
-                //alert(JSON.stringify(formData));
-                axios.post(goUrl,formData).then(function(response){
-                    // console.log(response.data);
-                    //alert(222);
-                    // self.total=response.data.total;
-                    if(response.data>0){
-                        _self.editFormVisible = false;
-                        _self.loadingData();//重新加载数据
-                    }
-                })
-                console.info(this.editForm);
-            }*/
-
             editSubmit: function (formName) {
                 var _self = this;
                 _self.loading = true;

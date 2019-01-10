@@ -1,7 +1,6 @@
 package com.aaa.oms.dao;
 
 import org.apache.ibatis.annotations.*;
-import org.mybatis.caches.redis.RedisCache;
 
 import java.util.List;
 import java.util.Map;
@@ -12,17 +11,17 @@ import java.util.Map;
  * author:HPY
  * createTime:2018-12-17 11:19
  */
-@CacheNamespace(implementation = RedisCache.class)
+//@CacheNamespace(implementation = RedisCache.class)
 public interface EmployDao {
     /**
      * 带参分页查询
      * @param map
      * @return
      */
-    @Select("<script>select stid,stname,sex,idcard,phone,recruitdp,recruitpos,to_char(employtime,'yyyy-mm-dd') as employtime,resume,recruitnum,state,reason from \n" +
-            "(select rownum rn,stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,recruitnum,state,reason from recruitstaff \n" +
-            "where rownum &lt; #{end}  and  state in(${STATE}) " +
-            "<if test=\"sex!=null and sex!=''\"> and sex=#{sex}</if>" +
+    @Select("<script>select stid,stname,sex,idcard,phone,recruitdp,recruitpos,to_char(employtime,'yyyy-mm-dd') as employtime,resume,recruitnum,state,reason,id,email from \n" +
+            "(select rownum rn,stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,(select numbers from recruit where id=61) recruitnum,state,reason,id,email from recruitstaff \n" +
+            "where rownum &lt; #{end}  and  state in (${STATE})   and phone not in(select a.telephone from cu_emp a)  " +
+            "<if test=\"sex!=null and sex!=''\"> and sex=#{sex} </if> " +
             "<if test=\"recruitdp!=null and recruitdp!=''\"> and recruitdp like '%'||#{recruitdp}||'%'</if>" +
             " )a where a.rn &gt; #{start} </script>")
     List<Map> getPageParam(Map map);
@@ -32,10 +31,10 @@ public interface EmployDao {
      * @param map
      * @return
      */
-    @Select("<script> select count(*) from recruitstaff <where>  and  state in(${STATE}) " +
+    @Select("<script> select count(*) from recruitstaff <where> state in (${STATE})    and phone not in(select a.telephone from cu_emp a) " +
             "<if test=\"sex!=null and sex!=''\"> and sex=#{sex}</if>" +
             "<if test=\"recruitdp!=null and recruitdp!=''\"> and recruitdp like '%'||#{recruitdp}||'%'</if>" +
-            " </where></script>")
+            " </where> </script>")
     int getPageCount(Map map);
 
     /**
@@ -43,20 +42,47 @@ public interface EmployDao {
      * @param map
      * @return
      */
-    @Update(value = "update recruitstaff set state=#{STATE},recruitnum=recruitnum-1 where stid=#{STID}")
+    @Update(value = "update recruitstaff set state=#{STATE} where stid=#{STID}")
     int tgupdate(Map map);
 
+    /**
+     * 审核状态通过
+     * @param map
+     * @return
+     */
+    @Update(value = "update recruit set numbers=numbers-1 where id=#{ID}")
+    int tgupdate1(Map map);
+
+
+    /**
+     * 入职新员工完善信息
+     * @param map
+     * @return
+     */
+    @Insert(value = "insert into cu_emp(eid,empnum,ename,telephone,empsex,empbirthday,gid,emiladdr,idcard,position,inductiontime) " +
+            "values(seq_cu_emp_id.nextval,seq_empnum.nextval,#{STNAME},#{PHONE},#{SEX},to_date(#{EMPBIRTHDAY},'yyyy-mm-dd'),#{GID},#{EMAIL},#{IDCARD},#{POSITION},SYSDATE)\n")
+    int perfectadd(Map map);
 
 
 
     /**
-     * 部门的添加
+     * 应聘员工信息添加
      * @param map
      * @return
      */
-    @Insert(value = "insert into recruitstaff(stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,recruitnum,id) " +
-            " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},#{RECRUITDP},#{RECRUITPOS},to_date(#{EMPLOYTIME},'yyyy-mm-dd'),#{RESUME},#{RECRUITNUM},#{ID})")
-    int add(Map map);
+    @Insert(value = "insert into recruitstaff(stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,recruitnum,id,email,resume) " +
+            " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},#{DEPARTMENT},#{JOBS},SYSDATE,#{NUMBERS},#{ID},#{EMAIL},#{RESUME})")
+    int addEmploy(Map map);
+
+
+    /**
+     * 应聘员工信息添加
+     * @param map
+     * @return
+     */
+   /* @Insert(value = "insert into recruitstaff(stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,recruitnum,id) " +
+            " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},(select department from recruit where id=#{RECRUITDP}),#{RECRUITPOS},to_date(#{EMPLOYTIME},'yyyy-mm-dd'),#{RESUME},#{RECRUITNUM},#{ID})")
+    int add(Map map);*/
 
     /**
      * 审核驳回理由
@@ -67,39 +93,32 @@ public interface EmployDao {
     int rsupdate(Map map);
 
     /**
-     * 部门查询
+     * 根据ID查询
      * @param map
      * @return
      */
-    /*@Select(value = "select * from recruit")
-    List<Map> chaxun(Map map);*/
-    @Select(value = "select * from recruit where id=#{ID}")
+    @Select(value = "select numbers from recruit where id=#{ID}")
     List<Map> chaxun(Map map);
 
-    /*@Select(value = "select * from recruit")
-    List<Map> getrecruit(Map map);*/
 
     /**
      * 部门列表查询
      * @return
      */
     @Select(value = "select * from recruit")
-    List<Map> getdept();
+    List<Map> getdept(Map map);
 
     /**
-     * 部门的更新
-     * @param map
+     * 班组查询
      * @return
      */
-    //@Update(value = "update recruitstaff set stname=#{STNAME},sex=#{SEX},idcard=#{IDCARD},phone=#{PHONE},recruitdp=#{RECRUITDP},recruitpos=#{RECRUITPOS},employtime=#{EMPLOYTIME},resume=#{resume},recruitnum=#{RECRUITNUM} where stid=#{STID}")
-    //int update(Map map);
+    @Select(value = "select * from cu_group ")
+    List<Map> getgid();
 
     /**
-     * 部门的删除
-     * @param stid
+     * 查询职称
      * @return
      */
-    //@Delete(value = "delete from recruitstaff where stid=#{stid}")
-    //int delete(int stid);
-
+    @Select(value = "select * from cu_position")
+    List<Map> getposid();
 }

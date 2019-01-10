@@ -52,8 +52,8 @@ public class DeptController {
      */
     @ResponseBody
     @RequestMapping("/list")
-    public Object list(){
-        return deptService.getList();
+    public Object list(Map map){
+        return deptService.getList(map);
     }
     /**
      *部门的添加
@@ -91,6 +91,7 @@ public class DeptController {
     public Object delete(@PathVariable("id") int id){//@PathVariable可以用来映射URL中的占位符到目标方法的参数中
         return deptService.delete(id);
     }
+
 }
 
 

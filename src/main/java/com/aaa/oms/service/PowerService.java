@@ -4,6 +4,7 @@ import com.aaa.oms.entity.Node;
 
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * className:PowerService
@@ -18,4 +19,13 @@ public interface PowerService {
      * @return
      */
     List<Node> getList();
+
+    List<Node> getChecktree(Map map);
+
+    /**
+     * 分权保存
+     * @param map
+     * @return
+     */
+    int savePower(Map map);
 }

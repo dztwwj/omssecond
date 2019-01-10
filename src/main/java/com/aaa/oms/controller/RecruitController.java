@@ -31,6 +31,15 @@ public class RecruitController {
     public Object toList(Map map){
         return "recruit/list";
     }
+    /**·
+     * 跳转应聘分页列表
+     * @param map
+     * @return
+     */
+    @RequestMapping("/employ")
+    public Object employ(Map map){
+        return "recruit/employ";
+    }
     /**
      * 分页
      * @param map
@@ -48,7 +57,7 @@ public class RecruitController {
     @ResponseBody
     @RequestMapping("/add")
     public Object add(@RequestBody Map map){
-        //System.out.println(map);
+        System.out.println(map);
         return recruitService.add(map);
     }
 
@@ -74,4 +83,13 @@ public class RecruitController {
     public Object delete(@PathVariable("id") int id){//@PathVariable可以用来映射URL中的占位符到目标方法的参数中
         return recruitService.delete(id);
     }
+
+
+    @ResponseBody
+    @RequestMapping("/chaxun/{id}")
+    public Object chaxun(@PathVariable("id") Integer id ){
+        //System.out.println(id+"......");
+        return recruitService.chaxun(id);
+    }
+
 }

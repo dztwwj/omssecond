@@ -46,7 +46,8 @@ public class DeptServiceImpl implements DeptService {
     }
 
     @Override
-    public List<Map> getList() {
-        return deptDao.getList();
+    public List<Map> getList(Map map) {
+        return deptDao.getList(map);
     }
+
 }

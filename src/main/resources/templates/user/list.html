@@ -26,6 +26,15 @@
             <el-form-item label="员工名称">
                 <el-input v-model="searchForm.ENAME" placeholder="员工名称"></el-input>
             </el-form-item>
+            <el-form-item label="员工工号">
+                <el-input v-model="searchForm.EMPNUM" placeholder="员工工号"></el-input>
+            </el-form-item>
+            <el-form-item >
+                <el-select v-model="searchForm.ISEFFECTIVE" placeholder="选择员工状态">
+                    <el-option label="在职员工" value="0" ></el-option>
+                    <el-option label="离职员工" value="1"></el-option>
+                </el-select>
+            </el-form-item>
            <!-- <el-form-item label="状态">
                 <el-input v-model="searchForm.dstatus" placeholder="状态"></el-input>
             </el-form-item>
@@ -96,7 +105,23 @@
                     label="邮箱"
                     >
             </el-table-column>
+            <el-table-column
+                    prop="DNAME"
+                    label="部门"
+            >
             </el-table-column>
+            <el-table-column
+                    prop="PNAME"
+                    label="职位"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="GNAME"
+                    label="班组"
+            >
+            </el-table-column>
+
+
             <el-table-column
                     label="操作">
                 <template scope="scope">
@@ -190,7 +215,9 @@
             loading:false,
             //搜索表单
             searchForm: {
-                ENAME: ''
+                ENAME: '',
+                EMPNUM:'',
+                ISEFFECTIVE:''
             },
             //多选值
             multipleSelection: [],
@@ -248,7 +275,7 @@
                 var start =(this.currentPage-1)*this.pageSize;
                 var end =this.currentPage*this.pageSize+1;
                 //  alert(this.searchForm.id);
-                var searchForm={'start':start,'end':end,'ENAME':this.searchForm.ENAME};
+                var searchForm={'start':start,'end':end,'ENAME':this.searchForm.ENAME,'EMPNUM':this.searchForm.EMPNUM,'ISEFFECTIVE':this.searchForm.ISEFFECTIVE};
                 //alert(JSON.stringify(searchForm));
                 axios.post('/user/page',searchForm).then(function(response){
                     console.log(response.data);

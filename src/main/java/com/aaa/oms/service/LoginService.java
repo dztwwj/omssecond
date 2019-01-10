@@ -2,6 +2,8 @@ package com.aaa.oms.service;
 
 import com.aaa.oms.entity.User;
 
+import java.util.List;
+
 /**
  * className:PowerController
  * discription:
@@ -10,4 +12,8 @@ import com.aaa.oms.entity.User;
  */
 public interface LoginService {
     public User findByName(String empnum);
+
+    /*List<User> findByName(String empnum);
+
+    List<User> findByid(Integer eid);*/
 }

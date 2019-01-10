@@ -1,10 +1,15 @@
 package com.aaa.oms.controller;
 
+import com.aaa.oms.entity.Node;
 import com.aaa.oms.service.PowerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * className:PowerController
@@ -37,5 +42,27 @@ public class PowerController {
     @RequestMapping("/tree")
     public Object tree(){
         return powerService.getList();
+    }
+
+    /**
+     * 权限树数据
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/checktree")
+    public Object checktree(@RequestBody Map map){
+        System.out.println(map);
+       List<Node> treeList= powerService.getChecktree(map);
+        return treeList;
+    }
+    /**
+     * 分权保存
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/save")
+    public Object save(@RequestBody Map map){
+        int result=powerService.savePower(map);
+        return result;
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * createTime:2018-12-10 14:43:07
  */
 @SpringBootApplication
+
 @MapperScan("com.aaa.oms.dao")
 public class SpringBootMainApplication {
 

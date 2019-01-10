@@ -66,11 +66,11 @@
     </dependency>
     <!--热部署：、-->
     <!--添加依赖-->
-    <dependency>
+   <!-- <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
-    </dependency>
+    </dependency>-->
     <!--spring aop 包-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -97,6 +97,12 @@
       <artifactId>pagehelper</artifactId>
       <version>5.0.0</version>
     </dependency>
+    <dependency>
+      <groupId>commons-net</groupId>
+      <artifactId>commons-net</artifactId>
+      <version>3.3</version>
+    </dependency>
+
     <dependency>
       <groupId>com.github.pagehelper</groupId>
       <artifactId>pagehelper-spring-boot-autoconfigure</artifactId>

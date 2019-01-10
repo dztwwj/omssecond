@@ -45,7 +45,7 @@ public interface PromoteDao{
      * @return
      */
     @Insert(value = "insert into cu_promotion_release(id,positionid,demandnum,endapply,empnum,jobcontent,requirements) " +
-            "values(seq_cu_pro_rel_id.nextval,#{POSITIONNAME},#{DEMANDNUM},to_date(#{ENDAPPLY},'yyyy/mm/dd'),10000,#{JOBCONTENT},#{REQUIREMENTS})")
+            "values(seq_cu_pro_rel_id.nextval,#{POSITIONNAME},#{DEMANDNUM},to_date(substr(#{ENDAPPLY},1,10),'yyyy/mm/dd'),10000,#{JOBCONTENT},#{REQUIREMENTS})")
     int add(Map map);
 
 
@@ -55,10 +55,24 @@ public interface PromoteDao{
      * @param map
      * @return
      */
-    @Update(value = "update cu_promotion_release set POSITIONID=#{POSITIONID},DEMANDNUM=#{DEMANDNUM},ENDAPPLY=to_date(#{ENDAPPLY},'yyyy/mm/dd')," +
+    @Update(value = "update cu_promotion_release set POSITIONID=#{POSITIONID},DEMANDNUM=#{DEMANDNUM},ENDAPPLY=to_date(substr(#{ENDAPPLY},1,10),'yyyy/mm/dd')," +
             "JOBCONTENT=#{JOBCONTENT},REQUIREMENTS=#{REQUIREMENTS} where ID=#{ID}")
     int update(Map map);
 
+    /**
+     * 审核通过
+     * @param map
+     * @return
+     */
+    @Update(value = "update cu_promotion_apply set state = 1 where id = #{ID}")
+    int updateTG(Map map);
+    /**
+     * 审核驳回
+     * @param map
+     * @return
+     */
+    @Update(value = "update cu_promotion_apply set state = 2 where id = #{ID}")
+    int updateNoTG(Map map);
     /**
      * 员晋升信息的删除
      * @param id
@@ -77,7 +91,7 @@ public interface PromoteDao{
      * 晋升的角色查询
      * @return
      */
-    @Select(value = "select POSITIONNAME,ID,ROLEID,RANK,POSTSEGMENT from cu_position where RANK > 1 and RANK < 98")
+    @Select(value = "select POSITIONNAME,ID,RANK from cu_position where RANK > 1 and RANK < 98")
     List<Map> selectPosition();
 
     /**
@@ -93,21 +107,15 @@ public interface PromoteDao{
             "(select dname from dept where id=(select deptid from cu_group where gid=e.gid)) dname," +
             "(select positionname from cu_position where ID=s.positionid) applyname " +
             "from cu_emp e,cu_promotion_apply p,cu_promotion_release s " +
-
-
-            " where e.empnum=p.applyemp and p.rid=s.id and p.state in(${STA})" +
-
-            ") a where a.rn &gt; #{start} and a.rn &lt; #{end}</script>")
+           " where e.empnum=p.applyemp and p.rid=s.id and p.state in(${STA}) and rownum &lt; #{end} " +
+            "<if test=\"STATE!=null and STATE!=''\"> and p.STATE = #{STATE}</if>" +
+            ") a where a.rn &gt; #{start} </script>")
     List<Map> auditPromote(Map map);
     /**
      * 查询审核管理总数量
      * @param map
      * @return
      */
-    @Select("<script>" +
-            "select count(*)" +
-            "from cu_emp e,cu_promotion_apply p,cu_promotion_release s " +
-            " where e.empnum=p.applyemp and p.rid=s.id and p.state in(${STA})" +
-            "</script>")
+    @Select("<script>select count(*) from cu_promotion_apply p where p.state in (${STA})</script>")
     int auditPromoteCount(Map map);
 }

@@ -35,15 +35,29 @@ public interface EmployService {
      * @param map
      * @return
      */
-    int tgupdate(Map map);
+    Map tgupdate(Map map);
 
     /**
      * 部门的添加
      * @param map
      * @return
      */
-    int add(Map map);
+    /*int add(Map map);*/
 
+
+    /**
+     * 入职新员工完善信息
+     * @param map
+     * @return
+     */
+    int perfectadd(Map map);
+
+    /**
+     * 应聘员工信息添加
+     * @param map
+     * @return
+     */
+    int addEmploy(Map map);
 
     /**
      * 审核驳回理由
@@ -53,25 +67,25 @@ public interface EmployService {
     int rsupdate(Map map);
 
     /**
-     * 部门查询
-     * @param
+     * 根据ID查询
+     * @param map
      * @return
      */
     List<Map> chaxun(Map map);
 
 
-    List<Map> getdept();
-    /**
-     * 部门的更新
-     * @param map
-     * @return
-     */
-    //int update(Map map);
+    List<Map> getdept(Map map);
+
 
     /**
-     * 部门的删除
-     * @param stid
+     * 班组查询
+     * @param
      * @return
      */
-    //int delete(int stid);
+    List<Map> getgid();
+    /**
+     * 查询职称
+     * @return
+     */
+    List<Map> getposid();
 }

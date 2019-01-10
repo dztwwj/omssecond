@@ -4,6 +4,7 @@ import com.aaa.oms.dao.EmployDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,15 +32,18 @@ public class EmployServiceImpl implements EmployService {
     }
 
     @Override
-    public int tgupdate(Map map) {
-        return employDao.tgupdate(map);
+    public Map tgupdate(Map map) {
+        Map map1 = new HashMap();
+        map1.put("a",employDao.tgupdate1(map));
+        map1.put("b",employDao.tgupdate(map));
+        return map1;
     }
 
-    @Override
+    /*@Override
     public int add(Map map) {
         System.out.println(map);
         return employDao.add(map);
-    }
+    }*/
 
     @Override
     public int rsupdate(Map map) {
@@ -52,7 +56,26 @@ public class EmployServiceImpl implements EmployService {
     }
 
     @Override
-    public List<Map> getdept() {
-        return employDao.getdept();
+    public List<Map> getdept(Map map) {
+        return employDao.getdept(map);
+    }
+
+    @Override
+    public int perfectadd(Map map) {
+        return employDao.perfectadd(map);
+    }
+    @Override
+    public int addEmploy(Map map) {
+        return employDao.addEmploy(map);
+    }
+
+    @Override
+    public List<Map> getgid() {
+        return employDao.getgid();
+    }
+
+    @Override
+    public List<Map> getposid() {
+        return employDao.getposid();
     }
 }

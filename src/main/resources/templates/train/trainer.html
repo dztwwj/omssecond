@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>培训师列表</title>
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>{{ message }}</h2>
+</div>
+
+<div id="tableView">
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-form-item label="培训师姓名">
+                <el-input v-model="searchForm.name" placeholder="培训师姓名"></el-input>
+            </el-form-item>
+            <!-- <el-form-item label="状态">
+                 <el-input v-model="searchForm.dstatus" placeholder="状态"></el-input>
+             </el-form-item>
+             <el-form-item label="描述">
+                 <el-input v-model="searchForm.describes" placeholder="描述"></el-input>
+             </el-form-item>-->
+            <!--<template>
+                <el-select v-model="searchForm.deptNo" placeholder="请选择所在部门">
+                    <el-option
+                            v-for="item in options"
+                            :key="item.DEPTNO"
+                            :label="item.DNAME"
+                            :value="item.DEPTNO">
+                    </el-option>
+                </el-select>
+            </template>
+        </el-form-item>-->
+            <el-form-item>
+                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+                <el-button type="success" icon="plus" @click="addClick">新增</el-button>
+                <el-button type="success" icon="plus" @click="flushClick">刷新</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <!-------------------------------------------------------------------------列表------------------------->
+    <el-row>
+        <el-table
+                :data="tableData"
+                v-loading.body="loading"
+                border
+                @selection-change="selectionChange"
+                style="width: 100%">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="ID"
+                    label="培训师ID"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="NAME"
+                    label="培训师姓名"
+                    width="150">
+            </el-table-column>
+           <!-- <el-table-column
+                    prop="PHOTO"
+                    label="照片"
+                    width="200">
+            </el-table-column>-->
+            <el-table-column
+                    prop="PHOTO"
+                    label="图片"
+                    width="120">
+                <template scope="scope">
+                    <a :href="'/trainer/show?fileName='+scope.row.PHOTO"><img slot="reference" :src="path+scope.row.PHOTO" height="100" min-width="70"></a>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="GRADE"
+                    label="培训师等级"
+                    :formatter="formatterGRADE"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="JOBNUM"
+                    label="工号"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="EMAIL"
+                    label="邮箱"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="PHONE"
+                    label="电话"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="PNAME"
+                    label="课程名称"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    label="操作">
+                <template scope="scope">
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑</el-button>
+                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-row>
+
+    <!--列表底部工具条和分页符-->
+    <el-row style="margin-top: 20px" type="flex" justify="end">
+        <el-col :span="6" >
+            <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
+        </el-col>
+        <el-col :span="18" >
+            <el-pagination
+                    style="float: right"
+                    @size-change="pageSizeChange"
+                    @current-change="currentPageChange"
+                    :current-page="currentPage"
+                    :page-sizes="[3,10, 20, 30, 50]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </el-col>
+    </el-row>
+
+    <!-------------------------------------------------------------------------------------编辑界面-->
+    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+            <el-form-item label="培训师姓名" prop="NAME">
+                <el-input v-model="editForm.NAME" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item v-if="isAdd" label="原图片" prop="PHOTO">
+                <a :href="'/trainer/downloadPic?fileName='+editForm.PHOTO"><img slot="reference" :src="path+editForm.PHOTO" height="100" min-width="70"></a>
+            </el-form-item>
+            <el-form-item label="照片" prop="">
+                <el-upload
+                        action="/trainer/upLoadPic"
+                        list-type="picture-card"
+                        auto-upload="true"
+                        limit="1"
+                        ref="upload"
+                        :file-list="imgList"
+                        multiple="false"
+                        :on-success="uploadSuc">
+                    <i class="el-icon-plus"></i>
+                </el-upload>
+            </el-form-item>
+            <el-form-item label="工号" prop="JOBNUM">
+                <el-input v-model="editForm.JOBNUM" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="培训等级">
+                <template>
+                    <el-select v-model="editForm.GRADE" placeholder="请选择等级">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.GRADE"
+                                :label="item.VAL"
+                                :value="item.GRADE">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-form-item>
+            <el-form-item label="Email" prop="EMAIL">
+                <el-input v-model="editForm.EMAIL" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="Phone" prop="PHONE">
+                <el-input v-model="editForm.PHONE" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="课程名称">
+                <template>
+                    <el-select v-model="editForm.PID" placeholder="请选课程名称">
+                        <el-option
+                                v-for="item in opts"
+                                :key="item.PID"
+                                :label="item.PNAME"
+                                :value="item.PID">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-form-item>
+
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="editFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+        </div>
+    </el-dialog>
+
+</div>
+
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '培训师列表'
+        }
+    });
+
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            imgList:[],
+            isAdd:false,
+            path:'/trainer/show?fileName=',
+                //部门select
+                options:[{GRADE:1,VAL:'初级培训师'},{GRADE:2,VAL:'中级培训师'},{GRADE:3,VAL:'高级培训师'}],
+                opts:[],
+                //列表数据
+                tableData: [],
+                //显示加载中样式
+                loading:false,
+                //搜索表单
+                searchForm: {
+                name: ''
+            },
+            //多选值
+            multipleSelection: [],
+            //当前页
+            currentPage:1,
+            //分页大小
+            pageSize:10,
+            //总记录数
+            total:800,
+            //删除的弹出框
+            deleteVisible:false,
+            //编辑界面是否显示
+            editFormVisible: false,
+            editLoading: false,
+            goUrl:'',
+            editFormRules: {
+                name: [
+                    { required: true, message: '请选择等级', trigger: 'blur' }
+                ]
+            },
+            //编辑界面数据
+            editForm: {
+                ID:'',
+                NAME: '',
+                JOBNUM: '',
+                GRADE: '',
+                PID: '',
+                PHOTO:'',
+                EMAIL:'',
+                PHONE:''
+            },
+        },
+        created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            axios.post('/trainer/trainerList',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response) {
+                console.log(response.data);
+                //alert(response.data.total);
+                self.total = response.data.total;
+                self.tableData = response.data.pageData;
+               // alert(JSON.stringify(response.data.pageData));
+
+            });
+            axios.post('/trainer/courseList').then(function(response) {
+                self.opts = response.data;
+            });
+        },
+
+        methods:{
+            formatterGRADE:function(row){
+                if(row.GRADE==1) return "初级工程师";
+                else if(row.GRADE==2) return "中级工程师";
+                else return "高级工程师";
+            },
+            //表格重新加载数据
+            loadingData:function() {
+                var _self = this;
+                _self.loading = true;
+                var self = this;
+                var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'name':this.searchForm.name};
+                axios.post('/trainer/trainerList',searchForm).then(function(response){
+                    console.log(response.data);
+                    _self.total=response.data.total;
+                    _self.tableData = response.data.pageData;
+                })
+                console.log(_self.currentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+            },
+            //表格编辑事件
+            editClick:function(row) {
+                this.goUrl="/trainer/update";
+                this.editFormVisible = true;
+                this.isAdd=true;
+                this.editForm = Object.assign({}, row);
+                /*if(this.editForm.GRADE==1)
+                this.editForm.GRADE='初级培训师';
+                else if(this.editForm.GRADE==2)
+                    this.editForm.GRADE='中级培训师';
+                else
+                    this.editForm.GRADE='高级培训师';*/
+            },
+            //刷新
+            flushClick:function () {
+                this.searchForm={
+                    name: ''
+                }
+                this.loadingData();//重新加载数据
+            },
+
+            //单条删除
+            deleteClick:function(row) {
+                //alert(JSON.stringify(row));
+                var _self = this;
+                this.$confirm('确认删除' + row.ID +'吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    var  url="/trainer/delete/"+row.ID;
+                    axios.get(url).then(function (response) {
+                        //alert(url);
+                        if(response.data>0){
+                            _self.$message({
+                                message: row.ID + '删除成功',
+                                type: 'success'
+                            });
+                            _self.loadingData();//重新加载数据
+                        }
+                    });
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //新建事件
+            addClick:function() {
+                this.isAdd=false;
+                this.goUrl="/trainer/add";
+                var _self = this;
+                //清空缓冲数据
+                this.editForm={
+                    ID:'',
+                    NAME: '',
+                    JOBNUM: '',
+                    GRADE: '',
+                    PID: '',
+                    PHOTO:'',
+                    EMAIL:'',
+                    PHONE:''
+                }
+                //显示隐藏的form表单
+                this.editFormVisible = true;
+                _self.loadingData();//重新加载数据
+            },
+            //表格查询事件
+            searchClick:function() {
+                var self = this;
+                self.loadingData();//重新加载数据
+            },
+            //表格勾选事件
+            selectionChange:function(val) {
+                for(var i=0;i<val.length;i++) {
+                    var row = val[i];
+                }
+                this.multipleSelection = val;
+                console.info(val);
+            },
+            //删除所选，批量删除
+            removeSelection:function() {
+                var _self = this;
+                var multipleSelection = this.multipleSelection;
+                if(multipleSelection.length < 1) {
+                    _self.$message({
+                        message: '请至少选中一条记录',
+                        type: 'error'
+                    });
+                    return;
+                }
+                var ids = "";
+                for(var i=0;i<multipleSelection.length;i++) {
+                    var row = multipleSelection[i];
+                    ids += row.ID + ","
+                }
+                this.$confirm('确认删除' + ids +'吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    var  url="/trainer/batchDel/"+ids;
+                    axios.get(url).then(function (response) {
+                        //alert(response.data);
+                        var temp="";
+                        if(response.data>0){
+                            temp="删除成功";
+                        }else {
+                            temp="删除失败";
+                        }
+                        _self.$message({
+                            message: ids + temp,
+                            type: 'success'
+                        });
+                        _self.loadingData();//重新加载数据
+                    });
+
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //分页大小修改事件
+            pageSizeChange:function(val) {
+                console.log('每页 ' + val +' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange:function(val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //保存点击事件
+            editSubmit:function(){
+                var _self = this;
+                _self.loading = true;
+                var formData =this.editForm;
+                //alert(formData);
+                var goUrl=this.goUrl;
+                //alert(goUrl);
+                //alert(JSON.stringify(formData));
+                axios.post(goUrl,formData).then(function(response){
+                    // console.log(response.data);
+                    //alert(222);
+                    // self.total=response.data.total;
+                    if(response.data>0){
+                        _self.editFormVisible = false;
+                        _self.loadingData();//重新加载数据
+                    }
+                })
+                this.$refs.upload.clearFiles();
+                console.info(this.editForm);
+            },
+            //上传成功后的方法
+            uploadSuc:function(response, file, fileList){
+                this.editForm.PHOTO=response;
+            },
+            downLoad:function(row){
+                location.href="/trainer/downloadPic?fileName="+row.PHOTO
+            }
+        }
+    })
+</script>
+</body>
+</html>

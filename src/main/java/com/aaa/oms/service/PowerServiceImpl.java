@@ -1,5 +1,6 @@
 package com.aaa.oms.service;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.aaa.oms.dao.PowerDao;
 import com.aaa.oms.entity.Node;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * className:PowerServiceImpl
@@ -63,4 +65,36 @@ public class PowerServiceImpl implements  PowerService {
             }
         }
     }
+
+    @Override
+    public List<Node> getChecktree(Map map) {
+        return powerDao.getChecktree(map);
+    }
+
+    /**
+     * 分权保存
+     * @param map
+     * @return
+     */
+    @Override
+    public int savePower(Map map) {
+        //删除原有的
+        int del=powerDao.delPower(map);
+        //添加权限
+       String powersid=(String) map.get("powersid");
+        String[] idsArray=powersid.split(",");//8,15,14,16,17 [1,2,3,4]
+        boolean isAdd =true;
+        for (String s : idsArray) {
+            map.put("powerid",Integer.valueOf(s));
+            int i=powerDao.savePower(map);
+            if(i<1){
+                isAdd=false;
+            }
+        }
+        if(isAdd==false){
+            return 0;
+        }
+        return 1;
+    }
 }
+
