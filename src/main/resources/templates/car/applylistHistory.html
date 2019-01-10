@@ -83,9 +83,9 @@
             </el-table-column>
 
             <el-table-column
-                    prop="CARTYPE"
-                    label="车型"
-                    width="120">
+                prop="CARTYPE"
+                label="车型"
+                width="120">
             </el-table-column>
             <el-table-column
                     prop="ID"
@@ -411,7 +411,7 @@
             },
             //格式化状态
             formatResult: function (row, column) {
-                return row.STATE === 0 ? '待审核' : row.STATE === 1 ? '可使用' : row.STATE === 2 ? '其他' : row.STATE === 3 ? '使用中' : '未知'
+                return row.RESULT === 0 ? '待审核' : row.RESULT === 1 ? '可使用' : row.RESULT === 2 ? '其他' : row.RESULT === 3 ? '使用中' : '未知'
 
             },
         }
