@@ -1,6 +1,8 @@
 package com.aaa.oms.controller;
 
 import com.aaa.oms.service.EmployService;
+import com.aaa.oms.util.FtpConfig;
+import com.aaa.oms.util.FtpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +23,12 @@ import java.util.Map;
 @RequestMapping("/employ")
 public class EmployController {
 
-  /*  //依赖注入ftp工具类
+    //依赖注入ftp工具类
     @Autowired
     private FtpUtil ftpUtil;
 
     @Autowired
     private FtpConfig ftpConfig;
-*/
     @Autowired
     private ResourceLoader resourceLoader;
 
@@ -107,19 +108,20 @@ public class EmployController {
      * @param file
      * @return
      */
-    /*@ResponseBody
+   @ResponseBody
     @RequestMapping("/upLoadPic")
     public Object upLoadPic(@RequestParam MultipartFile file){
-        System.out.println("jinru up");
+        System.out.println(file);
         String s = ftpUtil.upLoad(file);//调用上传方法
+       System.out.println("新文件的名称："+s);
         return s;
-    }*/
+    }
     /**
      * 显示Ftp图片
      * @param fileName
      * @return
      */
-    /*@RequestMapping("show")
+    @RequestMapping("show")
     public ResponseEntity show(String fileName){
         try {
             //  ftp://192.168.1.14/98f20a5d-7304-41c7-ac5a-db07d2aaffd3.png
@@ -128,7 +130,7 @@ public class EmployController {
             return ResponseEntity.notFound().build();
         }
 
-    }*/
+    }
 
     /**
      * 入职新员工完善信息
@@ -153,5 +155,25 @@ public class EmployController {
     public Object addemploy(@RequestBody Map map){
         System.out.println(map);
         return employService.addEmploy(map);
+    }
+
+    /**
+     * 班组查询
+     * @param
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/gid")
+    public Object getgid(){
+        return employService.getgid();
+    }
+
+    /**
+     * 职称查询
+     */
+    @ResponseBody
+    @RequestMapping("/posid")
+    public Object getposid(){
+        return employService.getposid();
     }
 }

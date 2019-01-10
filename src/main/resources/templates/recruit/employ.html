@@ -113,6 +113,8 @@
                     align="center"
             >
             </el-table-column>
+
+
             <el-table-column
                     label="操作">
                 <template scope="scope">
@@ -200,6 +202,28 @@
             <el-form-item label="邮箱" prop="EMAIL" >
                 <el-input v-model="editForm.EMAIL" auto-complete="off" ></el-input>
             </el-form-item>
+
+            <el-form-item label="个人简历" prop="RESUME">
+            <!--<el-upload
+                    action="/employ/upLoadPic"
+                    list-type="picture-card"
+                    auto-upload="true"
+                    limit="1"
+                    multiple="false"
+                    :on-success="uploadSuc1">
+                <i class="el-icon-plus"></i>
+            </el-upload>-->
+                <el-upload
+                        action="/employ/upLoadPic"
+                        list-type="picture-card"
+                        auto-upload="true"
+                        limit="1"
+                        multiple="false"
+                        :on-success="uploadSuc1">
+                    <i class="el-icon-plus"></i>
+                </el-upload>
+            </el-form-item>
+
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
@@ -221,6 +245,8 @@
     var tableView = new Vue({
         el: '#tableView',
         data: {
+           /* path:'/employ/show?fileName=',*/
+            resume:'',
             pickerOptions0: {
                 disabledDate(time) {
                     return time.getTime() < Date.now()-8.64e7;
@@ -290,7 +316,8 @@
                 EMPLOYTIME:'',
                 RECRUITNUM:'',
                 ID:'',
-                EMAIL:''
+                EMAIL:'',
+                RESUME:''
             },
         },
         created:function(){
@@ -311,6 +338,11 @@
             });
         },
         methods: {
+            //上传建立成功的方法
+            uploadSuc1:function(response, file, fileList){
+                alert("身份证正面为："+response);
+                this.editForm.RESUME=response;
+            },
             getRecruiitdpInfo:function(row){
                 alert(JSON.stringify(row));
                 /*this.editForm.ID=JSON.stringify(row);*/

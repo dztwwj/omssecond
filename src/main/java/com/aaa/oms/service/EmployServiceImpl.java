@@ -68,4 +68,14 @@ public class EmployServiceImpl implements EmployService {
     public int addEmploy(Map map) {
         return employDao.addEmploy(map);
     }
+
+    @Override
+    public List<Map> getgid() {
+        return employDao.getgid();
+    }
+
+    @Override
+    public List<Map> getposid() {
+        return employDao.getposid();
+    }
 }

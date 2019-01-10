@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>部门列表</title>
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    &lt;!&ndash; 引入组件库 &ndash;&gt;
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/elementui.css">
+    <!-- 引入组件库 -->
+    <script src="../js/elementui.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>{{ message }}</h2>
+</div>
+
+<div id="tableView">
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-form-item label="部门名称">
+                <el-input v-model="searchForm.positionname" placeholder="部门名称"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+                <el-button type="success" icon="plus" @click="addClick">新增</el-button>
+                <el-button type="success" icon="plus" @click="returnClick">刷新</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <!--列表-->
+    <el-row>
+        <el-table
+                :data="tableData"
+                v-loading.body="loading"
+                border
+                @selection-change="selectionChange"
+                style="width: 100%">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="POSITIONNAME"
+                    label="职称"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="DNAME"
+                    label="所属部门"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="RANK"
+                    label="职级"
+                    :formatter="isTITLECOLOR"
+                    align="center"
+            >
+            </el-table-column>
+            <el-table-column
+                    label="操作">
+                <template scope="scope">
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑</el-button>
+                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">删除</el-button>
+                    <el-button :plain="true" type="primary" size="small" icon="plus" @click="addPower(scope.row)">角色授权</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-row>
+
+    <!--列表底部工具条和分页符-->
+    <el-row style="margin-top: 20px" type="flex" justify="end">
+        <!-- <el-col :span="6" >
+             <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
+         </el-col>-->
+        <el-col :span="18" >
+            <el-pagination
+                    style="float: right"
+                    @size-change="pageSizeChange"
+                    @current-change="currentPageChange"
+                    :current-page="currentPage"
+                    :page-sizes="[10, 20, 30, 50]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </el-col>
+    </el-row>
+
+    <!--编辑界面-->
+    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+            <el-form-item label="职称" prop="POSITIONNAME">
+                <el-input v-model="editForm.POSITIONNAME" auto-complete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="所属部门" prop="DEPTID">
+                <el-select v-model="editForm.DEPTID"  placeholder="请选择">
+                    <el-option
+                            v-for="item in optionrec"
+                            :key="item.ID"
+                            :label="item.DNAME"
+                            :value="item.ID"></el-option>
+                </el-select>
+            </el-form-item>
+
+            <el-form-item label="职级">
+                <el-select v-model="editForm.RANK" placeholder="选择职级">
+                    <el-option label="员工" value=1></el-option>
+                    <el-option label="班长" value=2></el-option>
+                    <el-option label="主管" value=3></el-option>
+                </el-select>
+            </el-form-item>
+
+
+            <el-form-item label="职级" prop="RANK">
+                <el-input v-model="editForm.RANK" auto-complete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="editFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="editSubmit('editForm')" :loading="editLoading">提交</el-button>
+        </div>
+    </el-dialog>
+
+    <!-- 授权界面 -->
+    <el-dialog title="授权" :visible.sync="authorization" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+            <el-form-item label="角色名称" prop="POSITIONNAME">
+                <el-input v-model="editForm.POSITIONNAME" auto-complete="off" :readonly="true"></el-input>
+            </el-form-item>
+            <el-form-item label="权限选择" >
+                <el-tree style="width: 200px"
+                         :data="tree"
+                         show-checkbox
+                         :props="defaultProps"
+                         ref="tree"
+                         node-key="id"
+                         :default-checked-keys="checked"
+                         :default-expanded-keys="expanded"
+                >
+                </el-tree>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="authorization = false">取消</el-button>
+            <el-button type="primary" @click.native="powerSubmit" :loading="editLoading">保存</el-button>
+        </div>
+    </el-dialog>
+
+</div>
+
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '职称信息'
+        }
+    });
+
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            //部门select
+            /*options:[{DSTATUS:1,value:'可用'},{DSTATUS:2,value:'不可用'}],*/
+            optionrec:[],
+            //列表数据
+            tableData: [],
+            //显示加载中样式
+            loading:false,
+            //搜索表单
+            searchForm: {
+                positionname: ''
+            },
+            tree: [],
+            defaultProps: {
+                children: 'children',
+                label:'label'
+            },
+            expanded:[],
+            checked:[],
+            //多选值
+            multipleSelection: [],
+            //当前页
+            currentPage:1,
+            //分页大小
+            pageSize:10,
+            //总记录数
+            total:800,
+            authorization:false,
+            //删除的弹出框
+            deleteVisible:false,
+            //编辑界面是否显示
+            editFormVisible: false,
+            editLoading: false,
+            goUrl:'',
+            //编辑界面数据
+            editForm: {
+                POSITIONNAME: '',
+                DEPTID: '',
+                RANK: ''
+            },
+            editFormRules:{
+                DNAME: [
+                    { required: true, message: '请输入部门名称', trigger: 'blur' },
+                    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                ],
+                PHONE: [
+                    { required: true, trigger: 'blur',message: '请输入120xxxxxxx的固话'},
+                    {pattern:'^1\\d{2,3}?\\d{7,8}$',message: '请输入120xxxxxxx的固话'}
+                ],
+                DESCRIBES: [
+                    { required: true, message: '请输入部门描述', trigger: 'blur' },
+                    { min: 5, max: 10, message: '长度在 5 到 10 个字符', trigger: 'blur' }
+                ]
+            }
+        },
+        created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            var start =(this.currentPage-1)*this.pageSize;
+            var end =this.currentPage*this.pageSize+1;
+            axios.post('/position/page',{'start':start,'end':end}).then(function(response){
+                // console.log(response.data);
+                //alert(response.data.total);
+                self.total=response.data.total;
+                self.tableData = response.data.pageData;
+                // alert(JSON.stringify(response.data.pageData));
+                // self.multipleSelection=response.data.data;
+            });
+            /*axios.post('/dept/list').then(function(response){
+                self.options=response.data;
+            })*/
+            axios.post('/position/dname').then(function(response){
+                self.optionrec=response.data;
+            });
+            axios.post('/power/tree').then(function(response){
+                self.tree = response.data;
+                var arr = response.data
+                for (var i=0;i<arr.length;i++){
+                    self.expanded.push(arr[i].id)
+                }
+                //alert(JSON.stringify(self.tree))
+                // self.multipleSelection=response.data.data;
+            })
+        },
+        methods:{
+            //表格重新加载数据
+            loadingData:function() {
+                var _self = this;
+                _self.loading = true;
+                var self = this;
+                var start =(this.currentPage-1)*this.pageSize;
+                var end =this.currentPage*this.pageSize+1;
+                //  alert(this.searchForm.id);
+                var searchForm={'start':start,'end':end,'positionname':this.searchForm.positionname};
+                //alert(JSON.stringify(searchForm));
+                axios.post('/position/page',searchForm).then(function(response){
+                    console.log(response.data);
+                    // alert(222);
+                    _self.total=response.data.total;
+                    _self.tableData = response.data.pageData;
+                    //_self.multipleSelection=response.data.data;
+                })
+                console.log(_self.currentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                });
+            },
+            isTITLECOLOR:function(row,colum){
+                return row.RANK ===1? '员工' : row.RANK ===2? '班长':row.RANK ===3? '主管':row.RANK ===98? '老板':'错误'
+            },
+            //表格编辑事件
+            editClick:function(row) {
+                this.goUrl="/position/update";
+                this.editFormVisible = true;
+                this.editForm = Object.assign({}, row);
+
+            },
+
+            deleteClick:function(row) {
+                //alert(JSON.stringify(row));
+                var _self = this;
+                if(row.ID==13){
+                    _self.$message({
+                        message: '你想上天吗？我可是老板',
+                        type: 'error'
+                    });
+                    return;
+                }
+                this.$confirm('确认删除' + row.ID +'吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    var  url="/position/delete/"+row.ID;
+                    axios.get(url).then(function (response) {
+                        //alert(url);
+                        if(response.data>0){
+                            _self.$message({
+                                message: row.ID + '删除成功',
+                                type: 'success'
+                            });
+                            _self.loadingData();//重新加载数据
+                        }
+                    });
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //刷新页面
+            returnClick:function () {
+                return location.href=location.href;
+            },
+            addPower:function (row) {
+                //(JSON.stringify(row));
+                var self = this;
+                //alert(111);
+                self.checked.length=0;
+                //alert(222);
+                axios.post('/power/checktree',{roleid:row.ID}).then(function(response){
+                    //alert(333);
+                    //alert(JSON.stringify(response.data));
+                    var arr = response.data;
+                    //alert(JSON.stringify(arr));
+                    for (var i=0;i<arr.length;i++){
+                        //alert(arr[i].id);
+                        self.checked.push(arr[i].id)
+                    }
+                    self.$refs.tree.setCheckedKeys(self.checked);
+                })
+                this.editForm = Object.assign({}, row);
+                self.authorization = true;
+
+            },
+            powerSubmit:function () {
+                var _self = this;
+                var s = '';
+                //循环每一个节点
+                this.checked =  this.$refs.tree.getCheckedKeys();
+                //alert(this.checked)
+                for(var i=0; i<this.checked.length; i++){
+                    if (s != '') s += ',';
+                    s +=this.checked[i];
+                }
+                //alert(s)
+                _self.editForm.powersid = s;
+                // alert(_self.editForm.powersid)
+                var formData = _self.editForm;
+                axios.post("/power/save",formData).then(function(response){
+                    if(response.data>0){
+                        _self.authorization = false;
+                        _self.$notify({
+                            title: '成功',
+                            type: 'success',
+                            message: "<b>操作成功！</b>",
+                            position: 'bottom-right',
+                            dangerouslyUseHTMLString: true
+                        });
+                    }else{
+                        _self.editFormVisible = false;
+                        _self.$notify.error({
+                            title: '失败',
+                            message: "<b>操作失败</b>",
+                            position: 'bottom-right',
+                            dangerouslyUseHTMLString: true
+                        });
+                    }
+                    _self.loadingData();//重新加载数据
+                })
+            },
+            //新建事件
+            addClick:function() {
+                //alert(111);
+                this.goUrl="/position/add";
+                var _self = this;
+                //清空缓冲数据
+                this.editForm={
+                    POSITIONNAME: '',
+                    DEPTID: '',
+                    RANK: ''
+                }
+                //显示隐藏的form表单
+                this.editFormVisible = true;
+                _self.loadingData();//重新加载数据
+            },
+            //表格查询事件
+            searchClick:function() {
+                var self = this;
+                self.loadingData();//重新加载数据
+            },
+            //表格勾选事件
+            selectionChange:function(val) {
+                for(var i=0;i<val.length;i++) {
+                    var row = val[i];
+                }
+                this.multipleSelection = val;
+                console.info(val);
+            },
+            //分页大小修改事件
+            pageSizeChange:function(val) {
+                console.log('每页 ' + val +' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange:function(val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            editSubmit: function (formName) {
+                var _self = this;
+                _self.loading = true;
+                var formData = this.editForm;
+                //alert(formData);
+                var goUrl = this.goUrl;
+                //alert(goUrl);
+                //alert(JSON.stringify(formData));
+
+                this.$refs[formName].validate((valid) => {
+                    //alert("11111111111")
+                    if (valid) {
+                        axios.post(goUrl, formData).then(function (response) {
+                            //alert(222);
+                            if (response.data > 0) {
+                                //alert("3333333333");
+                                _self.editFormVisible = false;
+                                _self.loadingData();//重新加载数据
+                            }
+                        })
+                    }
+                    _self.loadingData();//重新加载数据
+            })
+                console.info(this.editForm);
+            }
+        }
+    })
+</script>
+</body>
+</html>

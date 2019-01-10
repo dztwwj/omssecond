@@ -66,11 +66,11 @@
     </dependency>
     <!--热部署：、-->
     <!--添加依赖-->
-    <dependency>
+   <!-- <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
-    </dependency>
+    </dependency>-->
     <!--spring aop 包-->
     <dependency>
       <groupId>org.springframework.boot</groupId>

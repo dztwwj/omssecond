@@ -188,18 +188,21 @@
                                 v-model="editForm.EMPBIRTHDAY"></el-date-picker>
             </el-form-item>
 
-            <!--<el-form-item label="班组" prop="GID">
+            <el-form-item label="班组" prop="GID">
                 <el-select v-model="editForm.GID"  placeholder="请选择">
                     <el-option
-                            v-for="item in optionjobs"
-                            :key="item.ID"
-                            :label="item.POSITIONNAME"
-                            :value="item.POSITIONNAME"></el-option>
+                            v-for="item in optiongid"
+                            :key="item.GID"
+                            :label="item.GNAME"
+                            :value="item.GID"></el-option>
                 </el-select>
-            </el-form-item>-->
-            <el-form-item label="班组" prop="GID">
-                <el-input v-model="editForm.GID" auto-complete="off"></el-input>
             </el-form-item>
+
+
+            <!--<el-form-item label="班组" prop="GID">
+                <el-input v-model="editForm.GID" auto-complete="off"></el-input>
+            </el-form-item>-->
+
             <el-form-item label="邮箱" prop="EMAIL">
                 <el-input v-model="editForm.EMAIL" auto-complete="off"></el-input>
             </el-form-item>
@@ -213,10 +216,19 @@
                 <el-input v-model="editForm.IDCARD" auto-complete="off" disabled></el-input>
             </el-form-item>
 
-            <el-form-item label="职称id" prop="POSITION">
+            <!--<el-form-item label="职称id" prop="POSITION">
                 <el-input v-model="editForm.POSITION" auto-complete="off"></el-input>
-            </el-form-item>
+            </el-form-item>-->
 
+            <el-form-item label="职称" prop="POSITION">
+                <el-select v-model="editForm.POSITION"  placeholder="请选择">
+                    <el-option
+                            v-for="item in optionposid"
+                            :key="item.ID"
+                            :label="item.POSITIONNAME"
+                            :value="item.ID"></el-option>
+                </el-select>
+            </el-form-item>
 
 
 
@@ -264,6 +276,8 @@
 
             //部门select
             optiondept:[],
+            optiongid:[],
+            optionposid:'',
             options:[
                 {
                     value: '男',
@@ -319,9 +333,15 @@
                 // alert(JSON.stringify(response.data.pageData));
                 // self.multipleSelection=response.data.data;
             });
-            axios.post('/dept/list').then(function(response){
-                self.optiondept=response.data;
+            axios.post('/employ/gid').then(function(response){
+                self.optiongid=response.data;
+            });
+            axios.post('/employ/posid').then(function(response){
+                self.optionposid=response.data;
             })
+
+
+
 
         },
         methods: {

@@ -4,18 +4,22 @@ import com.aaa.oms.service.PromoteService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * className:PromoteController
- * discription:
+ * discription:晋升模块
  * author:LiuQian
  * createTime:2018-12-17 21:24:49
  */
@@ -45,7 +49,7 @@ public class PromoteController {
         return "promote/promoteInfo";
     }
     /**
-     * 跳转晋升发布历史页面
+     * 跳转晋升审核页面
      * @return
      */
     @RequestMapping("/auditList")
@@ -53,19 +57,31 @@ public class PromoteController {
 
         return "promote/audit";
     }
+    /**
+     * 跳转晋升审核历史页面
+     * @return
+     */
+    @RequestMapping("/auditHistory")
+    public String auditListInfo(){
+
+        return "promote/auditHistory";
+    }
 
 
     /**
-     * 分页
+     * 晋升发布页面分页
      * @param map
      * @return
      */
     @ResponseBody
     @RequestMapping("/page")
-    public Object page(@RequestBody Map map){
+    public Object page(@RequestBody Map map, Model model, HttpSession session){
+        model.addAttribute("aaa","abababababab");
         Map resultmap = new HashMap();
         resultmap.put("pageData",promoteService.getPageParam(map));
         resultmap.put("total",promoteService.getPageCount(map));//total 当前分页的总数量
+        resultmap.put("aaaa","ssssssss");
+        session.setAttribute("empnum","empnum");
         return resultmap;
     }
     /**
@@ -76,6 +92,7 @@ public class PromoteController {
     @ResponseBody
     @RequestMapping("/audit")
     public Object audit(@RequestBody Map map){
+        System.out.println("sss"+map);
         Map resultmap = new HashMap();
         resultmap.put("pageData",promoteService.auditPromote(map));
         resultmap.put("total",promoteService.auditPromoteCount(map));//total 当前分页的总数量

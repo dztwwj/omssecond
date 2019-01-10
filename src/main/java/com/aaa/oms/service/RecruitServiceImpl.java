@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +59,11 @@ public class RecruitServiceImpl implements RecruitService {
         return recruitDao.chaxun(id);
     }
 
-
-
+    /*@Override
+    public Map tgupdate(Map map) {
+        Map map1 = new HashMap();
+        map1.put("a",recruitDao.tgupdate1(map));
+        map1.put("b",recruitDao.tgupdate(map));
+        return map1;
+    }*/
 }

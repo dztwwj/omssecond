@@ -77,5 +77,15 @@ public interface EmployService {
     List<Map> getdept(Map map);
 
 
-
+    /**
+     * 班组查询
+     * @param
+     * @return
+     */
+    List<Map> getgid();
+    /**
+     * 查询职称
+     * @return
+     */
+    List<Map> getposid();
 }
