@@ -103,15 +103,16 @@
                     label="申请时间"
                     width="120">
             </el-table-column>
-            <el-table-column
-                    prop="ENDTIME"
-                    label="使用结束时间"
-                    width="120">
-            </el-table-column>
+            <!--<el-table-column-->
+                    <!--prop="ENDTIME"-->
+                    <!--label="使用结束时间"-->
+                    <!--width="120">-->
+            <!--</el-table-column>-->
             <el-table-column
                     prop="RESULT"
                     label="审核状态"
-                    width="120">
+                    width="120"
+                    :formatter="formatResult">
             </el-table-column>
 
 
@@ -146,53 +147,6 @@
             </el-pagination>
         </el-col>
     </el-row>
-
-    <!--编辑界面-->
-    <!--<el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">-->
-        <!--<el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">-->
-            <!--<el-form-item label="ID" prop="ID">-->
-                <!--<el-input v-model="editForm.ID" auto-complete="off" disabled></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="车牌号" prop="LSICENSE">-->
-                <!--<el-input v-model="editForm.LSICENSE" auto-complete="off"disabled></el-input>-->
-            <!--</el-form-item>-->
-
-            <!--&lt;!&ndash; <el-form-item label="性别">-->
-                 <!--<el-radio-group v-model="editForm.sex">-->
-                     <!--<el-radio class="radio" :label="1">男</el-radio>-->
-                     <!--<el-radio class="radio" :label="0">女</el-radio>-->
-                 <!--</el-radio-group>  EMPNO: 0,-->
-                 <!--ENAME: '',-->
-                 <!--JOB: '',-->
-                 <!--SAL: 0,-->
-                 <!--HIREDATE: ''-->
-             <!--</el-form-item>&ndash;&gt;-->
-            <!--<el-form-item label="使用人">-->
-                <!--<el-input-number v-model="editForm.EMPNAME" :min="0" :max="20000"disabled></el-input-number>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="使用人部门">-->
-                <!--<el-input type="textarea" v-model="editForm.DNAME"disabled></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="车型">-->
-                <!--<el-input type="textarea" v-model="editForm.CARTYPE"disabled></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="车牌号">-->
-                <!--<el-input type="textarea" v-model="editForm.LSICENSE"disabled></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="申请时间">-->
-                <!--<el-input type="textarea" v-model="editForm.APPLYTIME"disabled></el-input>-->
-            <!--</el-form-item>-->
-
-
-
-
-        <!--</el-form>-->
-        <!--<div slot="footer" class="dialog-footer">-->
-            <!--<el-button @click.native="editFormVisible = false">取消</el-button>-->
-            <!--<el-button type="primary" @click.native="editSubmit" :loading="editLoading">确认</el-button>-->
-        <!--</div>-->
-    <!--</el-dialog>-->
-
 </div>
 
 
@@ -423,7 +377,6 @@
             //当前页修改事件
             currentPageChange:function(val) {
                 this.currentPage = val;
-                alert('当前页: ' + val);
                 var _self = this;
                 _self.loadingData();//重新加载数据
             },
@@ -455,7 +408,12 @@
                     _self.loadingData();//重新加载数据
                 })
                 console.info(this.editForm);
-            }
+            },
+            //格式化状态
+            formatResult: function (row, column) {
+                return row.STATE === 0 ? '待审核' : row.STATE === 1 ? '可使用' : row.STATE === 2 ? '其他' : row.STATE === 3 ? '使用中' : '未知'
+
+            },
         }
 
     })
