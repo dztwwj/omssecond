@@ -14,7 +14,7 @@ import java.util.Map;
  * author:HPY
  * createTime:2018-12-15 10:52
  */
-@Component
+//@Component
 //@CacheNamespace(implementation = RedisCache.class)
 public interface RecruitDao {
 

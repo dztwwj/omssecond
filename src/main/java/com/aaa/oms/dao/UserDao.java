@@ -26,8 +26,9 @@ public interface UserDao {
             "DEPARTURETIME,LEAVINGREASON,to_char(INDUCTIONTIME,'yyyy-mm-dd') INDUCTIONTIME,BATCH,PERMS,DEPTID,to_char(to_date((substr(idcard,7,8)),'yyyy-mm-dd'),'yyyy-mm-dd') birthday ,\n" +
             "(select dname from dept where id = (select deptid from cu_position p where id = e.position)) dname,\n" +
             "(select positionname from cu_position where id =e.position) pname,\n" +
-            "(select gname from cu_group where gid = e.gid) gname\n" +
-            "from cu_emp e where iseffective = 0 and rownum &lt; #{end}" +
+            "(select gname from cu_group where gid = e.gid) gname, \n" +
+            "(select ename from cu_emp em where em.empnum = e.addempnum) addname \n" +
+            "from cu_emp e where  rownum &lt; #{end}" +
             "<if test=\"ENAME!=null and ENAME!=''\"> and ename like '%'||#{ENAME}||'%'</if>" +
             "<if test=\"EMPNUM!=null and EMPNUM!=''\"> and EMPNUM = #{EMPNUM} </if>" +
             "<if test=\"ISEFFECTIVE!=null and ISEFFECTIVE!=''\"> and ISEFFECTIVE = #{ISEFFECTIVE}</if>" +
@@ -69,6 +70,6 @@ public interface UserDao {
      * @param id
      * @return
      */
-    @Delete(value = "delete from cu_emp where EMPNUM=#{EMPNUM}")
+    @Delete(value = "update cu_emp set ISEFFECTIVE = 1 where EMPNUM=#{EMPNUM}")
     int delete(int id);
 }
