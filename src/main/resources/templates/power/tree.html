@@ -11,35 +11,35 @@
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 </head>
 <body>
-    <div class="diva">
-        <el-tree
-                :data="treeData"
-                accordion
-                @node-click="handleNodeClick"
-                :icon-class="icon"
-            >
+<div class="diva">
+    <el-tree
+            :data="treeData"
+            accordion
+            @node-click="handleNodeClick"
+            :icon-class="icon"
+    >
 
-        </el-tree>
-    </div>
-   <script>
-       var vm = new Vue({
-           el:".diva",
-           data:{
-               icon:'el-icon-menu',
-               treeData:[]
-           },
-           created:function(){
-               var _self =this
-               axios.post("/power/tree").then(function(response){
-                 _self.treeData = response.data;
-               })
-           },
-           methods:{
-               handleNodeClick:function(n){
-                   alert(n.label+",url"+n.url);
-               }
-           }
-       })
-   </script>
+    </el-tree>
+</div>
+<script>
+    var vm = new Vue({
+        el:".diva",
+        data:{
+            icon:'el-icon-menu',
+            treeData:[]
+        },
+        created:function(){
+            var _self =this
+            axios.post("/power/tree").then(function(response){
+                _self.treeData = response.data;
+            })
+        },
+        methods:{
+            handleNodeClick:function(n){
+                alert(n.label+",url"+n.url);
+            }
+        }
+    })
+</script>
 </body>
 </html>

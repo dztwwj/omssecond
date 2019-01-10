@@ -61,9 +61,15 @@ public class CarinfoController {
     @ResponseBody
     @RequestMapping("update")
     public int updatecar(@RequestBody Map map){
-
+        System.out.println("ssss"+map);
         return carService.updateCar(map);
     }
+
+    /**
+     * 删除方法
+     * @param id
+     * @return
+     */
     @ResponseBody
     @RequestMapping("delete")
     public Object deletecar(int id){
@@ -72,6 +78,12 @@ public class CarinfoController {
 
 
     }
+
+    /**
+     * 多删除方法
+     * @param ids
+     * @return
+     */
     @ResponseBody
     @RequestMapping("batchDel")
     public Object batchDel(String ids) {
@@ -79,11 +91,6 @@ public class CarinfoController {
         return carService.batchDelete(ids);
 
     }
-//    //验证车牌是否重复
-//    @ResponseBody
-//    @RequestMapping("carnum")
-//    public String carnum(@RequestParam Map map){
-//        return carService.getcarnum(map);
-//    }
+
 
 }

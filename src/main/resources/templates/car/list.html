@@ -102,7 +102,8 @@
             <el-table-column
                     prop="STATE"
                     label="车辆状态"
-                    width="120">
+                    width="120"
+                    :formatter="formatResult">
             </el-table-column>
             <el-table-column
                     prop="INSURANCETIMR"
@@ -167,8 +168,11 @@
                  SAL: 0,
                  HIREDATE: ''
              </el-form-item>-->
+            <!--<el-form-item label="车型">-->
+                <!--<el-input-number v-model="editForm.CARTYPE" :min="0" :max="20000"></el-input-number>-->
+            <!--</el-form-item>-->
             <el-form-item label="车型">
-                <el-input-number v-model="editForm.CARTYPE" :min="0" :max="20000"></el-input-number>
+                <el-input type="textarea" v-model="editForm.CARTYPE"></el-input>
             </el-form-item>
             <el-form-item label="车座数量">
                 <el-input type="textarea" v-model="editForm.SADDLE"></el-input>
@@ -182,15 +186,27 @@
 
 
             <el-form-item label="启用时间">
-                <el-date-picker type="date"  value-format="yyyy-MM-dd" placeholder="选择日期" v-model="editForm.BEGINTIME"></el-date-picker>
+                <el-date-picker
+                        value-format="yyyy-MM-dd"
+                        v-model="editForm.BEGINTIME"
+                        type="date"
+                        placeholder="选择日期"
+                        :picker-options="pickerOptions0">
+                </el-date-picker>
             </el-form-item>
             <el-form-item label="车辆状态">
                 <el-input type="textarea" v-model="editForm.STATE"></el-input>
             </el-form-item>
-
-            <el-form-item label="买保险时间">
-                <el-date-picker type="date"  value-format="yyyy-MM-dd" placeholder="选择日期" v-model="editForm.INSURANCETIMR"></el-date-picker>
+            <el-form-item label="保险时间">
+                <el-date-picker
+                        value-format="yyyy-MM-dd"
+                        v-model="editForm.INSURANCETIMR"
+                        type="date"
+                        placeholder="选择日期"
+                        :picker-options="pickerOptions0">
+                </el-date-picker>
             </el-form-item>
+
             <el-form-item label="公里数">
                 <el-input type="textarea" v-model="editForm.MILEAGE"></el-input>
             </el-form-item>
@@ -218,6 +234,11 @@
     var tableView = new Vue({
         el: '#tableView',
         data: {
+            pickerOptions0: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now() - 8.64e6
+                }
+            },
             //deptNo:'',
             //部门select
             options:[],
@@ -247,7 +268,8 @@
             editFormRules: {
                 name: [
                     { required: true, message: '请输入姓名', trigger: 'blur' }
-                ]
+                ],
+
             },
             //编辑界面数据
             editForm: {
@@ -282,6 +304,9 @@
             })
         },
         methods:{
+
+
+
             //表格重新加载数据
             loadingData:function() {
 
@@ -466,7 +491,14 @@
                     _self.loadingData();//重新加载数据
                 })
                 console.info(this.editForm);
-            }
+            },
+            //格式化状态
+            formatResult: function (row, column) {
+                return row.STATE === 0 ? '待审核' : row.STATE === 1 ? '可使用' : row.STATE === 2 ? '其他' : row.STATE === 3 ? '使用中' : '未知'
+
+            },
+
+
         }
 
     })

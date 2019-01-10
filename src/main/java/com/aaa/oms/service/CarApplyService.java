@@ -11,14 +11,23 @@ import java.util.Map;
  */
 public interface CarApplyService {
     /**
-     * 显示数据库的的车辆维修表,分页显示
+     * 后台车辆审核查询,分页显示
      */
     List<Map> getCarMaintenance(Map map);
 
     /**
-     * 获取维修车辆总数量
+     * 后台车辆审核查询
      */
     int getCarCount(Map map);
+    /**
+     * 前台车辆审核查询,分页显示
+     */
+    List<Map> getCarMaintenanceQian(Map map);
+
+    /**
+     * 前台车辆审核查询
+     */
+    int getCarCountQian(Map map);
 
     /**
      * 添加维修的车辆
@@ -31,26 +40,20 @@ public interface CarApplyService {
      * @return
      */
     int updateToTG(Map map);
-    /**
-     * 获得车号下拉框
-     */
-    List<Map> getCarNumber(Map map);
-
-    /**
-     * 审核驳回方法
-     * @param map
-     * @return
-     */
-    int deleteCar(int id);
-    /**
-     * 维修多删除
-     */
 
 
-    int batchDelete(String ids);
     /**
      * 审核驳回
      */
     int turn(Map map);
+
+    /**
+     * 查询车辆的车牌号
+     *
+     * @return
+     */
+    List<Map> getLiscense();
+
+    int updateCarToUse(Map map);
 
 }

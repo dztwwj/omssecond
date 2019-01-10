@@ -64,8 +64,5 @@ public interface CarinfoDao {
     @Delete("<script>delete from CU_CARINFO where id in" +
             "<foreach collection='list' item='en' open='(' close=')' separator=','>#{en}</foreach></script>")
     int batchDelete(List list);
-    /**
-     * 验证车牌是否一致
-     */
-    List<Map> getcarnum(Map map);
+
 }

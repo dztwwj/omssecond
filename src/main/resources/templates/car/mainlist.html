@@ -148,8 +148,11 @@
                  SAL: 0,
                  HIREDATE: ''
              </el-form-item>-->
+            <!--<el-form-item label="车型">-->
+                <!--<el-input-number v-model="editForm.CARTYPE" :min="0" :max="20000"></el-input-number>-->
+            <!--</el-form-item>-->
             <el-form-item label="车型">
-                <el-input-number v-model="editForm.CARTYPE" :min="0" :max="20000"></el-input-number>
+                <el-input type="textarea" v-model="editForm.CARTYPE"></el-input>
             </el-form-item>
             <el-form-item label="维修厂家">
                 <el-input type="textarea" v-model="editForm.FACTORY"></el-input>

@@ -110,14 +110,39 @@
     <!-- 分页插件pagehelper -->
 
 
-  <!--热部署依赖-->
+    <!--thymeleaf整合shiro标签-->
+    <dependency>
+      <groupId>com.github.theborakompanioni</groupId>
+      <artifactId>thymeleaf-extras-shiro</artifactId>
+      <version>2.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mybatis.spring.boot</groupId>
+      <artifactId>mybatis-spring-boot-starter</artifactId>
+      <version>1.2.0</version>
+    </dependency>
+    <!--导入spring与shiro的整合-->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-spring</artifactId>
+      <version>1.4.0</version>
+    </dependency>
+    <!--导入thymeleaf依赖 为开发页面打基础-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-devtools</artifactId>
-      <optional>true</optional>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
     </dependency>
-    <!--热部署依赖-->
-
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!--ftp依赖包-->
+    <dependency>
+      <groupId>commons-net</groupId>
+      <artifactId>commons-net</artifactId>
+      <version>3.3</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -152,14 +177,6 @@
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>2.8.2</version>
-        </plugin>
-      <!--热部署-->
-        <plugin>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-maven-plugin</artifactId>
-          <configuration>
-            <fork>true</fork>
-          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>

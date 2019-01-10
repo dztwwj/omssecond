@@ -18,7 +18,9 @@ import java.util.Map;
 public class CarinfoServiceImpl implements CarinfoService {
     @Autowired
     private CarinfoDao carinfoDao;
-
+    /**
+     * 汽车多删除
+     */
     @Override
     public int batchDelete(String ids) {
         String[] idsArray = ids.split(",");
@@ -31,41 +33,43 @@ public class CarinfoServiceImpl implements CarinfoService {
         return carinfoDao.batchDelete(list);
 
     }
-
+    /**
+     * 带分页的显示汽车方法
+     */
     @Override
     public List<Map> getCarInfoDao(Map map) {
 
         return carinfoDao.getCarInfoDao(map);
     }
-
+    /**
+     *显示汽车总数量
+     */
     @Override
     public int getCarCount(Map map) {
         return carinfoDao.getCarCount(map);
     }
-
+    /**
+     * 汽车的添加方法
+     */
     @Override
     public int addCar(Map map) {
         return carinfoDao.addCar(map);
     }
-
+    /**
+     * 汽车更新方法
+     */
     @Override
     public int updateCar(Map map) {
         return carinfoDao.updateCar(map);
     }
-
+    /**
+     * 汽车删除方法
+     * @param id
+     */
     @Override
     public int deleteCar(int id) {
         return carinfoDao.deleteCar(id);
     }
 
-    @Override
-    public String getcarnum(Map map) {
-        String suc = "suc";
-        //验证车牌号是否一致的方法
-        List<Map> getcarnum = carinfoDao.getcarnum(map);
-        if(getcarnum!=null&&getcarnum.size()>0){
-            suc= "s";
-        }
-        return suc;
-    }
+
 }

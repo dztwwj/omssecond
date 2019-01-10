@@ -33,12 +33,9 @@ public interface CarinfoService {
      * @param id
      */
     int deleteCar(int id);
+
     /**
-     * 验证车牌是否一致
-     */
-    String getcarnum(Map map);
-    /**
-     * 多删除
+     * 汽车多删除
      */
     int batchDelete(String ids);
 }

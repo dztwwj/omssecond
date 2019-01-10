@@ -20,56 +20,80 @@ import java.util.Map;
 public class CarApplyServiceImpl implements CarApplyService {
     @Autowired
     private CarApplyDao carApplyDao;
-
+    /**
+     * 后台车辆审核查询,分页显示
+     */
     @Override
     public List<Map> getCarMaintenance(Map map) {
         return carApplyDao.getCarMaintenance(map);
     }
-
+    /**
+     * 后台车辆审核查询
+     */
     @Override
     public int getCarCount(Map map) {
         return carApplyDao.getCarCount(map);
     }
-
+    /**
+     * 前台车辆审核查询,分页显示
+     */
+    @Override
+    public List<Map> getCarMaintenanceQian(Map map) {
+        return carApplyDao.getCarMaintenanceQian(map);
+    }
+    /**
+     * 前台车辆审核查询
+     */
+    @Override
+    public int getCarCountQian(Map map) {
+        return carApplyDao.getCarCountQian(map);
+    }
+    /**
+     * 添加维修的车辆
+     */
     @Override
     public int add(Map map) {
         return carApplyDao.add(map);
     }
 
 
-    @Override
-    public List<Map> getCarNumber(Map map) {
-        return carApplyDao.getCarNumber(map);
-    }
-
-    @Override
-    public int deleteCar(int id) {
-        return carApplyDao.deleteCar(id);
-    }
 
 
-
-    @Override
-    public int batchDelete(String ids) {
-        String[] idsArray = ids.split(",");
-        boolean isDel = true;
-        List list = new ArrayList();
-
-        for(String s : idsArray){
-            list.add(s);
-        }
-        return carApplyDao.batchDelete(list);
-
-    }
-
+    /**
+     * 审核通过方法
+     * @param map
+     * @return
+     */
     @Override
     public int updateToTG(Map map) {
         carApplyDao.updateCarToUse(map);
         return carApplyDao.updateCaraToTG(map);
     }
+    /**
+     * 审核驳回
+     */
     @Override
     public int turn(Map map) {
         carApplyDao.turnCarToUse(map);
         return carApplyDao.turnCaraToTG(map);
+    }
+    /**
+     * 审核通过方法
+     * @param map
+     * @return
+     */
+
+    @Override
+    public int updateCarToUse(Map map) {
+        return carApplyDao.updateCarToUse(map);
+    }
+    /**
+     * 查询车辆的车牌号
+     *
+     * @return
+     */
+    @Override
+    public List<Map> getLiscense() {
+        return carApplyDao.getLiscense();
     }
 }
