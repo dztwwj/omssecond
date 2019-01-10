@@ -15,7 +15,7 @@ import java.util.Map;
  * author:zl
  * createTime:2018-12-21 20:45
  */
-@Component
+//@Component
 public interface ResultDao {
 
 

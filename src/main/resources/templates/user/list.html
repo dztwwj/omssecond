@@ -86,7 +86,7 @@
                     >
             </el-table-column>
             <el-table-column
-                    prop="EMPBIRTHDAY"
+                    prop="BIRTHDAY"
                     label="生日"
                     >
             </el-table-column>
@@ -120,12 +120,22 @@
                     label="班组"
             >
             </el-table-column>
-
+            <el-table-column
+                    prop="ADDNAME"
+                    label="添加人姓名"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="ISEFFECTIVE"
+                    label="员工状态"
+                    :formatter="formatState"
+            >
+            </el-table-column>
 
             <el-table-column
                     label="操作">
                 <template scope="scope">
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑</el-button>
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑</el-button><br>
                     <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
@@ -134,9 +144,9 @@
 
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
-        <el-col :span="6" >
-            <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
-        </el-col>
+        <!--<el-col :span="6" >-->
+            <!--<el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>-->
+        <!--</el-col>-->
         <el-col :span="18" >
             <el-pagination
                     style="float: right"
@@ -158,25 +168,6 @@
                 <el-input v-model="editForm.ENAME" auto-complete="off"></el-input>
             </el-form-item>
 
-            <!--<el-form-item label="状态">-->
-                <!--<template>-->
-                    <!--<el-select v-model="editForm.DSTATUS" placeholder="请选择所在员工">-->
-                        <!--<el-option-->
-                                <!--v-for="item in options"-->
-                                <!--:key="item.DSTATUS"-->
-                                <!--:label="item.value"-->
-                                <!--:value="item.DSTATUS">-->
-                        <!--</el-option>-->
-                    <!--</el-select>-->
-                <!--</template>-->
-            <!--</el-form-item>-->
-
-            <el-form-item label="性别" prop="EMPSEX">
-                <el-input v-model="editForm.EMPSEX" auto-complete="off"></el-input>
-            </el-form-item>
-            <!--<el-form-item label="生日" prop="EMPBIRTHDAY">-->
-                <!--<el-input v-model="editForm.EMPBIRTHDAY" auto-complete="off"></el-input>-->
-            <!--</el-form-item>-->
             <el-form-item label="电话号码" prop="TELEPHONE">
                 <el-input v-model="editForm.TELEPHONE" auto-complete="off"></el-input>
             </el-form-item>
@@ -184,6 +175,46 @@
                 <el-input v-model="editForm.IDCARD" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="邮箱" prop="EMILADDR">
+                <el-input v-model="editForm.EMILADDR" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="部门" prop="DNAME">
+                <el-input v-model="editForm.EMILADDR" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="职位" prop="PNAME">
+                <el-input v-model="editForm.EMILADDR" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="班组" prop="GNAME">
+                <el-input v-model="editForm.EMILADDR" auto-complete="off"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="editFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+        </div>
+    </el-dialog>
+    <!--新增界面-->
+    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+            <el-form-item label="姓名" prop="ENAME">
+                <el-input v-model="editForm.ENAME" auto-complete="off"></el-input>
+            </el-form-item>
+
+            <el-form-item label="电话号码" prop="TELEPHONE">
+                <el-input v-model="editForm.TELEPHONE" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="身份证号码" prop="IDCARD">
+                <el-input v-model="editForm.IDCARD" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="邮箱" prop="EMILADDR">
+                <el-input v-model="editForm.EMILADDR" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="部门" prop="DNAME">
+                <el-input v-model="editForm.EMILADDR" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="职位" prop="PNAME">
+                <el-input v-model="editForm.EMILADDR" auto-complete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="班组" prop="GNAME">
                 <el-input v-model="editForm.EMILADDR" auto-complete="off"></el-input>
             </el-form-item>
         </el-form>
@@ -267,6 +298,10 @@
             })*/
         },
         methods:{
+            //格式化状态
+            formatState: function (row, column) {
+                return row.ISEFFECTIVE === 0 ? '在职员工' : row.ISEFFECTIVE === 1 ? '离职员工' : '未知'
+            },
             //表格重新加载数据
             loadingData:function() {
                 var _self = this;
@@ -297,11 +332,12 @@
                 this.editForm = Object.assign({}, row);
             },
 
+            //删除
             deleteClick:function(row) {
                 //alert(JSON.stringify(row));
                 alert(row.EMPNUM);
                 var _self = this;
-                this.$confirm('确认删除' + row.EMPNUM +'吗?', '提示', {
+                this.$confirm('确认删除工号为' + row.EMPNUM +'的'+row.ENAME+'吗?', '提示', {
                     type: 'warning'
                 }).then(function(){
                     var  url="/user/delete/"+row.EMPNUM;
@@ -309,7 +345,7 @@
                         //alert(url);
                         if(response.data>0){
                             _self.$message({
-                                message: row.EMPNUM + '删除成功',
+                                message: row.EMPNUM + '离职成功',
                                 type: 'success'
                             });
                             _self.loadingData();//重新加载数据
@@ -405,8 +441,9 @@
                 var _self = this;
                 _self.loadingData();//重新加载数据
             },
+
             //保存点击事件
-            editSubmit:function(){
+            editSubmit:function(formName){
                 var _self = this;
                 _self.loading = true;
                 var formData =this.editForm;
@@ -414,14 +451,19 @@
                 var goUrl=this.goUrl;
                 //alert(goUrl);
                 //alert(JSON.stringify(formData));
-                axios.post(goUrl,formData).then(function(response){
-                    // console.log(response.data);
-                    //alert(222);
-                    // self.total=response.data.total;
-                    if(response.data>0){
-                        _self.editFormVisible = false;
-                        _self.loadingData();//重新加载数据
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        axios.post(goUrl,formData).then(function(response){
+                            // console.log(response.data);
+                            //alert(222);
+                            // self.total=response.data.total;
+                            if(response.data>0){
+                                _self.editFormVisible = false;
+                                _self.loadingData();//重新加载数据
+                            }
+                        })
                     }
+                    _self.loadingData();//重新加载数据
                 })
                 console.info(this.editForm);
             }
