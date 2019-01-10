@@ -12,15 +12,15 @@ import java.util.Map;
  * author:HPY
  * createTime:2018-12-11 10:24
  */
-@CacheNamespace(implementation = RedisCache.class)
+//@CacheNamespace(implementation = RedisCache.class)
 public interface DeptDao {
     /**
      * 带参分页查询
      * @param map
      * @return
      */
-    @Select("<script>select id, dname,dstatus,describes,phone,(select count(e.gid) from cu_emp e where e.gid in (select gid from cu_group where deptid = a.id)) num from \n" +
-                    "(select rownum rn,id,dname,dstatus,describes,phone,num from dept d \n" +
+    @Select("<script>select id, dname,describes,phone,(select count(e.gid) from cu_emp e where e.gid in (select gid from cu_group where deptid = a.id)) num from \n" +
+                    "(select rownum rn,id,dname,describes,phone,num from dept d \n" +
                     "where rownum &lt; #{end}  " +
                     "<if test=\"dname!=null and dname!=''\"> and dname like '%'||#{dname}||'%'</if>" +
                     " )a where a.rn &gt; #{start} </script>")
@@ -68,6 +68,4 @@ public interface DeptDao {
      */
     @Select(value = "select * from dept")
     List<Map> getList(Map map);
-
-
 }

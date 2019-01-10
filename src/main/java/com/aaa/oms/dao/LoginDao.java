@@ -17,7 +17,7 @@ import java.util.Map;
  * author:HPY
  * createTime:2018-12-11 10:24
  */
-@CacheNamespace(implementation = RedisCache.class)
+//@CacheNamespace(implementation = RedisCache.class)
 public interface LoginDao {
 
     public User findByName(String empnum);

@@ -291,9 +291,9 @@
             deleteClick:function(row) {
                 //alert(JSON.stringify(row));
                 var _self = this;
-                if(row.NUM>0){
+                if(row.ID==13){
                     _self.$message({
-                        message: '该部门下还有员工，处理后再来操作',
+                        message: '你想上天吗？我可是老板',
                         type: 'error'
                     });
                     return;
