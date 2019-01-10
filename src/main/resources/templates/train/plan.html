@@ -235,12 +235,11 @@
             },
             //编辑界面数据
             editForm: {
-                PID:'',
-                PNAME: '',
-                ID: '',
+                TID:'',
+                NAME: '',
                 P_BEGIN: '',
                 P_END: '',
-                ENAME:''
+                BATCH:''
             },
         },
         created:function(){
@@ -325,16 +324,15 @@
             },
             //新建事件
             addClick:function() {
-                alert(111);
                 this.goUrl="/plan/add";
                 var _self = this;
                 //清空缓冲数据
                 this.editForm={
-                    PNAME: '',
-                    ID: '',
+                    TID:'',
+                    NAME: '',
                     P_BEGIN: '',
                     P_END: '',
-                    ENAME:''
+                    BATCH:''
                 }
                 //显示隐藏的form表单
                 this.editFormVisible = true;
