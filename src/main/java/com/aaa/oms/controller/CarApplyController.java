@@ -92,7 +92,6 @@ public class CarApplyController {
     @ResponseBody
     @RequestMapping("updateTG")
     public Object updateTG(@RequestBody Map map){
-        System.out.println(map);
         carApplyService.updateCarToUse(map);
         return carApplyService.updateToTG(map);
 

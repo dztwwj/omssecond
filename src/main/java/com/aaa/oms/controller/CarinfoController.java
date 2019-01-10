@@ -40,8 +40,6 @@ public class CarinfoController {
     @RequestMapping("carlist")
     public Object CarList(@RequestBody Map parcarMap){
         Map map = new HashMap();
-        //total为车辆的总数量
-        //System.out.println(map);
         map.put("total", carService.getCarCount(parcarMap));
         map.put("pageData", carService.getCarInfoDao(parcarMap));
         return map;
@@ -61,7 +59,6 @@ public class CarinfoController {
     @ResponseBody
     @RequestMapping("update")
     public int updatecar(@RequestBody Map map){
-        System.out.println("ssss"+map);
         return carService.updateCar(map);
     }
 
@@ -87,7 +84,6 @@ public class CarinfoController {
     @ResponseBody
     @RequestMapping("batchDel")
     public Object batchDel(String ids) {
-
         return carService.batchDelete(ids);
 
     }

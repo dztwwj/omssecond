@@ -29,28 +29,9 @@
             <el-form-item label="使用人部门">
                 <el-input v-model="searchForm.DNAME" placeholder="使用人部门"></el-input>
             </el-form-item>
-            <!--<el-form-item label="查询">-->
-            <!--<el-input v-model="searchForm.job" placeholder="工作"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="部门">-->
-            <!--&lt;!&ndash;<el-select v-model="searchForm.deptNo" placeholder="部门">-->
-            <!--<el-option label="全部" value=""></el-option>-->
-            <!--<el-option label="财务部" value="10"></el-option>-->
-            <!--<el-option label="销售部" value="20"></el-option>-->
-            <!--</el-select>&ndash;&gt;-->
-            <!--<template>-->
-            <!--<el-select v-model="searchForm.deptNo" placeholder="请选择">-->
-            <!--<el-option-->
-            <!--v-for="item in options"-->
-            <!--:key="item.DEPTNO"-->
-            <!--:label="item.DNAME"-->
-            <!--:value="item.DEPTNO">-->
-            <!--</el-option>-->
-            <!--</el-select>-->
             </template>
             </el-form-item><el-form-item>
             <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
-            <!--<el-button type="success" icon="plus" @click="addClick">新增</el-button>-->
         </el-form-item>
         </el-form>
     </el-row>
@@ -81,12 +62,6 @@
                     label="使用人部门"
                     width="120">
             </el-table-column>
-
-            <el-table-column
-                prop="CARTYPE"
-                label="车型"
-                width="120">
-            </el-table-column>
             <el-table-column
                     prop="ID"
                     label="借车表的id"
@@ -103,37 +78,17 @@
                     label="申请时间"
                     width="120">
             </el-table-column>
-            <!--<el-table-column-->
-                    <!--prop="ENDTIME"-->
-                    <!--label="使用结束时间"-->
-                    <!--width="120">-->
-            <!--</el-table-column>-->
             <el-table-column
                     prop="RESULT"
                     label="审核状态"
                     width="120"
                     :formatter="formatResult">
             </el-table-column>
-
-
-
-
-
-            <!--<el-table-column-->
-                    <!--label="操作">-->
-                <!--<template scope="scope">-->
-                    <!--<el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">审核</el-button>-->
-                    <!--<el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">驳回</el-button>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
         </el-table>
     </el-row>
 
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
-        <el-col :span="6" >
-            <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
-        </el-col>
         <el-col :span="18" >
             <el-pagination
                     style="float: right"
@@ -181,27 +136,6 @@
             pageSize:10,
             //总记录数
             total:800,
-            //删除的弹出框
-            deleteVisible:false,
-            //编辑界面是否显示
-            editFormVisible: false,
-            editLoading: false,
-            goUrl:'',
-            editFormRules: {
-                name: [
-                    { required: true, message: '请输入姓名', trigger: 'blur' }
-                ]
-            },
-            //编辑界面数据
-            editForm: {
-
-                EMPNAME: '',
-                DNAME: '',
-                CARTYPE: '',
-                LSICENSE: '',
-                APPLYTIME: '',
-
-            },
         },
         created:function(){
             //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
@@ -246,61 +180,7 @@
                     _self.loading = false;
                 },1500);
             },
-            //表格编辑事件
-            editClick:function(row) {
-                this.goUrl="/CarApply/updateTG";
-                this.editFormVisible = true;
-                //  alert(JSON.stringify(row));
-                this.editForm = Object.assign({}, row);
-            },
-            //表格删除事件
-            deleteClick:function(row) {
 
-                this.goUrl="/CarApply/turnTG";
-                this.editFormVisible = true;
-                //  alert(JSON.stringify(row));
-                this.editForm = Object.assign({}, row);
-// .then(function(){
-//                    var  url="/CarApply/turnTG/?id="+row.ID;
-//
-//                    axios.get(url).then(function (response) {
-//                        //alert(response.data);
-//                        if(response.data>0){
-//                            _self.$message({
-//                                message: row.ID + '驳回成功',
-//                                type: 'success'
-//                            });
-//                        }else {
-//                            _self.$message({
-//                                message: row.ID + '驳回失败',
-//                                type: 'error'
-//                            });
-//                        }
-//                        _self.loadingData();//重新加载数据
-//                    });
-//                }).catch(function(e){
-//                    if(e != "cancel")
-//                        console.log("出现错误：" + e);
-//                });
-            },
-            //新建事件
-            addClick:function() {
-                //alert(111);
-                this.goUrl="/CarApply/add";
-                var _self = this;
-                //清空原有数据
-                this. editForm={
-
-                    EMPNAME: '',
-                    DNAME: '',
-                    CARTYPE: '',
-                    LSICENSE: '',
-                    APPLYTIME: '',
-                }
-                //显示隐藏form表单
-                this.editFormVisible = true;
-                _self.loadingData();//重新加载数据
-            },
             //表格查询事件
             searchClick:function() {
                 var self = this;
@@ -322,96 +202,16 @@
                 })
                 self.loadingData();//重新加载数据
             },
-            //表格勾选事件
-            selectionChange:function(val) {
-                /*  for(var i=0;i<val.length;i++) {
-                      var row = val[i];
-                      alert(JSON.stringify(row));
-                  }*/
-                this.multipleSelection = val;
-                // alert(JSON.stringify(val));
-                console.info(val);
-            },
-            //删除所选，批量删除
-            removeSelection:function() {
-                var _self = this;
-                var multipleSelection = this.multipleSelection;
-                if(multipleSelection.length < 1) {
-                    _self.$message({
-                        message: '请至少选中一条记录',
-                        type: 'error'
-                    });
-                    return;
-                }
-                var ids = "";
-                for(var i=0;i<multipleSelection.length;i++) {
-                    var row = multipleSelection[i];
-                    ids += row.ID + ","
-                }
-
-                this.$confirm('确认删除' + ids +'吗?', '提示', {
-                    type: 'warning'
-                }).then(function(){
-                    var  url="/carmainlist/batchDel/?ids="+ids;
-                    axios.get(url).then(function (response) {
-                        //alert(response.data);
-                        var temp="";
-                        if(response.data>0){
-                            temp="删除成功";
-                        }else {
-                            temp="删除失败";
-                        }
-
-                        _self.$message({
-                            message: ids + temp,
-                            type: 'success'
-                        });
-                        _self.loadingData();//重新加载数据
-                    });
-
-                }).catch(function(e){
-                    if(e != "cancel")
-                        console.log("出现错误：" + e);
-                });
-            },
             //当前页修改事件
             currentPageChange:function(val) {
                 this.currentPage = val;
                 var _self = this;
                 _self.loadingData();//重新加载数据
             },
-            //保存点击事件
-            editSubmit:function(){
-                var _self = this;
-                _self.loading = true;
-                var formData =this.editForm;
-                //alert(formData);
-                var goUrl=this.goUrl;
-                //alert(goUrl);
-                //alert(JSON.stringify(formData));
-                axios.post(goUrl,formData).then(function(response){
-                    // console.log(response.data);
-                    // alert(222);
-                    // self.total=response.data.total;
-                    if(response.data>0){
-                        _self.editFormVisible = false;
-                        _self.$message({
-                            message:'操作成功',
-                            type: 'success'
-                        });
-                    }else{
-                        _self.$message({
-                            message:'操作失败',
-                            type: 'error'
-                        });
-                    }
-                    _self.loadingData();//重新加载数据
-                })
-                console.info(this.editForm);
-            },
+
             //格式化状态
             formatResult: function (row, column) {
-                return row.RESULT === 0 ? '待审核' : row.RESULT === 1 ? '可使用' : row.RESULT === 2 ? '其他' : row.RESULT === 3 ? '已还车' : '未知'
+                return  row.RESULT === 1 ? '使用中'  : row.RESULT === 3 ? '已还车' : '未知'
 
             },
         }
