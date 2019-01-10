@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>计划与实施</title>
+    <title>汽车维修列表</title>
     <!-- 引入样式 -->
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
@@ -20,15 +20,35 @@
     <!--列表顶部搜索和工具条-->
     <el-row>
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-            <el-form-item label="计划与实施">
-                <el-input v-model="searchForm.pname"  placeholder="请输入课程或工号"></el-input>
+            <el-form-item label="车牌">
+                <el-input v-model="searchForm.LICENSE" placeholder="车牌"></el-input>
             </el-form-item>
-
-            <el-form-item>
-                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
-                <el-button type="success" icon="plus" @click="addClick">新增</el-button>
-                <el-button type="success" icon="plus" @click="flushClick">刷新</el-button>
+            <el-form-item label="车型">
+                <el-input v-model="searchForm.CARTYPE" placeholder="车型"></el-input>
             </el-form-item>
+            <!--<el-form-item label="查询">-->
+            <!--<el-input v-model="searchForm.job" placeholder="工作"></el-input>-->
+            <!--</el-form-item>-->
+            <!--<el-form-item label="部门">-->
+            <!--&lt;!&ndash;<el-select v-model="searchForm.deptNo" placeholder="部门">-->
+            <!--<el-option label="全部" value=""></el-option>-->
+            <!--<el-option label="财务部" value="10"></el-option>-->
+            <!--<el-option label="销售部" value="20"></el-option>-->
+            <!--</el-select>&ndash;&gt;-->
+            <!--<template>-->
+            <!--<el-select v-model="searchForm.deptNo" placeholder="请选择">-->
+            <!--<el-option-->
+            <!--v-for="item in options"-->
+            <!--:key="item.DEPTNO"-->
+            <!--:label="item.DNAME"-->
+            <!--:value="item.DEPTNO">-->
+            <!--</el-option>-->
+            <!--</el-select>-->
+            </template>
+            </el-form-item><el-form-item>
+            <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+            <el-button type="success" icon="plus" @click="addClick">新增</el-button>
+        </el-form-item>
         </el-form>
     </el-row>
     <!--列表-->
@@ -41,54 +61,48 @@
                 style="width: 100%">
             <el-table-column
                     type="selection"
-                    width="55">
-            </el-table-column>
-            <el-table-column
-                    prop="RN"
-                    label="序号"
-                    width="100">
-            </el-table-column>
-            <el-table-column
-                    prop="EMPNUM"
-                    label="培训工号"
                     width="120">
             </el-table-column>
             <el-table-column
-                    prop="ENAME"
-                    label="培训姓名"
+                    prop="ID"
+                    label="id"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="LICENSE"
+                    label="车牌"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="CARTYPE"
+                    label="车型"
                     width="120">
             </el-table-column>
 
             <el-table-column
-                    prop="NAME"
-                    label="教师姓名"
+                    prop="FACTORY"
+                    label="维修厂家"
                     width="120">
             </el-table-column>
             <el-table-column
-                    prop="PNAME"
-                    label="课程名称"
+                    prop="COSTS"
+                    label="维修费用"
                     width="120">
             </el-table-column>
             <el-table-column
-                    prop="PTYPE"
-                    label="课程类型"
+                    prop="CONTENTD"
+                    label="维修内容"
                     width="120">
             </el-table-column>
+
             <el-table-column
-                    prop="PDIRECTION"
-                    label="课程方方向"
+                    prop="CARTIME"
+                    label="维修时间"
                     width="120">
             </el-table-column>
-            <el-table-column
-                    prop="P_BEGIN"
-                    label="开始时间"
-                    width="200">
-            </el-table-column>
-            <el-table-column
-                    prop="P_END"
-                    label="结束时间"
-                    width="200">
-            </el-table-column>
+
+
+
             <el-table-column
                     label="操作">
                 <template scope="scope">
@@ -110,7 +124,7 @@
                     @size-change="pageSizeChange"
                     @current-change="currentPageChange"
                     :current-page="currentPage"
-                    :page-sizes="[3,10, 20, 30, 50]"
+                    :page-sizes="[10, 20, 30, 50]"
                     :page-size="pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total">
@@ -118,67 +132,44 @@
         </el-col>
     </el-row>
 
-    <!--编辑界面-------------------------------------------------------------------------------------------------------->
-    <el-dialog title="编辑2" :visible.sync="editFormVisible" :close-on-click-modal="false">
+    <!--编辑界面-->
+    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
         <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-            <el-form-item label="课程名称">
-                <template>
-                    <el-select v-model="editForm.PID"    @change="selCurse($event, item)" placeholder="请选课程名称">
-                        <el-option
-                                v-for="item in opts"
-                                :key="item.PID"
-                                :label="item.PNAME"
-                                :value="item.PID">
-                        </el-option>
-                    </el-select>
-                </template>
+            <el-form-item label="车牌号" prop="LICENSE">
+                <el-input v-model="editForm.LICENSE" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="教师ID">
-                <template>
-                    <el-select v-model="editForm.ID" placeholder="请选教师姓名">
-                        <el-option
-                                v-for="item in optss"
-                                :key="item.ID"
-                                :label="item.NAME"
-                                :value="item.ID">
-                        </el-option>
-                    </el-select>
-                </template>
+            <!-- <el-form-item label="性别">
+                 <el-radio-group v-model="editForm.sex">
+                     <el-radio class="radio" :label="1">男</el-radio>
+                     <el-radio class="radio" :label="0">女</el-radio>
+                 </el-radio-group>  EMPNO: 0,
+                 ENAME: '',
+                 JOB: '',
+                 SAL: 0,
+                 HIREDATE: ''
+             </el-form-item>-->
+            <!--<el-form-item label="车型">-->
+                <!--<el-input-number v-model="editForm.CARTYPE" :min="0" :max="20000"></el-input-number>-->
+            <!--</el-form-item>-->
+            <el-form-item label="车型">
+                <el-input type="textarea" v-model="editForm.CARTYPE"></el-input>
             </el-form-item>
-            <el-form-item label="开始时间">
-                <template>
-                    <div class="block">
-                        <el-date-picker
-                                v-model="editForm.P_BEGIN"
-                                type="date"
-                                placeholder="选择日期">
-                        </el-date-picker>
-                    </div>
-                </template>
+            <el-form-item label="维修厂家">
+                <el-input type="textarea" v-model="editForm.FACTORY"></el-input>
             </el-form-item>
-            <el-form-item label="结束时间">
-                <template>
-                    <div class="block">
-                        <el-date-picker
-                                v-model="editForm.P_END"
-                                type="date"
-                                placeholder="选择日期">
-                        </el-date-picker>
-                    </div>
-                </template>
+            <el-form-item label="维修费用">
+                <el-input type="textarea" v-model="editForm.COSTS"></el-input>
             </el-form-item>
-            <el-form-item label="学员姓名" prop="EID">
-                <template>
-                    <el-select v-model="editForm.EID" placeholder="请选课程名称">
-                        <el-option
-                                v-for="item in optsa"
-                                :key="item.EID"
-                                :label="item.ENAME"
-                                :value="item.EID">
-                        </el-option>
-                    </el-select>
-                </template>
+            <el-form-item label="维修内容">
+                <el-input type="textarea" v-model="editForm.CONTENTD"></el-input>
             </el-form-item>
+            <el-form-item label="维修时间">
+                <el-input type="textarea" v-model="editForm.CARTIME"></el-input>
+            </el-form-item>
+
+
+
+
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
@@ -193,26 +184,24 @@
     var app = new Vue({
         el: '#app',
         data: {
-            message: '课程列表'
+            message: '维修信息'
         }
     });
 
     var tableView = new Vue({
         el: '#tableView',
         data: {
+            //deptNo:'',
             //部门select
-            options:[{PTYPE:1,value:'语言'},{PTYPE:2,value:'css'},{PTYPE:3,value:'编程语言'},{PTYPE:4,value:'编程'},{PTYPE:5,value:'网络设计'}],
-            opts:[],
-            optss:[],
-            optsa:[],
+            options:[],
             //列表数据
             tableData: [],
             //显示加载中样式
             loading:false,
             //搜索表单
             searchForm: {
-                pname: ''
-
+                LSICENSE: '',
+                CARTYPE:''
             },
             //多选值
             multipleSelection: [],
@@ -230,51 +219,53 @@
             goUrl:'',
             editFormRules: {
                 name: [
-                    { required: true, message: '请输入课程', trigger: 'blur' }
+                    { required: true, message: '请输入姓名', trigger: 'blur' }
                 ]
             },
             //编辑界面数据
             editForm: {
-                TID:'',
-                NAME: '',
-                P_BEGIN: '',
-                P_END: '',
-                BATCH:''
+
+                LICENSE: '',
+                CARTYPE: '',
+                FACTORY: '',
+                COSTS: '',
+                CONTENTD: '',
+                CARTIME:'',
             },
         },
         created:function(){
             //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
             var self = this;
-            axios.post('/plan/toList',{'pageNo':this.currentPage,'pageSize':this.pageSize}).then(function(response){
-                console.log(response.data);
-                //alert(response.data.total);
+            var start =(this.currentPage-1)*this.pageSize;
+            var end =this.currentPage*this.pageSize+1;
+            axios.post('/carmainlist/carmlist',{'start':start,'end':end}).then(function(response){
+                // console.log(response.data);
+                //alert(11111);
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
-                //alert(JSON.stringify(response.data.pageData));
+                // alert(JSON.stringify(response.data.pageData));
+                // self.multipleSelection=response.data.data;
             });
-            axios.post('/plan/courseList1').then(function(response) {
-                self.opts = response.data;
-            });
-
-            axios.post('/plan/planList').then(function(response) {
-                self.optsa = response.data;
-            });
+            axios.post('/carmainlist/carmlist').then(function(response){
+                self.options = response.data;
+            })
         },
-
-
         methods:{
             //表格重新加载数据
             loadingData:function() {
+
                 var _self = this;
                 _self.loading = true;
                 var self = this;
-                //var start =(this.currentPage-1)*this.pageSize;
-                // var end =this.currentPage*this.pageSize+1;
-                var searchForm={'pageNo':this.currentPage,'pageSize':this.pageSize,'pname':this.searchForm.pname};
-                //alert(JSON.stringify(searchForm));
-                axios.post('/plan/toList',searchForm).then(function(response){
-                    console.log(response.data);
-                    // alert(222);
+                var start =(this.currentPage-1)*this.pageSize;
+                var end =this.currentPage*this.pageSize+1;
+                //  alert(this.searchForm.id);
+                var searchForm={'start':start,'end':end,'LICENSE':this.searchForm.LICENSE,'CARTYPE':this.searchForm.CARTYPE};
+                //   alert(JSON.stringify(searchForm));
+                axios.post('/carmainlist/carmlist',searchForm).then(function(response){
+                    // console.log(response.data);
+                   // alert(JSON.stringify(response.data));
+
                     _self.total=response.data.total;
                     _self.tableData = response.data.pageData;
                     //_self.multipleSelection=response.data.data;
@@ -283,39 +274,37 @@
                 setTimeout(function(){
                     console.info("加载数据成功");
                     _self.loading = false;
-                },300);
+                },1500);
             },
-            //刷新
-            flushClick:function () {
-                this.searchForm={
-                    pname: ''
-                }
-                this.loadingData();//重新加载数据
-            },
-
             //表格编辑事件
             editClick:function(row) {
-                this.goUrl="/plan/update";
+                this.goUrl="/carmainlist/update";
                 this.editFormVisible = true;
+                //  alert(JSON.stringify(row));
                 this.editForm = Object.assign({}, row);
             },
-            //单条删除
+            //表格删除事件
             deleteClick:function(row) {
-                //alert(JSON.stringify(row));
                 var _self = this;
-                this.$confirm('确认删除' + row.P_ID +'吗?', '提示', {
+                this.$confirm('确认删除' + row.ID+'吗?', '提示', {
                     type: 'warning'
                 }).then(function(){
-                    var  url="/plan/delete/"+row.P_ID;
+                    var  url="/carmainlist/delete/?id="+row.ID;
+
                     axios.get(url).then(function (response) {
-                        //alert(url);
+                        //alert(response.data);
                         if(response.data>0){
                             _self.$message({
-                                message: row.P_ID + '删除成功',
+                                message: row.ID + '删除成功',
                                 type: 'success'
                             });
-                            _self.loadingData();//重新加载数据
+                        }else {
+                            _self.$message({
+                                message: row.ID + '删除失败',
+                                type: 'error'
+                            });
                         }
+                        _self.loadingData();//重新加载数据
                     });
                 }).catch(function(e){
                     if(e != "cancel")
@@ -324,31 +313,52 @@
             },
             //新建事件
             addClick:function() {
-                this.goUrl="/plan/add";
+                //alert(111);
+                this.goUrl="/carmainlist/add";
                 var _self = this;
-                //清空缓冲数据
-                this.editForm={
-                    TID:'',
-                    NAME: '',
-                    P_BEGIN: '',
-                    P_END: '',
-                    BATCH:''
+                //清空原有数据
+                this. editForm={
+
+                    LICENSE: '',
+                    CARTYPE: '',
+                    FACTORY: '',
+                    COSTS: '',
+                    CONTENTD: '',
+                    CARTIME:'',
                 }
-                //显示隐藏的form表单
+                //显示隐藏form表单
                 this.editFormVisible = true;
                 _self.loadingData();//重新加载数据
             },
             //表格查询事件
             searchClick:function() {
                 var self = this;
+                var start =(this.currentPage-1)*this.pageSize;
+                var end =this.currentPage*this.pageSize+1;
+                //var searchForm =this.searchForm;
+
+                var searchForm={'start':start,'end':end,'LICENSE':self.searchForm.LICENSE,'CARTYPE':self.searchForm.CARTYPE};
+
+                //formData.push({'start':start}).push({'end':end})
+                axios.post('/carmainlist/carmlist',searchForm).then(function(response){
+
+                    // console.log(response.data);
+                    //alert(1111);
+                    self.total=response.data.total;
+                    self.tableData = response.data.pageData;
+
+                    // self.multipleSelection=response.data.data;
+                })
                 self.loadingData();//重新加载数据
             },
             //表格勾选事件
             selectionChange:function(val) {
-                for(var i=0;i<val.length;i++) {
-                    var row = val[i];
-                }
+                /*  for(var i=0;i<val.length;i++) {
+                      var row = val[i];
+                      alert(JSON.stringify(row));
+                  }*/
                 this.multipleSelection = val;
+                // alert(JSON.stringify(val));
                 console.info(val);
             },
             //删除所选，批量删除
@@ -365,12 +375,13 @@
                 var ids = "";
                 for(var i=0;i<multipleSelection.length;i++) {
                     var row = multipleSelection[i];
-                    ids += row.P_ID + ","
+                    ids += row.ID + ","
                 }
+
                 this.$confirm('确认删除' + ids +'吗?', '提示', {
                     type: 'warning'
                 }).then(function(){
-                    var  url="/plan/batchDel/"+ids;
+                    var  url="/carmainlist/batchDel/?ids="+ids;
                     axios.get(url).then(function (response) {
                         //alert(response.data);
                         var temp="";
@@ -379,6 +390,7 @@
                         }else {
                             temp="删除失败";
                         }
+
                         _self.$message({
                             message: ids + temp,
                             type: 'success'
@@ -391,17 +403,10 @@
                         console.log("出现错误：" + e);
                 });
             },
-            //分页大小修改事件
-            pageSizeChange:function(val) {
-                console.log('每页 ' + val +' 条');
-                this.pageSize = val;
-                var _self = this;
-                _self.loadingData();//重新加载数据
-            },
             //当前页修改事件
             currentPageChange:function(val) {
                 this.currentPage = val;
-                console.log('当前页: ' + val);
+                alert('当前页: ' + val);
                 var _self = this;
                 _self.loadingData();//重新加载数据
             },
@@ -413,28 +418,31 @@
                 //alert(formData);
                 var goUrl=this.goUrl;
                 //alert(goUrl);
-                alert(formData.P_BEGIN+"****"+formData.P_END);
+                //alert(JSON.stringify(formData));
                 axios.post(goUrl,formData).then(function(response){
                     // console.log(response.data);
-                    //alert(222);
+                    // alert(222);
                     // self.total=response.data.total;
                     if(response.data>0){
                         _self.editFormVisible = false;
-                        _self.loadingData();//重新加载数据
+                        _self.$message({
+                            message:'操作成功',
+                            type: 'success'
+                        });
+                    }else{
+                        _self.$message({
+                            message:'操作失败',
+                            type: 'error'
+                        });
                     }
+                    _self.loadingData();//重新加载数据
                 })
                 console.info(this.editForm);
-            },
-            selCurse:function(e,item){
-                var self=this;
-                alert(e);
-                var url="/plan/courseList/"+e;
-                axios.post(url).then(function(response) {
-                    self.optss = response.data;
-                });
             }
         }
+
     })
 </script>
+
 </body>
 </html>
