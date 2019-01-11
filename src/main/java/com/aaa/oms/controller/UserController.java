@@ -149,6 +149,7 @@ public class UserController {
             User user=(User)session.getAttribute("user");
             map.put("empnum",user.getEmpnum());
             map.put("ename",user.getEname());
+            System.out.println(map);
             return map;
         }
 
