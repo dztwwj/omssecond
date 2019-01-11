@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/elementui.css">
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
+    <!-- 引入组件库 -->
+    <script src="../js/elementui.js"></script>
+    <style type="text/css">
+        body{
+            background:url("/img/wanliu.jpg");
+            background-repeat:no-repeat;
+        }
+        #aaa{
+            margin-top:230px;
+            margin-left:300px;
+            width:1200px;
+            height: 550px;
+        }
+        #bbb{
+            margin-top:20px;
+            width:1200px;
+            height: 50px;
+        }
+        #ccc{
+            width:1200px;
+            height: 380px;
+        }
+        #ddd{
+            width:1200px;
+            height: 70px;
+        }
+        .sel_btn{
+            height: 21px;
+            line-height: 21px;
+            padding: 0 11px;
+            background: #02bafa;
+            border-radius: 3px;
+            color: #52823D;
+            display: inline-block;
+            text-decoration: none;
+            font-size: 12px;
+            outline: none;
+        }
+        .ch_cls{
+            background: #e4e4e4;
+        }
+    </style>
+</head>
+<body>
+<div id="aaa">
+    <div id="bbb">
+        <span style="font-weight: bold;color:#f40;"><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;亲爱的：</span>
+        <span>{{message.ename}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;您的工号是：{{message.empnum}}</span>
+    </div>
+    <div id="ccc">
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;还记得第一次执机时得你吗？紧张得涨红了脸，吞吞吐吐，也许你的手都在发抖吧。看，现在的你，沉着冷静，对答如流，电话那头的一声“谢谢”是真的献给你的，因为你是真的如此优秀。
+        </p>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;还记得你身边的同事吗？他们都和你一样，重复着这样的工作。但不要以为因此大家都没有在意过你，也许你们没有什么交流，但每天上班都是微笑的面孔，如果突然少了那么一两个，大家都会有空落落的感觉。
+        </p>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;也许你觉得这里不适合你的个性，也许你还有更好的发展机遇，但无论因为什么，请相信，中心感谢你在这里奋斗过的每一天！中心的每一项荣誉，每一步提升，都有你的努力和贡献！
+        </p>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;无论你离开了客服中心走到哪里，请不要忘记在这里度过的每一天。有欢笑，有泪水，都是成长路上不可缺少的风景，因为有了这些风景，青春岁月才没有留白，不是吗？
+        </p>
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;成长没有捷径可走，每一步路都需要你自己去走，每一种经历都需要自己去体味。但你要相信，生命一直都是由大快乐与小痛苦组成的，没有过不去的沟沟坎坎，只要你自己去勇敢面对，只要坚强，只要坚定，只要坚持，相信你一定会走出一片自己的天地。祝福你！！！
+        </p>
+
+    </div>
+    <div id="ddd">
+        <div style="margin-top: 20px;margin-left: 50px">
+            <a class="sel_btn ch_cls" id="sel_btn1" href="/user/toListQian">放弃申请</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="sel_btn ch_cls" id="sel_btn1" href="/departure/departureApply">继续申请</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var bbb = new Vue({
+        el: '#bbb',
+        data: {
+            message: [],
+        },
+        created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            axios.post('/user/selectEname').then(function(response){
+                self.message=response.data;
+            });
+        },
+    });
+</script>
+</body>
+</html>
