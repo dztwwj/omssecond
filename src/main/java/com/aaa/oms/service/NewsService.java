@@ -1,15 +1,17 @@
 package com.aaa.oms.service;
 
+
+
 import java.util.List;
 import java.util.Map;
 
 /**
- * className:UserService
+ * className:NewsService
  * discription:
- * author:LiuQian
- * createTime:2018-12-14 21:53:23
+ * author:
+ * createTime:2018-12-11 10:24
  */
-public interface UserService {
+public interface NewsService {
     /**
      * 带参分页查询
      * @param map
@@ -24,38 +26,30 @@ public interface UserService {
      */
     int getPageCount(Map map);
     /**
-     * 员工的添加
+     * 新闻的添加
      * @param map
      * @return
      */
     int add(Map map);
 
-
-
     /**
-     * 员工的更新
+     * 新闻的更新
      * @param map
      * @return
      */
     int update(Map map);
-    /**
-     * 员工自己修改
-     * @param map
-     * @return
-     */
-    int updateQian(Map map);
 
     /**
-     * 员工的删除
-     * @param id
+     * 根据nid更新删除状态
+     * @param NID
      * @return
      */
-    int delete(int id);
+    int updateNews(int NID);
 
     /**
-     * 根据部门id查询对应班组
-     * @param id
+     * 根据nid更新发布状态
+     * @param NID
      * @return
      */
-    List<Map> selectG(Integer id);
+    int updateCon(int NID);
 }
