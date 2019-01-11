@@ -172,16 +172,16 @@
                 <!--<el-input-number v-model="editForm.CARTYPE" :min="0" :max="20000"></el-input-number>-->
             <!--</el-form-item>-->
             <el-form-item label="车型">
-                <el-input type="textarea" v-model="editForm.CARTYPE"></el-input>
+                <el-input  v-model="editForm.CARTYPE"></el-input>
             </el-form-item>
             <el-form-item label="车座数量">
-                <el-input type="textarea" v-model="editForm.SADDLE"></el-input>
+                <el-input  v-model="editForm.SADDLE"></el-input>
             </el-form-item>
             <el-form-item label="适用类型">
-                <el-input type="textarea" v-model="editForm.APPLICATIONTYPE"></el-input>
+                <el-input  v-model="editForm.APPLICATIONTYPE"></el-input>
             </el-form-item>
             <el-form-item label="驾驶员">
-                <el-input type="textarea" v-model="editForm.DRIVER"></el-input>
+                <el-input  v-model="editForm.DRIVER"></el-input>
             </el-form-item>
 
 
@@ -195,7 +195,7 @@
                 </el-date-picker>
             </el-form-item>
             <el-form-item label="车辆状态">
-                <el-input type="textarea" v-model="editForm.STATE"></el-input>
+                <el-input  v-model="editForm.STATE"></el-input>
             </el-form-item>
             <el-form-item label="保险时间">
                 <el-date-picker
@@ -208,10 +208,10 @@
             </el-form-item>
 
             <el-form-item label="公里数">
-                <el-input type="textarea" v-model="editForm.MILEAGE"></el-input>
+                <el-input  v-model="editForm.MILEAGE"></el-input>
             </el-form-item>
             <el-form-item label="备注">
-                <el-input type="textarea" v-model="editForm.REMARK"></el-input>
+                <el-input v-model="editForm.REMARK"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -304,8 +304,6 @@
             })
         },
         methods:{
-
-
 
             //表格重新加载数据
             loadingData:function() {

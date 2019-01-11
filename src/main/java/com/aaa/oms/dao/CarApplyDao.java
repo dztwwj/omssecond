@@ -111,13 +111,6 @@ public interface CarApplyDao {
     @Update(value ="update cu_carapplicatinon set result = 2 where id = #{ID}")
     int turnCaraToTG(Map map);
 
-//    /**
-//     * 驳回
-//     * @param id
-//     * @return
-//     */
-//    int deleteCar(int id);
-
 
     /**
      * 查询车辆的车牌号

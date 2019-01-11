@@ -43,9 +43,6 @@ public interface CarinfoDao {
      */
     @Insert("insert into CU_CARINFO values(seq_CU_CARINFO_id.nextval,#{LSICENSE},#{CARTYPE},#{SADDLE},#{APPLICATIONTYPE},#{DRIVER},to_date(#{BEGINTIME},'yyyy-mm-dd'),#{STATE},to_date(#{INSURANCETIMR},'yyyy-mm-dd'),#{MILEAGE},#{REMARK})")
     int addCar(Map map);
-
-
-
     /**
      * 汽车更新方法
      * ("update tb_user set ENAME=#{ENAME},JOB=#{JOB},HIREDATE=to_date(substr(#{HIREDATE},1,10),'yyyy-mm-dd'),SAL=#{SAL},COMM=#{COMM},DEPTNO=#{DEPTNO} where empno=#{EMPNO}")
