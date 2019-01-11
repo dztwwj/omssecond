@@ -1,6 +1,5 @@
 package com.aaa.oms.service;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.aaa.oms.dao.PowerDao;
 import com.aaa.oms.entity.Node;
 
@@ -79,7 +78,7 @@ public class PowerServiceImpl implements  PowerService {
     @Override
     public int savePower(Map map) {
         //删除原有的
-        int del=powerDao.delPower(map);
+       int del=powerDao.delPower(map);
         //添加权限
        String powersid=(String) map.get("powersid");
         String[] idsArray=powersid.split(",");//8,15,14,16,17 [1,2,3,4]

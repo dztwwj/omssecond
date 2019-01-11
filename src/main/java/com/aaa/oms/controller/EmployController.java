@@ -45,15 +45,31 @@ public class EmployController {
         return "/employ/list";
     }
 
-
+    /**
+     * 跳转到审核记录页面
+     * @return
+     */
     @RequestMapping("/ListRecord")
     public String ListRecord(){
         return "/employ/listrecord";
     }
 
+    /**
+     * 跳转到入职新员工页面
+     * @return
+     */
     @RequestMapping("/entry")
     public String entry(){
         return "/employ/entry";
+    }
+
+    /**
+     * 跳转到
+     * @return
+     */
+    @RequestMapping("/zhaopin")
+    public String zhaopin(){
+        return "/zhaopin";
     }
 
     /**

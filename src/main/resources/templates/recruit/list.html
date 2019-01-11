@@ -389,7 +389,7 @@
                     'start': start,
                     'end': end,
                     'department': this.searchForm.department,
-                    'releasetime': this.searchForm.releasetime
+                    'education': this.searchForm.education
                 };
                 //alert(JSON.stringify(searchForm));
                 axios.post('/recruit/page', searchForm).then(function (response) {

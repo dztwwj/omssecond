@@ -59,6 +59,7 @@ public class CarinfoController {
     @ResponseBody
     @RequestMapping("update")
     public int updatecar(@RequestBody Map map){
+
         return carService.updateCar(map);
     }
 

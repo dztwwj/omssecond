@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>zhute</title>
+    <script src="../images/jquery.min.js"></script>
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
     <!--&lt;!&ndash; 引入样式 &ndash;&gt;
@@ -47,11 +50,43 @@
             line-height: 320px;
         }
     </style>
+    <script>
+        //头部时钟
+        function showTime(){
+            var date = new Date();
+            this.year = date.getFullYear();
+            this.month = date.getMonth() + 1;
+            this.date = date.getDate();
+            this.day = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六")[date.getDay()];
+            this.hour = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            this.minute = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            this.second = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+            $("#clock").text(this.year + "年" + this.month + "月" + this.date + "日 " + this.hour + ":" + this.minute + ":" + this.second + " " + this.day);
+        }
+        window.setInterval("showTime()",1000);
+    </script>
 </head>
 <body>
 <div class="diva">
     <el-container>
-        <el-header style="height: 60px;">运营管理平台</el-header>
+       <!-- <el-header style="height: 60px;">运营管理平台</el-header>-->
+
+        <el-header style="background-color:#B3C0D1;color: #333;line-height: 60px;">
+            <el-row :gutter="20">
+                <el-col :span="4"><div class="grid-content bg-purple" align="center" id="clock"></div></el-col>
+                <el-col :span="16">
+                    <div class="grid-content bg-purple" align="center" style="color:#1a1719;font-size: 32px;">运营管理平台</div>
+                </el-col>
+                <el-col :span="4">
+                    <div class="grid-content bg-purple" align="center">
+                        <!--<span th:text="${empnum}" style="font-size: 20px;"></span>&nbsp;&nbsp;&nbsp;&nbsp;-->
+                        <a href="/toLogin">退出</a>
+                    </div>
+                </el-col>
+            </el-row>
+        </el-header>
+
+
         <el-container>
             <el-aside width="200px" style="height: 747px;">
                 <el-tree
