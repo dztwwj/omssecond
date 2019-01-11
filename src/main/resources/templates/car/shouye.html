@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h3>车辆申请</h3>
+<form action="/sb/news/update" method="post" enctype="multipart/form-data">
+    <table border="1">
+
+        <tr><td>车牌号</td>
+            <input th:value="${car.LSICENSE}" type="hidden" th:name="LSICENSE">
+            <td><input th:value="${news.TITLE}" type="text" th:name="title"> </td>
+        <td>车型</td>
+            <td><input th:value="${news.CONTENT}" type="text" th:name="CONTENT"> </td>
+        <td>车座数量</td>
+            <td><input th:value="${news.SADDLE}" type="text" th:name="type"> </td>
+            <td>使用类型</td>
+            <td><input th:value="${news.TYPEID}" type="text" th:name="type"> </td>
+            <td>驾驶员</td>
+            <td><input th:value="${news.TYPEID}" type="text" th:name="type"> </td>
+            <td>启用时间</td>
+            <td><input th:value="${news.TYPEID}" type="text" th:name="type"> </td>
+            <td>车辆状态</td>
+            <td><input th:value="${news.TYPEID}" type="text" th:name="type"> </td>
+            <td>购买保险时间</td>
+            <td><input th:value="${news.TYPEID}" type="text" th:name="type"> </td>
+            <td>公里数</td>
+            <td><input th:value="${news.TYPEID}" type="text" th:name="type"> </td>
+
+
+
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

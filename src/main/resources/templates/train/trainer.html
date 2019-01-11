@@ -140,7 +140,7 @@
     <!-------------------------------------------------------------------------------------编辑界面-->
     <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
         <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-            <el-form-item label="培训师姓名" prop="NAME">
+            <el-form-item label="培训师姓名" prop="NAME" :rules="[{required:true,message:'请输入姓名',trigger:'blur'}]">
                 <el-input v-model="editForm.NAME" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item v-if="isAdd" label="原图片" prop="PHOTO">
@@ -159,7 +159,7 @@
                     <i class="el-icon-plus"></i>
                 </el-upload>
             </el-form-item>
-            <el-form-item label="工号" prop="JOBNUM">
+            <el-form-item label="工号" prop="JOBNUM" :rules="[{required:true,message:'请输入工号',trigger:'blur'},{min:3,max:5,message:'工号长度3到5个数字',trigger:'blur'}]">
                 <el-input v-model="editForm.JOBNUM" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="培训等级">
@@ -174,10 +174,10 @@
                     </el-select>
                 </template>
             </el-form-item>
-            <el-form-item label="Email" prop="EMAIL">
+            <el-form-item label="Email" prop="EMAIL" :rules="[{required:true,message:'请输入邮箱',trigger:'blur'},{type:'email',message:'邮箱格式不正确',trigger:'blur'}]">
                 <el-input v-model="editForm.EMAIL" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="Phone" prop="PHONE">
+            <el-form-item label="Phone" prop="PHONE"  :rules="[{required:true,message:'请输入手机号',trigger:'blur'},{pattern:'^((17[0-9])|(14[0-9])|(13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$',message:'手机号格式不正确',trigger:'blur'}]">
                 <el-input v-model="editForm.PHONE" auto-complete="off"></el-input>
             </el-form-item>
             <el-form-item label="课程名称">
@@ -431,6 +431,7 @@
             },
             //保存点击事件
             editSubmit:function(){
+
                 var _self = this;
                 _self.loading = true;
                 var formData =this.editForm;

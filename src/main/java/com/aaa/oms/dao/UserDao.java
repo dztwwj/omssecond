@@ -26,11 +26,13 @@ public interface UserDao {
             "DEPARTURETIME,LEAVINGREASON,to_char(INDUCTIONTIME,'yyyy-mm-dd') INDUCTIONTIME,BATCH,PERMS,DEPTID,to_char(to_date((substr(idcard,7,8)),'yyyy-mm-dd'),'yyyy-mm-dd') birthday ,\n" +
             "(select dname from dept where id = (select deptid from cu_position p where id = e.position)) dname,\n" +
             "(select positionname from cu_position where id =e.position) pname,\n" +
-            "(select gname from cu_group where gid = e.gid) gname\n" +
-            "from cu_emp e where iseffective = 0 and rownum &lt; #{end}" +
+            "(select gname from cu_group where gid = e.gid) gname, \n" +
+            "(select ename from cu_emp em where em.empnum = e.addempnum) addname \n" +
+            "from cu_emp e where  rownum &lt; #{end}" +
             "<if test=\"ENAME!=null and ENAME!=''\"> and ename like '%'||#{ENAME}||'%'</if>" +
             "<if test=\"EMPNUM!=null and EMPNUM!=''\"> and EMPNUM = #{EMPNUM} </if>" +
-            "<if test=\"ISEFFECTIVE!=null and ISEFFECTIVE!=''\"> and ISEFFECTIVE = #{ISEFFECTIVE}</if>" +
+            "<if test=\"ISEFFECTIVE!=null and ISEFFECTIVE!=''\"> and ISEFFECTIVE = #{ISEFFECTIVE} </if> " +
+            "<if test=\"empnumQian!=null and empnumQian!=''\"> and empnum = #{empnumQian} </if> " +
             " order by eid\n" +
             ") a where a.rn  &gt; #{start}</script>")
 //    <if test="ENAME!=null and ENAME!=''"> and ename like '%'||#{ENAME}||'%'</if>
@@ -43,7 +45,9 @@ public interface UserDao {
     @Select("<script> select count(*) from cu_emp <where>" +
             "<if test=\"ENAME!=null and ENAME!=''\"> and ename like '%'||#{ENAME}||'%'</if>" +
             "<if test=\"EMPNUM!=null and EMPNUM!=''\"> and EMPNUM = #{EMPNUM} </if>" +
-            "<if test=\"ISEFFECTIVE!=null and ISEFFECTIVE!=''\"> and ISEFFECTIVE = #{ISEFFECTIVE}</if> </where>" +
+            "<if test=\"ISEFFECTIVE!=null and ISEFFECTIVE!=''\"> and ISEFFECTIVE = #{ISEFFECTIVE}</if> " +
+            "<if test=\"empnumQian!=null and empnumQian!=''\"> and empnum = #{empnumQian} </if> " +
+            " </where>" +
             "</script>")
     int getPageCount(Map map);
     /**
@@ -51,7 +55,7 @@ public interface UserDao {
      * @param map
      * @return
      */
-    @Insert(value = "insert into cu_emp(empnum,eid,ename,telephone,empsex,empbirthday,emiladdr,idcard) values(seq_empnum.nextval,seq_emp_id.nextval,#{ENAME},#{TELEPHONE},#{EMPSEX},sysdate,#{EMILADDR},#{IDCARD})")
+    @Insert(value = "insert into cu_emp(addempnum,empnum,eid,ename,telephone,empsex,empbirthday,emiladdr,idcard,position,gid,INDUCTIONTIME) values(#{addEmpnumm},seq_empnum.nextval,seq_emp_id.nextval,#{ENAME},#{TELEPHONE},#{EMPSEX},to_date((substr(#{IDCARD},7,8)),'yyyy-mm-dd'),#{EMILADDR},#{IDCARD},#{PNAME},#{GNAME},sysdate)")
     int add(Map map);
 
 
@@ -61,14 +65,29 @@ public interface UserDao {
      * @param map
      * @return
      */
-    @Update(value = "update cu_emp set ename=#{ENAME},telephone=#{TELEPHONE},empsex=#{EMPSEX},emiladdr=#{EMILADDR}，idcard=#{IDCARD} where empnum=#{EMPNUM}")
+    @Update(value = "update cu_emp set ename=#{ENAME},telephone=#{TELEPHONE},emiladdr=#{EMILADDR},idcard = #{IDCARD},position = #{POSITION},gid = #{GID} where empnum=#{EMPNUM}")
     int update(Map map);
+    /**
+     * 员工自己修改信息
+     * @param map
+     * @return
+     */
+    @Update(value = "update cu_emp set ename=#{ENAME},telephone=#{TELEPHONE},emiladdr=#{EMILADDR},idcard = #{IDCARD} where empnum=#{EMPNUM}")
+    int updateQian(Map map);
 
     /**
      * 员工的删除
      * @param id
      * @return
      */
-    @Delete(value = "delete from cu_emp where EMPNUM=#{EMPNUM}")
+    @Delete(value = "update cu_emp set ISEFFECTIVE = 1 where EMPNUM=#{EMPNUM}")
     int delete(int id);
+
+    /**
+     * 根据部门id查询当前班组
+     * @param id
+     * @return
+     */
+    @Select(value = "select * from cu_group where deptid=( select deptid from cu_position where id = #{id})")
+    List<Map> selectG(Integer id);
 }

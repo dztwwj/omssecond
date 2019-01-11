@@ -73,7 +73,7 @@ public class TrainerController {
     @ResponseBody
     @RequestMapping("/add")
     public Object add(@RequestBody Map map){
-        //System.out.println(map);
+        System.out.println(map+"**************************");
         return trainerService.add(map);
     }
     @ResponseBody

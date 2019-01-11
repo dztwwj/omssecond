@@ -38,6 +38,12 @@ public interface UserService {
      * @return
      */
     int update(Map map);
+    /**
+     * 员工自己修改
+     * @param map
+     * @return
+     */
+    int updateQian(Map map);
 
     /**
      * 员工的删除
@@ -45,4 +51,11 @@ public interface UserService {
      * @return
      */
     int delete(int id);
+
+    /**
+     * 根据部门id查询对应班组
+     * @param id
+     * @return
+     */
+    List<Map> selectG(Integer id);
 }

@@ -1,9 +1,12 @@
 package com.aaa.oms.service;
 
 import com.aaa.oms.dao.UserDao;
+import com.aaa.oms.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +21,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private HttpSession session;
     @Override
     public List<Map> getPageParam(Map map) {
         return userDao.getPageParam(map);
@@ -30,6 +35,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int add(Map map) {
+        User user=(User)session.getAttribute("user");
+        map.put("addEmpnumm",user.getEmpnum());
         return userDao.add(map);
     }
 
@@ -41,5 +48,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public int delete(int id) {
         return userDao.delete(id);
+    }
+
+    @Override
+    public List<Map> selectG(Integer id) {
+        return userDao.selectG(id);
+    }
+
+    @Override
+    public int updateQian(Map map) {
+        return userDao.updateQian(map);
     }
 }

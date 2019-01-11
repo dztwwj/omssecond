@@ -18,22 +18,35 @@ public interface DepartureService {
     List<Map> getPageParam(Map map);
 
     /**
+     *根据session的empnum查询当前是否有离职申请
+     * @return
+     */
+    int selectCount();
+
+    /**
      * 查询分页总数量
      * @param map
      * @return
      */
     int getPageCount(Map map);
     /**
-     * 请假通过
+     * 离职通过
      * @param map
      * @return
      */
     int updateTG(Map map);
     /**
-     * 请假驳回
+     * 离职驳回
      * @param map
      * @return
      */
     int updateNoTG(Map map);
+
+    /**
+     * 申请离职
+     * @param map
+     * @return
+     */
+    int apply(Map map);
 
 }
