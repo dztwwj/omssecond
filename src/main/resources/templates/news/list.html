@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新闻列表</title>
+    <!-- 引入样式 -->
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="../css/elementui.css">
+    <!-- 引入组件库 -->
+    <script src="../js/elementui.js"></script>
+</head>
+<body>
+<div id="app">
+    <h2>{{ message }}</h2>
+</div>
+
+<div id="tableView">
+    <!--列表顶部搜索和工具条-->
+    <el-row>
+        <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+            <el-form-item label="新闻标题">
+                <el-input v-model="searchForm.ntitle" placeholder="输入新闻标题"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" icon="search" @click="searchClick">查询</el-button>
+                <el-button type="success" icon="plus" @click="addClick">新增</el-button>
+                <el-button type="success" icon="plus" @click="returnClick">刷新</el-button>
+            </el-form-item>
+        </el-form>
+    </el-row>
+    <!--列表-->
+    <el-row>
+        <el-table
+                :data="tableData"
+                v-loading.body="loading"
+                border
+                @selection-change="selectionChange"
+                style="width: 100%">
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="NID"
+                    label="ID"
+                    width="70">
+            </el-table-column>
+            <el-table-column
+                    prop="NTITLE"
+                    label="新闻标题"
+                    width="80">
+            </el-table-column>
+            <el-table-column
+                    prop="NINTRO"
+                    label="新闻简介"
+                    width="120">
+            </el-table-column>
+            <el-table-column width="80"
+                    label="新闻内容">
+                <template scope="scopes">
+                    <el-button type="text" @click="open(scopes.row)">详情</el-button>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="SECTIONNAME"
+                    label="添加人部门"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="ADDEMPNAME"
+                    label="添加人姓名"
+                    width="100">
+            </el-table-column>
+            <!--<el-table-column
+                    prop="TOP"
+                    label="是否顶置"
+                    :formatter="isTOP"
+                    width="80">
+            </el-table-column>
+            <el-table-column
+                    prop="TITLEBOLD"
+                    label="是否加粗"
+                    :formatter="isTITLEBOLD"
+                    width="80">
+            </el-table-column>
+            <el-table-column
+                    prop="TITLECOLOR"
+                    label="是否标红"
+                    :formatter="isTITLECOLOR"
+                    width="80">
+            </el-table-column>-->
+            <el-table-column
+                    prop="CONFIRMID"
+                    label="是否发布"
+                    :formatter="isCONFIRMID"
+                    width="80">
+            </el-table-column>
+            <el-table-column
+                    prop="ISDELETE"
+                    label="是否删除"
+                    :formatter="isISDELETE"
+                    width="80">
+            </el-table-column>
+            <el-table-column
+                    prop="COVERPLOTPATH"
+                    label="封面图片"
+                    width="100">
+                <template scope="scope">
+                    <a :href="'/news/show?fileName='+scope.row.COVERPLOTPATH"><img slot="reference" :src="path+scope.row.COVERPLOTPATH" height="100" min-width="70"></a>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="ADDTIME"
+                    label="时间"
+                    width="110">
+            </el-table-column>
+            <el-table-column
+                    label="操作">
+                <template scope="scope">
+                    <el-button :plain="true" type="primary" size="small" icon="" @click="CONFIRMID(scope.row)">发布</el-button>
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑</el-button>
+                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </el-row>
+
+    <!--列表底部工具条和分页符-->
+    <el-row style="margin-top: 20px" type="flex" justify="end">
+        <el-col :span="6" >
+            <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
+        </el-col>
+        <el-col :span="18" >
+            <el-pagination
+                    style="float: right"
+                    @size-change="pageSizeChange"
+                    @current-change="currentPageChange"
+                    :current-page="currentPage"
+                    :page-sizes="[3,10, 20, 30, 50]"
+                    :page-size="pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="total">
+            </el-pagination>
+        </el-col>
+    </el-row>
+
+    <!--编辑界面-->
+    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
+        <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+
+            <el-form-item label="新闻标题">
+                <el-input v-model="editForm.NTITLE"></el-input>
+            </el-form-item>
+            <el-form-item label="新闻简介">
+                <el-input  v-model="editForm.NINTRO"></el-input>
+            </el-form-item>
+            <el-form-item label="添加人部门" prop="SECTIONNAME">
+                <el-select v-model="editForm.SECTIONNAME" placeholder="请选择">
+                    <el-option
+                            v-for="item in optiondept"
+                            :key="item.ID"
+                            :label="item.DNAME"
+                            :value="item.DNAME">
+                    </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="添加人姓名">
+                <el-input  v-model="editForm.ADDEMPNAME"></el-input>
+            </el-form-item>
+            <!--<el-form-item label="是否顶置">
+                <el-select v-model="editForm.TOP" placeholder="是否顶置">
+                    <el-option label="是" value="2" ></el-option>
+                    <el-option label="否" value="1"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="是否加粗">
+                <el-select v-model="editForm.TITLEBOLD" placeholder="是否删除">
+                    <el-option label="是" value=2></el-option>
+                    <el-option label="否" value=1></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="是否标红">
+                <el-select v-model="editForm.TITLECOLOR" placeholder="是否标红">
+                    <el-option label="是" value="2"></el-option>
+                    <el-option label="否" value="1"></el-option>
+                </el-select>
+            </el-form-item>-->
+            <el-form-item v-if="isAdd" label="原图片" prop="COVERPLOTPATH">
+                <a :href="'/news/downloadPic?fileName='+editForm.COVERPLOTPATH"><img slot="reference" :src="path+editForm.COVERPLOTPATH" height="100" min-width="70"></a>
+            </el-form-item>
+            <el-form-item label="封面图片" prop="">
+                <el-upload
+                        action="/news/upLoadPic"
+                        list-type="picture-card"
+                        auto-upload="true"
+                        limit="1"
+                        ref="upload"
+                        :file-list="imgList"
+                        multiple="false"
+                        :on-success="uploadSuc">
+                    <i class="el-icon-plus"></i>
+                </el-upload>
+            </el-form-item>
+            <el-form-item label="时间">
+                <el-date-picker  type="datetime" format="yyyy-MM-dd HH:mm:ss" value-format="yyyy-MM-dd HH:mm:ss"  placeholder="选择日期"  v-model="editForm.ADDTIME"></el-date-picker>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click.native="editFormVisible = false">取消</el-button>
+            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+        </div>
+    </el-dialog>
+
+</div>
+
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: '新闻列表'
+        }
+    });
+
+    var tableView = new Vue({
+        el: '#tableView',
+        data: {
+            imgList:[],
+            isAdd:false,
+            path:'/news/show?fileName=',
+            optiondept:[],
+            //select
+            options:[{DSTATUS:1,value:'可用'},{DSTATUS:2,value:'不可用'}],
+            //列表数据
+            tableData: [],
+            //显示加载中样式
+            loading:false,
+            //搜索表单
+            searchForm: {
+                ntitle: ''
+            },
+            //多选值
+            multipleSelection: [],
+            //当前页
+            currentPage:1,
+            //分页大小
+            pageSize:3,
+            //总记录数
+            total:800,
+            //删除的弹出框
+            deleteVisible:false,
+            //编辑界面是否显示
+            editFormVisible: false,
+            editLoading: false,
+            goUrl:'',
+            editFormRules: {
+                name: [
+                    { required: true, message: '请输入名称', trigger: 'blur' }
+                ]
+            },
+            //编辑界面数据
+            editForm: {
+                NTITLE: '',
+                NINTRO: '',
+                ADDEMPNAME: '',
+                SECTIONNAME: '',
+                /*TOP: '',
+                TITLEBOLD: '',
+                TITLECOLOR: '',*/
+                COVERPLOTPATH: '',
+                ADDTIME: ''
+            },
+        },
+        created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            var start =(this.currentPage-1)*this.pageSize;
+            var end =this.currentPage*this.pageSize+1;
+            axios.post('/news/page',{'start':start,'end':end}).then(function(response){
+                // console.log(response.data);
+                //alert(response.data.total);
+                self.total=response.data.total;
+                self.tableData = response.data.pageData;
+                // alert(JSON.stringify(response.data.pageData));
+                // self.multipleSelection=response.data.data;
+            });
+            axios.post('/news/list').then(function(response){
+                self.optiondept=response.data;
+            })
+        },
+
+        methods:{
+            open:function(row) {
+                this.$alert(row.NCLOB, '新闻内容', {
+                    confirmButtonText: '确定',
+                });
+            },
+
+
+            //表格重新加载数据
+            loadingData:function() {
+                var _self = this;
+                _self.loading = true;
+                var self = this;
+                var start =(this.currentPage-1)*this.pageSize;
+                var end =this.currentPage*this.pageSize+1;
+                //  alert(this.searchForm.id);
+                var searchForm={'start':start,'end':end,'ntitle':this.searchForm.ntitle};
+                //alert(JSON.stringify(searchForm));
+                axios.post('/news/page',searchForm).then(function(response){
+                    console.log(response.data);
+                    //alert(2);
+                    _self.total=response.data.total;
+                    _self.tableData = response.data.pageData;
+                    //_self.multipleSelection=response.data.data;
+                })
+                console.log(_self.currentPage);
+                setTimeout(function(){
+                    console.info("加载数据成功");
+                    _self.loading = false;
+                },300);
+            },
+            /*isTOP:function(row,colum){
+                return row.TOP === 1 ? '否' : row.TOP === 2 ? '是':'错误'
+            },
+            isTITLEBOLD:function(row,colum){
+                return row.TITLEBOLD === 1 ? '否' : row.TITLEBOLD === 2 ? '是':'错误'
+            },
+            isTITLECOLOR:function(row,colum){
+                return row.TITLECOLOR ==='1'? '否' : row.TITLECOLOR ==='2'? '是':'错误'
+            },*/
+            isCONFIRMID:function(row,colum){
+                return row.CONFIRMID === 1 ? '否' : row.CONFIRMID === 2 ? '是':'错误'
+            },
+            isISDELETE:function(row,colum){
+                return row.ISDELETE === 1 ? '否' : row.ISDELETE === 2 ? '是':'错误'
+            },
+            //表格编辑事件
+            editClick:function(row) {
+                this.goUrl="/news/update";
+                this.editFormVisible = true;
+                this.isAdd=true;
+                this.editForm = Object.assign({}, row);
+            },
+            //发布事件
+            CONFIRMID:function(row) {
+                var _self = this;
+                this.$confirm('确认发布' + row.NID +'吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    var  url="/news/updat/"+row.NID;
+                    axios.get(url).then(function (response) {
+                        //alert(url);
+                        if(response.data>0){
+                            _self.$message({
+                                message: row.NID + '发布成功',
+                                type: 'success'
+                            });
+                            _self.loadingData();//重新加载数据
+                        }
+                    });
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //删除事件
+            deleteClick:function(row) {
+                var _self = this;
+                this.$confirm('确认删除' + row.NID +'吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    var  url="/news/delete/"+row.NID;
+                    axios.get(url).then(function (response) {
+                        //alert(url);
+                        if(response.data>0){
+                            _self.$message({
+                                message: row.NID + '删除成功',
+                                type: 'success'
+                            });
+                            _self.loadingData();//重新加载数据
+                        }
+                    });
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //新建事件
+            addClick:function() {
+                this.isAdd=false;
+                this.goUrl="/news/add";
+                var _self = this;
+                //清空缓冲数据
+                this.editForm={
+                    NTITLE: '',
+                    NINTRO: '',
+                    ADDEMPNAME: '',
+                    SECTIONNAME: '',
+                    /*TOP: '',
+                    TITLEBOLD: '',
+                    TITLECOLOR: '',*/
+                    COVERPLOTPATH: '',
+                    ADDTIME: ''
+                }
+                //显示隐藏的form表单
+                this.editFormVisible = true;
+                _self.loadingData();//重新加载数据
+            },
+            //表格查询事件
+            searchClick:function() {
+                var self = this;
+                self.loadingData();//重新加载数据
+            },
+            returnClick: function () {
+                return location.href = location.href;
+            },
+            //表格勾选事件
+            selectionChange:function(val) {
+                for(var i=0;i<val.length;i++) {
+                    var row = val[i];
+                }
+                this.multipleSelection = val;
+                console.info(val);
+            },
+            //删除所选，批量删除
+            removeSelection:function() {
+                var _self = this;
+                var multipleSelection = this.multipleSelection;
+                if(multipleSelection.length < 1) {
+                    _self.$message({
+                        message: '请至少选中一条记录',
+                        type: 'error'
+                    });
+                    return;
+                }
+                var ids = "";
+                for(var i=0;i<multipleSelection.length;i++) {
+                    var row = multipleSelection[i];
+                    ids += row.NID + ","
+                }
+                this.$confirm('确认删除' + ids +'吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    var  url="/user/batchDel/"+ids;
+                    axios.get(url).then(function (response) {
+                        //alert(response.data);
+                        var temp="";
+                        if(response.data>0){
+                            temp="删除成功";
+                        }else {
+                            temp="删除失败";
+                        }
+                        _self.$message({
+                            message: ids + temp,
+                            type: 'success'
+                        });
+                        _self.loadingData();//重新加载数据
+                    });
+
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
+            },
+            //分页大小修改事件
+            pageSizeChange:function(val) {
+                console.log('每页 ' + val +' 条');
+                this.pageSize = val;
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //当前页修改事件
+            currentPageChange:function(val) {
+                this.currentPage = val;
+                console.log('当前页: ' + val);
+                var _self = this;
+                _self.loadingData();//重新加载数据
+            },
+            //保存点击事件
+            editSubmit:function(){
+                var _self = this;
+                _self.loading = true;
+                var formData =this.editForm;
+                //alert(formData);
+                var goUrl=this.goUrl;
+                //alert(goUrl);
+                //alert(JSON.stringify(formData));
+                axios.post(goUrl,formData).then(function(response){
+                    // console.log(response.data);
+                    //alert(222);
+                    // self.total=response.data.total;
+                    if(response.data>0){
+                        _self.editFormVisible = false;
+                        _self.loadingData();//重新加载数据
+                    }
+                })
+                this.$refs.upload.clearFiles();
+                console.info(this.editForm);
+            },
+            //上传成功后的方法
+            uploadSuc:function(response, file, fileList){
+                this.editForm.COVERPLOTPATH=response;
+            },
+            downLoad:function(row){
+                location.href="/news/downloadPic?fileName="+row.COVERPLOTPATH
+            }
+        }
+    })
+</script>
+</body>
+</html>

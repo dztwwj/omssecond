@@ -1,5 +1,6 @@
 package com.aaa.oms.controller;
 
+import com.aaa.oms.entity.User;
 import com.aaa.oms.service.DepartureService;
 import com.aaa.oms.service.LeaveService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,8 @@ public class DepartureController {
 
     @Autowired
     private DepartureService departureService;
+    @Autowired
+    private HttpSession session;
 
     /**
      * 跳转离职审核页面
@@ -46,7 +50,12 @@ public class DepartureController {
      */
     @RequestMapping("/departureQian")
     public String departureQian(){
-        return "frontHtml/departure/departureApply";
+        int count = departureService.selectCount();
+        if(count >0){
+            return "frontHtml/departure/wait";
+        }else{
+            return "frontHtml/departure/departureApply";
+        }
     }
 
     /**
@@ -81,5 +90,13 @@ public class DepartureController {
         System.out.println("离职驳回"+map);
         return departureService.updateNoTG(map);
     }
+    /**
+     * 请假驳回
+     */
+    @ResponseBody
+    @RequestMapping("/apply")
+    public int apply(@RequestBody Map map){
 
+        return departureService.apply(map);
+    }
 }

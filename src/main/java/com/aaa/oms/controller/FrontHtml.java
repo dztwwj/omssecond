@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/front")
 public class FrontHtml {
-     @RequestMapping("/toFrontHtml")
+    @RequestMapping("/toFrontHtml")
     public String toFrontHtml(){
         return "frontHtml/promote/contact";
     }
