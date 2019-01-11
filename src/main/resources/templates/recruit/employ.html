@@ -150,11 +150,6 @@
             <el-form-item label="姓名" prop="STNAME">
                 <el-input v-model="editForm.STNAME" auto-complete="off"></el-input>
             </el-form-item>
-            <!--性别-->
-            <!--<el-form-item label="性别" prop="SEX">
-                <el-input v-model="editForm.SEX" auto-complete="off"></el-input>
-            </el-form-item>-->
-
             <el-form-item label="性别" prop="SEX">
                 <el-select v-model="editForm.SEX" placeholder="请选择">
                     <el-option
@@ -183,15 +178,6 @@
             <el-form-item label="职称" prop="JOBS">
                 <el-input v-model="editForm.JOBS" auto-complete="off" disabled></el-input>
             </el-form-item>
-            <!--应聘日期-->
-            <!--<el-form-item label="提交日期"  prop="EMPLOYTIME">
-                <el-date-picker type="date"
-                                value-format="yyyy-MM-dd"
-                                placeholder="选择日期"
-                                v-model="editForm.EMPLOYTIME"
-                                :picker-options="pickerOptions0"></el-date-picker>
-            </el-form-item>-->
-
             <el-form-item label="招聘人数" prop="RECRUITNUM" v-if="false">
                 <el-input v-model="editForm.RECRUITNUM" auto-complete="off"  disabled></el-input>
             </el-form-item>

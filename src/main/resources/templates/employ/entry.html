@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>应聘信息审核记录</title>
+    <title>入职新员工</title>
     <!-- 引入样式 -->
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
@@ -109,19 +109,6 @@
                     align="center"
             >
             </el-table-column>
-            <!--<el-table-column
-                    prop="RESUME"
-                    label="个人简历"
-                    align="center"
-            >
-            </el-table-column>
-            <el-table-column
-                    prop="RECRUITNUM"
-                    label="还需招聘人数"
-                    align="center"
-                    width="55"
-            >
-            </el-table-column>-->
             <el-table-column
                     prop="STATE"
                     label="审核结果"
@@ -149,9 +136,6 @@
 
     <!--列表底部工具条和分页符-->
     <el-row style="margin-top: 20px" type="flex" justify="end">
-        <!-- <el-col :span="6" >
-             <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
-         </el-col>-->
         <el-col :span="18" >
             <el-pagination
                     style="float: right"
@@ -181,12 +165,12 @@
             </el-form-item>
 
 
-            <el-form-item label="生日"  prop="EMPBIRTHDAY">
+            <!--<el-form-item label="生日"  prop="EMPBIRTHDAY">
                 <el-date-picker type="date"
                                 value-format="yyyy-MM-dd"
                                 placeholder="选择日期"
                                 v-model="editForm.EMPBIRTHDAY"></el-date-picker>
-            </el-form-item>
+            </el-form-item>-->
 
             <el-form-item label="班组" prop="GID">
                 <el-select v-model="editForm.GID"  placeholder="请选择">
@@ -197,28 +181,13 @@
                             :value="item.GID"></el-option>
                 </el-select>
             </el-form-item>
-
-
-            <!--<el-form-item label="班组" prop="GID">
-                <el-input v-model="editForm.GID" auto-complete="off"></el-input>
-            </el-form-item>-->
-
             <el-form-item label="邮箱" prop="EMAIL">
                 <el-input v-model="editForm.EMAIL" auto-complete="off"></el-input>
             </el-form-item>
-
-            <!--<el-form-item label="邮箱地址" prop="EMILADDR">
-                <el-input v-model="editForm.EMILADDR" auto-complete="off" ></el-input>
-            </el-form-item>-->
-
             <!--身份证号-->
             <el-form-item label="身份证号" prop="IDCARD">
                 <el-input v-model="editForm.IDCARD" auto-complete="off" disabled></el-input>
             </el-form-item>
-
-            <!--<el-form-item label="职称id" prop="POSITION">
-                <el-input v-model="editForm.POSITION" auto-complete="off"></el-input>
-            </el-form-item>-->
 
             <el-form-item label="职称" prop="POSITION">
                 <el-select v-model="editForm.POSITION"  placeholder="请选择">
@@ -246,7 +215,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            message: '应聘信息审核记录'
+            message: '入职新员工'
         }
     });
 
@@ -364,7 +333,6 @@
                 //alert(JSON.stringify(searchForm));
                 axios.post('/employ/page', searchForm).then(function (response) {
                     console.log(response.data);
-                    // alert(222);
                     _self.total = response.data.total;
                     _self.tableData = response.data.pageData;
                     //_self.multipleSelection=response.data.data;
@@ -447,9 +415,7 @@
                 //alert(goUrl);
                 //alert(JSON.stringify(formData));
                 axios.post(goUrl, formData).then(function (response) {
-                    //alert(222);
                     if (response.data > 0) {
-                        //alert(111);
                         _self.editFormVisible = false;
                         _self.loadingData();//重新加载数据
                     }
