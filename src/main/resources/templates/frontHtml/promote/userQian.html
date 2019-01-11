@@ -3,16 +3,16 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>晋升审核管理</title>
+    <title>员工信息列表</title>
     <!-- 引入样式 -->
     <script type="text/javascript" src="../js/vue.js"></script>
     <script type="text/javascript" src="../js/axios.min.js"></script>
     <!-- 引入样式 -->
-    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
     <link rel="stylesheet" href="../css/elementui.css">
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">-->
     <!-- 引入组件库 -->
-    <!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
     <script src="../js/elementui.js"></script>
+    <!--<script src="https://unpkg.com/element-ui/lib/index.js"></script>-->
 </head>
 <body>
 <div id="app">
@@ -25,6 +25,15 @@
         <el-form :inline="true" :model="searchForm" class="demo-form-inline">
             <!--<el-form-item label="员工名称">-->
                 <!--<el-input v-model="searchForm.ENAME" placeholder="员工名称"></el-input>-->
+            <!--</el-form-item>-->
+            <!--<el-form-item label="员工工号">-->
+                <!--<el-input v-model="searchForm.EMPNUM" placeholder="员工工号"></el-input>-->
+            <!--</el-form-item>-->
+            <!--<el-form-item >-->
+                <!--<el-select v-model="searchForm.ISEFFECTIVE" placeholder="选择员工状态">-->
+                    <!--<el-option label="在职员工" value="0" ></el-option>-->
+                    <!--<el-option label="离职员工" value="1"></el-option>-->
+                <!--</el-select>-->
             <!--</el-form-item>-->
            <!-- <el-form-item label="状态">
                 <el-input v-model="searchForm.dstatus" placeholder="状态"></el-input>
@@ -45,7 +54,10 @@
             </el-form-item>-->
             <el-form-item>
                 <!--<el-button type="primary" icon="search" @click="searchClick">查询</el-button>-->
-                <el-button type="success" icon="plus" @click="addClick">新增</el-button>
+                <!--<el-button type="success" icon="plus" @click="addClick">新增</el-button>-->
+                <el-button type="success" icon="plus" @click="leave">我的请假信息</el-button>
+                <el-button type="success" icon="plus" @click="departure">离职</el-button>
+                <el-button type="success" icon="plus" @click="promote">我想晋升</el-button>
             </el-form-item>
         </el-form>
     </el-row>
@@ -62,59 +74,77 @@
                     >
             </el-table-column>
             <el-table-column
-                    prop="ID"
-                    label="编号"
+                    prop="EMPNUM"
+                    label="工号"
                     >
             </el-table-column>
             <el-table-column
                     prop="ENAME"
                     label="姓名"
-            >
+                    >
+            </el-table-column>
+            <el-table-column
+                    prop="EMPSEX"
+                    label="性别"
+                    >
+            </el-table-column>
+            <el-table-column
+                    prop="BIRTHDAY"
+                    label="生日"
+                    >
             </el-table-column>
             <el-table-column
                     prop="TELEPHONE"
-                    label="电话"
+                    label="电话号码"
+                    >
+            </el-table-column>
+            <el-table-column
+                    prop="IDCARD"
+                    label="身份证号码"
                     >
             </el-table-column>
             <el-table-column
                     prop="EMILADDR"
-                    label="e-mail"
+                    label="邮箱"
                     >
             </el-table-column>
             <el-table-column
-                    prop="POSITIONNAME"
-                    label="当前职位"
-                    >
+                    prop="DNAME"
+                    label="部门"
+            >
             </el-table-column>
             <el-table-column
-                    prop="BEFOREPNAME"
-                    label="申请前职位"
-                    >
-            </el-table-column>
-
-            <el-table-column
-                    prop="APPLYNAME"
-                    label="申请职位"
-                    >
+                    prop="PNAME"
+                    label="职位"
+            >
             </el-table-column>
             <el-table-column
-                    prop="STATE"
-                    label="申请状态"
+                    prop="GNAME"
+                    label="班组"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="ADDNAME"
+                    label="添加人姓名"
+            >
+            </el-table-column>
+            <el-table-column
+                    prop="ISEFFECTIVE"
+                    label="员工状态"
                     :formatter="formatState"
-                    >
+            >
             </el-table-column>
-            <!--<el-table-column class-name="status-col" label="状态" width="110" sortable prop="STATE">-->
-                <!--<template slot-scope="scope">-->
-                    <!--<el-tag :type="scope.row.STATE | statusFilter">{{scope.row.STATE | formatStata}}</el-tag>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
+            <el-table-column
+                    prop="INDUCTIONTIME"
+                    label="入职时间"
+            >
+            </el-table-column>
 
-            </el-table-column>
             <el-table-column
                     label="操作">
                 <template scope="scope">
-                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">审核通过</el-button>
-                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">审核驳回</el-button>
+                    <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑</el-button><br>
+                    <!--<el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">删除</el-button>-->
                 </template>
             </el-table-column>
         </el-table>
@@ -140,37 +170,30 @@
     </el-row>
 
     <!--编辑界面-->
-    <el-dialog title="确定信息" :visible.sync="editFormVisible" :close-on-click-modal="false">
+    <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
         <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-
-            <el-form-item label="编号" prop="ID">
-                <el-input v-model="editForm.ID" auto-complete="off" disabled></el-input>
-            </el-form-item>
             <el-form-item label="姓名" prop="ENAME">
-                <el-input v-model="editForm.ENAME" auto-complete="off" disabled ></el-input><!--disabled 禁用，不可编辑-->
+                <el-input v-model="editForm.ENAME" auto-complete="off"></el-input>
+                <el-input v-model="editForm.EMPNUM" auto-complete="off" type="hidden"></el-input>
             </el-form-item>
-            <el-form-item label="电话" prop="TELEPHONE">
-                <el-input v-model="editForm.TELEPHONE" auto-complete="off" disabled ></el-input><!--disabled 禁用，不可编辑-->
+
+            <el-form-item label="电话号码" prop="TELEPHONE">
+                <el-input v-model="editForm.TELEPHONE" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="e-mail" prop="EMILADDR">
-                <el-input v-model="editForm.EMILADDR" auto-complete="off" disabled></el-input><!--disabled 禁用，不可编辑-->
+            <el-form-item label="身份证号码" prop="IDCARD">
+                <el-input v-model="editForm.IDCARD" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="当前职位" prop="POSITIONNAME">
-                <el-input v-model="editForm.POSITIONNAME" auto-complete="off" disabled ></el-input><!--disabled 禁用，不可编辑-->
-            </el-form-item>
-            <el-form-item label="申请前职位" prop="BEFOREPNAME">
-                <el-input v-model="editForm.BEFOREPNAME" auto-complete="off" disabled></el-input><!--disabled 禁用，不可编辑-->
-            </el-form-item>
-            <el-form-item label="申请职位" prop="APPLYNAME">
-                <el-input v-model="editForm.APPLYNAME" auto-complete="off" disabled ></el-input><!--disabled 禁用，不可编辑-->
+            <el-form-item label="邮箱" prop="EMILADDR">
+                <el-input v-model="editForm.EMILADDR" auto-complete="off"></el-input>
             </el-form-item>
 
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
-            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">确定</el-button>
+            <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
         </div>
     </el-dialog>
+
 
 </div>
 
@@ -178,45 +201,33 @@
 <script type="text/javascript">
     var app = new Vue({
         el: '#app',
-        // filters: {
-        //     // el-tag类型转换
-        //     statusFilter(status) {
-        //         const statusMap = {
-        //             0: 'info',
-        //             2: 'danger',
-        //             1: 'success'
-        //         }
-        //         return statusMap[status]
-        //     },
-        //     // 状态显示转换
-        //     formatStata(status) {
-        //         const statusMap = {
-        //             0: '未审核',
-        //             1: '审核通过',
-        //             2: '审核不通过',
-        //         }
-        //         return statusMap[status]
-        //     }
-        // },
         data: {
-            message: '审核管理页面'
-        }
+            message: '你的个人信息如下：'
+        },
     });
 
     var tableView = new Vue({
         el: '#tableView',
         data: {
-            //职位下拉框查询
-            options:[],
+            //部门下拉菜单
+            optiondept:[],
+            //班组下拉菜单
+            groups:[],
+            //职位下拉菜单
+            optionjobs:[],
+
+            //员工select
+           // options:[{DSTATUS:1,value:'可用'},{DSTATUS:2,value:'不可用'}],
             //列表数据
             tableData: [],
             //显示加载中样式
             loading:false,
             //搜索表单
             searchForm: {
-                ENAME: ''
+                ENAME: '',
+                EMPNUM:'',
+                ISEFFECTIVE:''
             },
-
             //多选值
             multipleSelection: [],
             //当前页
@@ -229,22 +240,37 @@
             deleteVisible:false,
             //编辑界面是否显示
             editFormVisible: false,
+            editFormVisible1: false,
             editLoading: false,
+            editLoading1: false,
             goUrl:'',
             editFormRules: {
                 name: [
                     { required: true, message: '请输入员工', trigger: 'blur' }
                 ]
             },
+            editFormRules1: {
+                name: [
+                    { required: true, message: '请输入员工', trigger: 'blur' }
+                ]
+            },
             //编辑界面数据
             editForm: {
-                EMPNUM: '',
                 ENAME: '',
+                EMPSEX: '',
+                EMPBIRTHDAY: '',
                 TELEPHONE: '',
-                EMILADDR:'',
-                POSITIONNAME: '',
-                BEFOREPNAME: '',
-                APPLYNAME:''
+                EMILADDR: '',
+                IDCARD: '',
+            },
+            //新增页面的数据
+            editForm1: {
+                ENAME: '',
+                EMPSEX: '',
+                EMPBIRTHDAY: '',
+                TELEPHONE: '',
+                EMILADDR: '',
+                IDCARD: '',
             },
         },
         created:function(){
@@ -252,7 +278,7 @@
             var self = this;
             var start =(this.currentPage-1)*this.pageSize;
             var end =this.currentPage*this.pageSize+1;
-            axios.post('/promote/audit',{'start':start,'end':end,'STA':'0'}).then(function(response){
+            axios.post('/user/pageQian',{'start':start,'end':end}).then(function(response){
                 // console.log(response.data);
                 //alert(response.data.total);
                 self.total=response.data.total;
@@ -260,11 +286,55 @@
                 // alert(JSON.stringify(response.data.pageData));
                 // self.multipleSelection=response.data.data;
             });
-            axios.post('/promote/selectPosition').then(function(response){
+            /*axios.post('/user/list').then(function(response){
                 self.options=response.data;
-            })
+            })*/
+            axios.post('/dept/list').then(function(response){
+                self.optiondept=response.data;
+            });
         },
         methods:{
+            //点击部门之后查看对应的职位
+            getRecruiitdpInfo:function(row){
+                // alert(JSON.stringify(row));
+                /*this.editForm.ID=JSON.stringify(row);*/
+                var self = this;
+                //alert(JSON.stringify(row));
+                var url="/recruit/chaxun/"+JSON.stringify(row);
+                axios.post(url).then(function(response){
+                    // alert("职位1"+JSON.stringify(response.data));
+                    self.optionjobs=response.data;
+                    // alert("职位3"+self.optionjobs);
+                });
+            },
+            //跳转离职页面
+            departure:function(){
+                var _self = this;
+                _self.loading = true;
+                var goUrl="/departure/departureQian";
+                axios.post(goUrl).then(function(){
+                        //location.href="/departure/departureQian";
+                })
+                this.$refs.upload.clearFiles();
+                console.info(this.editForm);
+            },
+            //点击职位之后查看对应的班组
+            getRecruiitdpInfo1:function(row){
+                // alert(JSON.stringify(row));
+                /*this.editForm.ID=JSON.stringify(row);*/
+                var self = this;
+                //alert(JSON.stringify(row));
+                var url="/user/selectG/"+JSON.stringify(row);
+                axios.post(url).then(function(response){
+                    // alert("banzu"+JSON.stringify(response.data));
+                    self.groups=response.data;
+                    // alert("职位3"+self.groups);
+                });
+            },
+            //格式化状态
+            formatState: function (row, column) {
+                return row.ISEFFECTIVE === 0 ? '在职员工' : row.ISEFFECTIVE === 1 ? '离职员工' : '未知'
+            },
             //表格重新加载数据
             loadingData:function() {
                 var _self = this;
@@ -273,9 +343,9 @@
                 var start =(this.currentPage-1)*this.pageSize;
                 var end =this.currentPage*this.pageSize+1;
                 //  alert(this.searchForm.id);
-                var searchForm={'start':start,'end':end,'STA':'0'};
+                var searchForm={'start':start,'end':end,'ENAME':this.searchForm.ENAME,'EMPNUM':this.searchForm.EMPNUM,'ISEFFECTIVE':this.searchForm.ISEFFECTIVE};
                 //alert(JSON.stringify(searchForm));
-                axios.post('/promote/audit',searchForm).then(function(response){
+                axios.post('/user/pageQian',searchForm).then(function(response){
                     console.log(response.data);
                     // alert(222);
                     _self.total=response.data.total;
@@ -288,46 +358,60 @@
                     _self.loading = false;
                 },300);
             },
-            //格式化状态
-            formatState: function (row, column) {
-                return row.STATE === 0 ? '未审核' : row.STATE === 1 ? '审核通过' : '审核未通过'
-            },
-            //晋升通过事件
+            //表格编辑事件
             editClick:function(row) {
-                this.goUrl="/promote/updateTG";
+                this.goUrl="/user/updateQian";
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
             },
-            //晋升驳回时间
+
+            //删除
             deleteClick:function(row) {
-                this.goUrl="/promote/updateNoTG";
-                this.editFormVisible = true;
-                this.editForm = Object.assign({}, row);
+                //alert(JSON.stringify(row));
+                alert(row.EMPNUM);
+                var _self = this;
+                this.$confirm('确认删除工号为' + row.EMPNUM +'的'+row.ENAME+'吗?', '提示', {
+                    type: 'warning'
+                }).then(function(){
+                    var  url="/user/delete/"+row.EMPNUM;
+                    axios.get(url).then(function (response) {
+                        //alert(url);
+                        if(response.data>0){
+                            _self.$message({
+                                message: row.EMPNUM + '离职成功',
+                                type: 'success'
+                            });
+                            _self.loadingData();//重新加载数据
+                        }
+                    });
+                }).catch(function(e){
+                    if(e != "cancel")
+                        console.log("出现错误：" + e);
+                });
             },
             //新建事件
             addClick:function() {
                 //alert(111);
-                this.goUrl="/promote/add";
+                this.goUrl="/user/add";
                 var _self = this;
                 //清空缓冲数据
-                this.editForm={
-                    EMPNUM: '',
+                this.editForm1={
                     ENAME: '',
+                    EMPSEX: '',
+                    EMPBIRTHDAY: '',
                     TELEPHONE: '',
-                    EMILADDR:'',
-                    POSITIONNAME: '',
-                    BEFOREPNAME: '',
-                    APPLYNAME:''
+                    EMILADDR: '',
+                    IDCARD: ''
                 }
                 //显示隐藏的form表单
-                this.editFormVisible = true;
+                this.editFormVisible1 = true;
                 _self.loadingData();//重新加载数据
             },
             //表格查询事件
-            // searchClick:function() {
-            //     var self = this;
-            //     self.loadingData();//重新加载数据
-            // },
+            searchClick:function() {
+                var self = this;
+                self.loadingData();//重新加载数据
+            },
             //表格勾选事件
             selectionChange:function(val) {
                 for(var i=0;i<val.length;i++) {
@@ -350,13 +434,12 @@
                 var ids = "";
                 for(var i=0;i<multipleSelection.length;i++) {
                     var row = multipleSelection[i];
-                    ids += row.ID + ","
-
+                    ids += row.EMPNUM + ","
                 }
                 this.$confirm('确认删除' + ids +'吗?', '提示', {
                     type: 'warning'
                 }).then(function(){
-                    var  url="/promote/delete/"+ids;
+                    var  url="/user/delete/"+ids;
                     axios.get(url).then(function (response) {
                         //alert(response.data);
                         var temp="";
@@ -391,26 +474,43 @@
                 var _self = this;
                 _self.loadingData();//重新加载数据
             },
-            //保存点击事件
-            editSubmit:function(){
+            //编辑保存点击事件
+            editSubmit:function(formName){
                 var _self = this;
                 _self.loading = true;
                 var formData =this.editForm;
                 //alert(formData);
                 var goUrl=this.goUrl;
-                //alert(goUrl);
-                //alert(JSON.stringify(formData));
-                axios.post(goUrl,formData).then(function(response){
-                    // console.log(response.data);
-                    //alert(222);
-                    // self.total=response.data.total;
-                    if(response.data>0){
-                        _self.editFormVisible = false;
-                        _self.loadingData();//重新加载数据
-                    }
-                })
+                        axios.post(goUrl,formData).then(function(response){
+                            // console.log(response.data);
+                            //alert(222);
+                            // self.total=response.data.total;
+                            if(response.data>0){
+                                _self.editFormVisible = false;
+                                _self.loadingData();//重新加载数据
+                            }
+                        })
+
                 console.info(this.editForm);
-            }
+            },
+            //新增保存点击事件
+            editSubmit1:function(formName){
+                var _self = this;
+                _self.loading = true;
+                var formData =this.editForm1;
+                //alert(formData);
+                var goUrl=this.goUrl;
+                        axios.post(goUrl,formData).then(function(response){
+                            // console.log(response.data);
+                            //alert(222);
+                            // self.total=response.data.total;
+                            if(response.data>0){
+                                _self.editFormVisible1 = false;
+                                _self.loadingData();//重新加载数据
+                            }
+                        })
+                console.info(this.editForm);
+            },
         }
     })
 </script>

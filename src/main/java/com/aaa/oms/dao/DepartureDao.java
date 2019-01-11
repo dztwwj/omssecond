@@ -1,5 +1,6 @@
 package com.aaa.oms.dao;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
@@ -27,6 +28,14 @@ public interface DepartureDao {
             "<if test=\"STATE!=null and STATE!=''\"> and DEPARTURESTATUS = #{STATE}</if>" +
             " order by id) a where a.rn &gt; #{start}</script>")
     List<Map> getPageParam(Map map);
+
+    /**
+     * 根据session的empnum查询当前是否有离职申请
+     * @param map
+     * @return
+     */
+    @Select(value = "select count(empnum) from cu_departure where empnum = #{applyEmp} and DEPARTURESTATUS in (0,2)")
+    int selectCount(Map map);
     /**
      * 查询分页总数量
      * @param map
@@ -66,4 +75,11 @@ public interface DepartureDao {
     @Update(value = "update cu_departure set departurestatus = 1 where id = ${ID}")
     int updateNoTG(Map map);
 
+    /**
+     * 离职申请
+     * @param map
+     * @return
+     */
+    @Insert(value = "insert into cu_departure(id,empnum,APPLYTIME,DEPARTUREREASON,INTENTION,OPINION) values(seq_cu_departure_id.nextval,#{EMPNUMQ},sysdate,#{DEPARTUREREASON},#{INTENTION},#{OPINION})")
+    int apply(Map map);
 }
