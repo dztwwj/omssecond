@@ -26,7 +26,7 @@ public interface TrainerDao {
             "<if test=\"name!=null and name!=''\"> and  name like '%'||#{name}||'%'</if></script>")
     List<Map> getList(Map map);
 
-    @Insert(value="insert into cu_teacher values(seq_cu_teacher_id.nextval,#{NAME},#{JOBNUM},#GRADE),#{PID},#{PHOTO},#{EMAIL},#{PHONE},{STATE}")
+    @Insert(value="insert into cu_teacher(id,name,jobnum,grade,pid,photo,email,phone) values(seq_cu_teacher_id.nextval,#{NAME},#{JOBNUM},#{GRADE},#{PID},#{PHOTO},#{EMAIL},#{PHONE})")
     int add(Map map);
 
     @Update(value="update cu_teacher set name=#{NAME},jobnum=#{JOBNUM},grade=#{GRADE},pid=#{PID},photo=#{PHOTO},email=#{EMAIL},phone=#{PHONE},state=#{STATE} where id=#{ID}")
