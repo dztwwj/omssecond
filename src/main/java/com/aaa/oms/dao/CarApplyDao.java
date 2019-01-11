@@ -20,7 +20,7 @@ public interface CarApplyDao {
      * @return
      */
     @Select("<script>" +
-            "select * from (select  rownum rn,c.id,c.dname ,c.empno,c.empname,to_char(c.applytime,'yyyy-mm-dd') applytime,\n" +
+            "select * from (select  rownum rn,c.id,c.dname ,c.empno,c.empname,to_char(c.applytime,'yyyy-mm-dd') applytime,to_char(c.endtime,'yyyy-mm-dd') endtime,\n" +
             "c.startplace,c.endplace,\n" +
             "c.carid,\n" +
             "(select ci.lsicense from cu_carinfo ci where c.carid = ci.id) lsicense,\n" +

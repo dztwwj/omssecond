@@ -45,7 +45,7 @@ public class CarApplyController {
         return "car/applylistQian";
     }
     /**
-     * 跳转审核历史记录
+     * 跳转历史记录
      * @return
      */
     @RequestMapping("carApplyHis")
