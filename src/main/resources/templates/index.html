@@ -78,8 +78,9 @@
                     <div class="grid-content bg-purple" align="center" style="color:#1a1719;font-size: 32px;">运营管理平台</div>
                 </el-col>
                 <el-col :span="4">
-                    <div class="grid-content bg-purple" align="center">
+                    <div class="grid-content bg-purple" align="center" id="login">
                         <!--<span th:text="${empnum}" style="font-size: 20px;"></span>&nbsp;&nbsp;&nbsp;&nbsp;-->
+                        <span>{{message.ename}}</span>
                         <a href="/toLogin">退出</a>
                     </div>
                 </el-col>
@@ -114,6 +115,20 @@
     </el-container>
 </div>
 <script>
+    var login = new Vue({
+        el: '#login',
+        data: {
+            message: [],
+        },
+        created:function(){
+            //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+            var self = this;
+            axios.post('/user/selectEname').then(function(response){
+                self.message=response.data;
+            });
+        },
+    });
+
     var vm = new Vue({
         el:".diva",
 
