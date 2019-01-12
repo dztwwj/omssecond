@@ -54,7 +54,7 @@
             </el-table-column>
             <el-table-column
                     prop="DESCRIBE"
-                    label="新闻描述"
+                    label="新闻简介"
                     width="150">
             </el-table-column>
             <el-table-column
@@ -89,13 +89,10 @@
     <!--编辑界面-->
     <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
         <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-            <el-form-item label="ID" prop="NCID">
-                <el-input v-model="editForm.NCID" auto-complete="off"></el-input>
-            </el-form-item>
             <el-form-item label="新闻类型" prop="NCNAME">
                 <el-input v-model="editForm.NCNAME" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="新闻描述" prop="DESCRIBE">
+            <el-form-item label="新闻简介" prop="DESCRIBE">
                 <el-input v-model="editForm.DESCRIBE" auto-complete="off"></el-input>
             </el-form-item>
         </el-form>
@@ -140,6 +137,7 @@
             //删除的弹出框
             deleteVisible:false,
             //编辑界面是否显示
+
             editFormVisible: false,
             editLoading: false,
             goUrl:'',
@@ -150,7 +148,6 @@
             },
             //编辑界面数据
             editForm: {
-                NCID:'',
                 NCNAME: '',
                 DESCRIBE: ''
             },
@@ -225,14 +222,15 @@
                         console.log("出现错误：" + e);
                 });
             },
+
+
             //新建事件
             addClick:function() {
-                //alert(111);
-                this.goUrl="/newstype/add";
+                this.isAdd=false;
+                this.goUrl="/news/add";
                 var _self = this;
                 //清空缓冲数据
                 this.editForm={
-                    NCID:'',
                     NCNAME: '',
                     DESCRIBE: ''
                 }
@@ -240,6 +238,8 @@
                 this.editFormVisible = true;
                 _self.loadingData();//重新加载数据
             },
+
+
             //表格查询事件
             searchClick:function() {
                 var self = this;

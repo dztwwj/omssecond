@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -68,9 +69,12 @@ public class NewsController {
      * @return
      */
     @RequestMapping("/tonewx")
-    public String tonewx(){
+    public String tonewx( Model model,Integer nid){
+        System.out.println("nnid"+nid);
+        model.addAttribute("nnid",nid);
         return "frontHtml/news/xinwenx";
     }
+
 
     /**
      * 分页
@@ -80,11 +84,24 @@ public class NewsController {
     @ResponseBody
     @RequestMapping("/page")
     public Object page(@RequestBody Map map){
+
         Map resultmap = new HashMap();
         resultmap.put("pageData",newsService.getPageParam(map));
         resultmap.put("total",newsService.getPageCount(map));//total 当前分页的总数量
         return resultmap;
     }
+
+    /**
+     * 通过ni查询nclob
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/selectNclobByNid")
+    public Object selectNclobByNid(@RequestBody Map map){
+        return  newsService.selectNclobByNid(map);
+    }
+
 
     /**
      * @param map
@@ -110,11 +127,24 @@ public class NewsController {
         return newsService.updateNews(NID);
     }
 
+    //新闻是否发布
     @ResponseBody//标志返回值是josn
     @RequestMapping("/updat/{NID}")
     public Object updat(@PathVariable("NID")int NID){
         return newsService.updateCon(NID);
     }
+
+    /**
+     * 新闻类型查询
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/list")
+    public Object list(Map map){
+        return newsService.getList(map);
+    }
+
+
     /**
      * 上传方法
      * @param file

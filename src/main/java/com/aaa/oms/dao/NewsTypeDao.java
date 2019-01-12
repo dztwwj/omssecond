@@ -12,7 +12,7 @@ import java.util.Map;
  * author:HPY
  * createTime:2018-12-11 10:24
  */
-@CacheNamespace(implementation = RedisCache.class)
+//@CacheNamespace(implementation = RedisCache.class)
 public interface NewsTypeDao {
     /**
      * 带参分页查询
@@ -40,7 +40,7 @@ public interface NewsTypeDao {
      * @param map
      * @return
      */
-    @Insert(value = "insert into CU_NEWS_CLASS values(seq_CU_NEWS_CLASS_ncid.nextval,#{NCNAME},#{DESCRIBE})")
+    @Insert(value = "insert into CU_NEWS_CLASS(ncid,ncname,describe) values(seq_CU_NEWS_CLASS_ncid.nextval,#{NCNAME},#{DESCRIBE})")
     int add(Map map);
 
 

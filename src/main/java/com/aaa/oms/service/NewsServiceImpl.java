@@ -50,4 +50,18 @@ public class NewsServiceImpl implements NewsService {
     public int updateCon(int NID) {
         return newsDao.updateCon(NID);
     }
+
+    @Override
+    public List<Map> getList(Map map) {
+        return newsDao.getList(map);
+    }
+    /**
+     * 通过ni查询nclob
+     * @param map
+     * @return
+     */
+    @Override
+    public List<Map> selectNclobByNid(Map map) {
+        return newsDao.selectNclobByNid(map);
+    }
 }

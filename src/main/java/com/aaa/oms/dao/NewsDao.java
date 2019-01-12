@@ -12,7 +12,7 @@ import java.util.Map;
  * author:
  * createTime:2018-12-11 10:24
  */
-@CacheNamespace(implementation = RedisCache.class)
+//@CacheNamespace(implementation = RedisCache.class)
 public interface NewsDao {
     /**
      * 带参分页查询
@@ -23,8 +23,19 @@ public interface NewsDao {
             "(select rownum rn,nid,ntitle,nclob,nintro,addempname,sectionname,top,confirmid,isdelete,titlebold,titlecolor,coverplotpath,addtime from CU_NEWS\n" +
             "where rownum &lt; #{end}  " +
             "<if test=\"ntitle!=null and ntitle!=''\"> and ntitle like '%'||#{ntitle}||'%'</if>" +
+            "<if test=\"nccid!=null and nccid!=''\"> and ncid =#{nccid}</if>" +
+            "<if test=\"del!=null and del!=''\"> and isdelete =#{del}</if>" +
+            "<if test=\"con!=null and con!=''\"> and confirmid =#{con}</if>" +
             " )a where a.rn &gt; #{start} </script>")
     List<Map> getPageParam(Map map);
+
+    /**
+     * 通过ni查询nclob,coverplotpath
+     * @param map
+     * @return
+     */
+    @Select(value = "select nid,NCLOB,COVERPLOTPATH from CU_NEWS where nid =#{nid}")
+    List<Map> selectNclobByNid(Map map);
 
     /**
      * 前台新闻查询
@@ -33,6 +44,7 @@ public interface NewsDao {
      */
     @Select("select to_date(#{ADDTIME},'yyyy-mm-dd hh24:mi:ss'),ntitle from CU_NEWS where nid ")
     List<Map> getnews();
+
 
     /**
      * 根据nid更新删除状态
@@ -57,14 +69,29 @@ public interface NewsDao {
      */
     @Select("<script> select count(*) from CU_NEWS <where> " +
             "<if test=\"ntitle!=null and ntitle!=''\"> and ntitle like '%'||#{ntitle}||'%'</if>" +
+            "<if test=\"nccid!=null and nccid!=''\"> and ncid =#{nccid}</if>" +
+            "<if test=\"del!=null and del!=''\"> and isdelete =#{del}</if>" +
+            "<if test=\"con!=null and con!=''\"> and confirmid =#{con}</if>" +
             " </where></script>")
     int getPageCount(Map map);
+
+
+
+    /**
+     * 根据新闻ID查询类型
+     *  @return
+     */
+    @Select(value = "select * from CU_NEWS_CLASS")
+    List<Map> getList(Map map);
+
+
+
     /**
      * 新闻的添加
      * @param map
      * @return
      */
-    @Insert(value = "insert into CU_NEWS(nid,ntitle,nintro,addempname,sectionname,top,titlebold,titlecolor,coverplotpath,addtime) values(seq_CU_NEWS_nid.nextval,#{NTITLE},#{NINTRO},#{ADDEMPNAME},#{SECTIONNAME},#{TOP},#{TITLEBOLD},#{TITLECOLOR},#{COVERPLOTPATH},to_date(#{ADDTIME},'yyyy-mm-dd hh24:mi:ss'))")
+    @Insert(value = "insert into CU_NEWS(nid,ntitle,nintro,nclob,addempname,sectionname,top,titlebold,titlecolor,ncid,coverplotpath,addtime) values(seq_CU_NEWS_nid.nextval,#{NTITLE},#{NINTRO},#{NCLOB},#{ADDEMPNAME},#{SECTIONNAME},#{TOP},#{TITLEBOLD},#{TITLECOLOR},#{NCID},#{COVERPLOTPATH},to_date(#{ADDTIME},'yyyy-mm-dd hh24:mi:ss'))")
     int add(Map map);
 
     /**
@@ -74,6 +101,7 @@ public interface NewsDao {
      */
     @Update(value = "update CU_NEWS set ntitle=#{NTITLE},nintro=#{NINTRO},addempname=#{ADDEMPNAME},sectionname=#{SECTIONNAME},top=#{TOP},confirmid=#{CONFIRMID},isdelete=#{ISDELETE},titlebold=#{TITLEBOLD},titlecolor=#{TITLECOLOR},coverplotpath=#{COVERPLOTPATH},addtime=to_date(#{ADDTIME},'yyyy-mm-dd hh24:mi:ss') where nid=#{NID}")
     int update(Map map);
+
 
 
 }
