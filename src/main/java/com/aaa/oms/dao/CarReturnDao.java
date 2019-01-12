@@ -55,6 +55,6 @@ public interface CarReturnDao {
      * @param map
      * @return
      */
-    @Update(value ="update cu_carapplicatinon set result = 3 where id = #{ID}")
+    @Update(value ="update cu_carapplicatinon set result = 3,endtime=sysdate where id = #{ID}")
     int turnCaraToTG(Map map);
 }

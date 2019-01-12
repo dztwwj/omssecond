@@ -45,13 +45,13 @@ public interface CarinfoDao {
     int addCar(Map map);
     /**
      * 汽车更新方法
-     * ("update tb_user set ENAME=#{ENAME},JOB=#{JOB},HIREDATE=to_date(substr(#{HIREDATE},1,10),'yyyy-mm-dd'),SAL=#{SAL},COMM=#{COMM},DEPTNO=#{DEPTNO} where empno=#{EMPNO}")
+     *
      */
     @Insert("update CU_CARINFO set LSICENSE=#{LSICENSE},CARTYPE=#{CARTYPE},SADDLE=#{SADDLE},APPLICATIONTYPE=#{APPLICATIONTYPE},DRIVER=#{DRIVER},BEGINTIME=to_date(substr(#{BEGINTIME},1,10),'yyyy-mm-dd'),STATE=#{STATE},INSURANCETIMR=to_date(substr(#{INSURANCETIMR},1,10),'yyyy-mm-dd'),MILEAGE=#{MILEAGE},REMARK=#{REMARK} where id=#{ID}")
 
     int updateCar(Map map);
     /**
-     * 汽车删除方法
+     * 汽车信息删除方法
      */
     @Insert("delete from CU_CARINFO where id=#{ID}")
     int deleteCar(int id);
