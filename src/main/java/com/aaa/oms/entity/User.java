@@ -12,6 +12,7 @@ public class User {
     private String empnum;
     private String epassword;
     private String ename;
+    private Integer iseffective;
 
 
     public Integer getEid() {
@@ -44,5 +45,13 @@ public class User {
 
     public void setEname(String ename) {
         this.ename = ename;
+    }
+
+    public Integer getIseffective() {
+        return iseffective;
+    }
+
+    public void setIseffective(Integer iseffective) {
+        this.iseffective = iseffective;
     }
 }

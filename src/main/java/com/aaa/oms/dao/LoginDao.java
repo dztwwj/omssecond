@@ -20,12 +20,10 @@ import java.util.Map;
 //@CacheNamespace(implementation = RedisCache.class)
 public interface LoginDao {
 
-    public User findByName(String empnum);
+    User findByName(String empnum);
 
     @Select(value = "select * from cu_emp ")
     List<Map> getname(String ename);
 
-    /*List<User> findByName(String empnum);
 
-    List<User> findByid(Integer eid);*/
 }

@@ -190,15 +190,6 @@
             </el-form-item>
 
             <el-form-item label="个人简历" prop="RESUME">
-            <!--<el-upload
-                    action="/employ/upLoadPic"
-                    list-type="picture-card"
-                    auto-upload="true"
-                    limit="1"
-                    multiple="false"
-                    :on-success="uploadSuc1">
-                <i class="el-icon-plus"></i>
-            </el-upload>-->
                 <el-upload
                         action="/employ/upLoadPic"
                         list-type="picture-card"
@@ -326,18 +317,18 @@
         methods: {
             //上传建立成功的方法
             uploadSuc1:function(response, file, fileList){
-                alert("身份证正面为："+response);
+                //alert("身份证正面为："+response);
                 this.editForm.RESUME=response;
             },
             getRecruiitdpInfo:function(row){
-                alert(JSON.stringify(row));
+                //alert(JSON.stringify(row));
                 /*this.editForm.ID=JSON.stringify(row);*/
                 var self = this;
                 axios.post("/employ/chaxun",{ID:row}).then(function (response) {
                     //alert(response.data+","+JSON.stringify(response.data));
                     //alert(response.data[0]);
                     //alert(response.data[0].RECRUITNUM);
-                    alert(response.data[0].ID)
+                    //alert(response.data[0].ID)
                     self.editForm.ID=response.data[0].ID;
                     self.editForm.RECRUITNUM=response.data[0].RECRUITNUM;
                     self.editForm.RECRUITPOS=response.data[0].JOBS;
@@ -405,20 +396,13 @@
                 var _self = this;
                 _self.loading = true;
                 var formData = this.editForm;
-                //alert(formData);
                 var goUrl = "/employ/addEmploy";
-                alert(goUrl);
-                alert(JSON.stringify(formData));
+                //alert(goUrl);
+                //alert(JSON.stringify(formData));
                 this.$refs[formName].validate((valid) => {
-                    alert(111222);
                     if (valid) {
-                        alert(11111111111111111);
-                        alert(goUrl);
-                        alert(JSON.stringify(formData));
                         axios.post(goUrl, formData).then(function (response) {
-                            alert(response.data);
                             if (response.data > 0) {
-                                alert(1111);
                                 _self.editFormVisible = false;
                                 _self.loadingData();//重新加载数据
                             }

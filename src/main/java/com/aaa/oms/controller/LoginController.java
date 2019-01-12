@@ -48,10 +48,16 @@ public class LoginController {
     }
 
 
+    /**
+     * 执行登录操作
+     * @param empnum
+     * @param epassword
+     * @param model
+     * @param session
+     * @return
+     */
     @RequestMapping("/indexht")
     public String indexht(String empnum, String epassword, Model model, HttpSession session){
-        System.out.println("name="+empnum);
-        System.out.println(empnum+"================"+epassword);
         //使用shiro编写认证操作
         //获取Subject
         Subject subject = SecurityUtils.getSubject();
@@ -63,11 +69,16 @@ public class LoginController {
             subject.login(token);
             session.setAttribute("userName",token.getUsername());
             User user = loginService.findByName(empnum);//根据员工编号找该用户信息 吧用户信息放入user中
-            session.setAttribute("user",user);
-            return "redirect:/index/toHome";
-            //登录成功
+            System.out.println(user.getIseffective());
+            if(user.getIseffective()==0){
+                session.setAttribute("user",user);
+                return "redirect:/index/toHome";
+                //登录成功
+            }else{
+                model.addAttribute("msg","用户名or密码错误");
+                return "indexht";
+            }
         } catch (UnknownAccountException e) {
-            //e.printStackTrace();
             //登录失败:用户不存在
             model.addAttribute("msg","用户名or密码错误");
             return "indexht";

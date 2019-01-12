@@ -59,8 +59,8 @@ public interface EmployDao {
      * @param map
      * @return
      */
-    @Insert(value = "insert into cu_emp(eid,empnum,ename,telephone,empsex,empbirthday,gid,emiladdr,idcard,position,inductiontime) " +
-            "values(seq_cu_emp_id.nextval,seq_empnum.nextval,#{STNAME},#{PHONE},#{SEX},to_date(#{EMPBIRTHDAY},'yyyy-mm-dd'),#{GID},#{EMAIL},#{IDCARD},#{POSITION},SYSDATE)\n")
+    @Insert(value = "insert into cu_emp(eid,empnum,ename,telephone,empsex,gid,emiladdr,idcard,position,inductiontime) " +
+            "values(seq_cu_emp_id.nextval,seq_empnum.nextval,#{STNAME},#{PHONE},#{SEX},#{GID},#{EMAIL},#{IDCARD},#{POSITION},SYSDATE)")
     int perfectadd(Map map);
 
 
@@ -74,15 +74,6 @@ public interface EmployDao {
             " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},#{DEPARTMENT},#{JOBS},SYSDATE,#{NUMBERS},#{ID},#{EMAIL},#{RESUME})")
     int addEmploy(Map map);
 
-
-    /**
-     * 应聘员工信息添加
-     * @param map
-     * @return
-     */
-   /* @Insert(value = "insert into recruitstaff(stid,stname,sex,idcard,phone,recruitdp,recruitpos,employtime,resume,recruitnum,id) " +
-            " values(seq_recruitstaff_stid.nextval,#{STNAME},#{SEX},#{IDCARD},#{PHONE},(select department from recruit where id=#{RECRUITDP}),#{RECRUITPOS},to_date(#{EMPLOYTIME},'yyyy-mm-dd'),#{RESUME},#{RECRUITNUM},#{ID})")
-    int add(Map map);*/
 
     /**
      * 审核驳回理由

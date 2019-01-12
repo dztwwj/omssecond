@@ -48,7 +48,6 @@ public class RecruitController {
     @ResponseBody
     @RequestMapping("/page")
     public Object page(@RequestBody Map map){
-        //System.out.println(map);
         Map resultmap = new HashMap();
         resultmap.put("pageData",recruitService.getPageParam(map));
         resultmap.put("total",recruitService.getPageCount(map));//total 当前分页的总数量
@@ -57,7 +56,6 @@ public class RecruitController {
     @ResponseBody
     @RequestMapping("/add")
     public Object add(@RequestBody Map map){
-        System.out.println(map);
         return recruitService.add(map);
     }
 
@@ -69,7 +67,6 @@ public class RecruitController {
     @ResponseBody
     @RequestMapping("/update")
     public Object update(@RequestBody Map map){
-        System.out.println(map);
         return recruitService.update(map);
     }
 
@@ -84,11 +81,14 @@ public class RecruitController {
         return recruitService.delete(id);
     }
 
-
+    /**
+     * 根据部门ID查询数据
+     * @param id
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/chaxun/{id}")
     public Object chaxun(@PathVariable("id") Integer id ){
-        //System.out.println(id+"......");
         return recruitService.chaxun(id);
     }
 

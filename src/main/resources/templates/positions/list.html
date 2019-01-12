@@ -121,9 +121,6 @@
             </el-form-item>
 
 
-            <el-form-item label="职级" prop="RANK">
-                <el-input v-model="editForm.RANK" auto-complete="off"></el-input>
-            </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click.native="editFormVisible = false">取消</el-button>
@@ -278,7 +275,7 @@
                 });
             },
             isTITLECOLOR:function(row,colum){
-                return row.RANK ===1? '员工' : row.RANK ===2? '班长':row.RANK ===3? '主管':row.RANK ===98? '老板':'错误'
+                return row.RANK ===1? '员工' : row.RANK ===2? '班长':row.RANK ===3? '主管':row.RANK ===98? '老板':row.RANK ===99? '网站开发员':'错误'
             },
             //表格编辑事件
             editClick:function(row) {
