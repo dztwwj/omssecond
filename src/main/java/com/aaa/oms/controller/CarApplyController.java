@@ -47,6 +47,14 @@ public class CarApplyController {
         return "car/applylistQian";
     }
     /**
+     * 跳转前台申请车辆页面
+     * @return
+     */
+    @RequestMapping("carone")
+    public String carone(){
+        return "frontHtml/car/carone";
+    }
+    /**
      * 跳转历史记录
      * @return
      */
