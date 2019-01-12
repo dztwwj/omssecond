@@ -13,7 +13,7 @@ public class User {
     private String epassword;
     private String ename;
     private Integer iseffective;
-
+    private String position;
 
     public Integer getEid() {
         return eid;
@@ -53,5 +53,13 @@ public class User {
 
     public void setIseffective(Integer iseffective) {
         this.iseffective = iseffective;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 }
