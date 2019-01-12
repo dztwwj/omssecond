@@ -48,6 +48,12 @@ public class CarApplyServiceImpl implements CarApplyService {
     public int getCarCountQian(Map map) {
         return carApplyDao.getCarCountQian(map);
     }
+
+    @Override
+    public String getDname(String position) {
+        return carApplyDao.getDname(position);
+    }
+
     /**
      * 添加维修的车辆
      */

@@ -48,13 +48,21 @@ public class DepartureController {
      * 跳转离职前台页面
      * @return
      */
+    @RequestMapping("/departureApply")
+    public String departureWanliu(){
+        return "frontHtml/departure/departureApply";
+    }
+    /**
+     * 点击离职判断跳转路径，申请过的话请耐心等待，未申请成功进入挽留页面
+     * @return
+     */
     @RequestMapping("/departureQian")
     public String departureQian(){
         int count = departureService.selectCount();
         if(count >0){
             return "frontHtml/departure/wait";
         }else{
-            return "frontHtml/departure/departureApply";
+            return "frontHtml/departure/wanliu";
         }
     }
 
@@ -99,4 +107,5 @@ public class DepartureController {
 
         return departureService.apply(map);
     }
+
 }

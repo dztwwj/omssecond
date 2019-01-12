@@ -69,10 +69,10 @@
                 border
                 @selection-change="selectionChange"
                 style="width: 100%">
-            <el-table-column
-                    type="selection"
-                    >
-            </el-table-column>
+            <!--<el-table-column-->
+                    <!--type="selection"-->
+                    <!--&gt;-->
+            <!--</el-table-column>-->
             <el-table-column
                     prop="EMPNUM"
                     label="工号"
@@ -151,23 +151,23 @@
     </el-row>
 
     <!--列表底部工具条和分页符-->
-    <el-row style="margin-top: 20px" type="flex" justify="end">
-        <!--<el-col :span="6" >-->
-            <!--<el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>-->
+    <!--<el-row style="margin-top: 20px" type="flex" justify="end">-->
+        <!--&lt;!&ndash;<el-col :span="6" >&ndash;&gt;-->
+            <!--&lt;!&ndash;<el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>&ndash;&gt;-->
+        <!--&lt;!&ndash;</el-col>&ndash;&gt;-->
+        <!--<el-col :span="18" >-->
+            <!--<el-pagination-->
+                    <!--style="float: right"-->
+                    <!--@size-change="pageSizeChange"-->
+                    <!--@current-change="currentPageChange"-->
+                    <!--:current-page="currentPage"-->
+                    <!--:page-sizes="[5,10, 20, 30, 50]"-->
+                    <!--:page-size="pageSize"-->
+                    <!--layout="total, sizes, prev, pager, next, jumper"-->
+                    <!--:total="total">-->
+            <!--</el-pagination>-->
         <!--</el-col>-->
-        <el-col :span="18" >
-            <el-pagination
-                    style="float: right"
-                    @size-change="pageSizeChange"
-                    @current-change="currentPageChange"
-                    :current-page="currentPage"
-                    :page-sizes="[5,10, 20, 30, 50]"
-                    :page-size="pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="total">
-            </el-pagination>
-        </el-col>
-    </el-row>
+    <!--</el-row>-->
 
     <!--编辑界面-->
     <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">

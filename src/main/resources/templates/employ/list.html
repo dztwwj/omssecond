@@ -413,10 +413,10 @@
             var end =this.currentPage*this.pageSize+1;
             axios.post('/employ/page',{'start':start,'end':end,'STATE':"'待审核'"}).then(function(response){
                 // console.log(response.data);
-                alert(response.data.total);
+                //alert(response.data.total);
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
-                alert(JSON.stringify(response.data.pageData));
+                //alert(JSON.stringify(response.data.pageData));
                 // self.multipleSelection=response.data.data;
             });
             axios.post('/employ/deptt').then(function(response){
@@ -437,7 +437,7 @@
                     //alert(response.data+","+JSON.stringify(response.data));
                     //alert(response.data[0]);
                     //alert(response.data[0].RECRUITNUM);
-                    alert(response.data[0].ID)
+                    //alert(response.data[0].ID)
                     self.editForm.ID=response.data[0].ID;
                     self.editForm.RECRUITNUM=response.data[0].NUMBERS;
                     self.editForm.RECRUITPOS=response.data[0].JOBS;

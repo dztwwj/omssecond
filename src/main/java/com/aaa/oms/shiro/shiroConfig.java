@@ -48,12 +48,8 @@ public class shiroConfig {
          *
          */
 
-
-        //filterMap.put("/dept/toList","authc");
-        //filterMap.put("/shiro/toLogin","anon");
         filterMap.put("/toLogin","anon");
         //放行indexht页面
-        //filterMap.put("/shiro/indexht","anon");
         filterMap.put("/indexht","anon");
         filterMap.put("/qiantai","anon");
 
