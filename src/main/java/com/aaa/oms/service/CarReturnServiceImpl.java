@@ -42,7 +42,6 @@ public class CarReturnServiceImpl implements CarReturnService{
     @Override
     public int updateToTG(Map map) {
         carReturnDao.turnCaraToTG(map);
-
         return carReturnDao.turnCarToUse(map);
     }
 

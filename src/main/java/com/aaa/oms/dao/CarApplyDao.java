@@ -97,14 +97,14 @@ public interface CarApplyDao {
     @Update(value ="update cu_carapplicatinon set result = 1 where id = #{ID}")
     int updateCaraToTG(Map map);
     /**
-     *
+     *更新汽车申请表的状态为审核驳回
      * @param map
      * @return
      */
     @Update(value ="update cu_carinfo set state =2 where id= #{CARID}")
     int turnCarToUse(Map map);
     /**
-     *
+     *还车失败
      * @param map
      * @return
      */

@@ -53,7 +53,11 @@ public interface CarApplyService {
      * @return
      */
     List<Map> getLiscense();
-
+    /**
+     * 审核通过
+     *
+     * @return
+     */
     int updateCarToUse(Map map);
 
 }

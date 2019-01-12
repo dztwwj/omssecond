@@ -41,11 +41,9 @@ public class CarMaintenanceController {
     @ResponseBody
     @RequestMapping("carmlist")
     public Object carmlist(@RequestBody Map parMap){
-       // System.out.println("parMap"+parMap);
         Map map = new HashMap();
         map.put("total", carMaintenanceService.getCarCount(parMap));
         map.put("pageData", carMaintenanceService.getCarMaintenance(parMap));
-       // System.out.println("jjjj"+map);
         return map;
     }
     /**
