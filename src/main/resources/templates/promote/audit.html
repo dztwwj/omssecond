@@ -72,6 +72,11 @@
             >
             </el-table-column>
             <el-table-column
+                    prop="EMPNUM"
+                    label="工号"
+            >
+            </el-table-column>
+            <el-table-column
                     prop="TELEPHONE"
                     label="电话"
                     >
@@ -148,6 +153,7 @@
             </el-form-item>
             <el-form-item label="姓名" prop="ENAME">
                 <el-input v-model="editForm.ENAME" auto-complete="off" disabled ></el-input><!--disabled 禁用，不可编辑-->
+                <el-input v-model="editForm.EMPNUM" auto-complete="off" disabled type ="hidden"></el-input><!--disabled 禁用，不可编辑-->
             </el-form-item>
             <el-form-item label="电话" prop="TELEPHONE">
                 <el-input v-model="editForm.TELEPHONE" auto-complete="off" disabled ></el-input><!--disabled 禁用，不可编辑-->
@@ -163,6 +169,7 @@
             </el-form-item>
             <el-form-item label="申请职位" prop="APPLYNAME">
                 <el-input v-model="editForm.APPLYNAME" auto-complete="off" disabled ></el-input><!--disabled 禁用，不可编辑-->
+                <el-input v-model="editForm.POSITIONID" auto-complete="off" disabled type = "hidden"></el-input><!--disabled 禁用，不可编辑-->
             </el-form-item>
 
         </el-form>

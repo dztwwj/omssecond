@@ -30,10 +30,23 @@ public interface LeaveService {
      */
     int updateTG(Map map);
     /**
+     * 请假通过呈报
+     * @param map
+     * @return
+     */
+    int updateTGTo2(Map map);
+    /**
      * 请假驳回
      * @param map
      * @return
      */
     int updateNoTG(Map map);
+
+    /**
+     * 请假添加
+     * @param map
+     * @return
+     */
+    int add(Map map);
 
 }
