@@ -73,24 +73,6 @@
                     label="添加人姓名"
                     width="100">
             </el-table-column>
-            <!--<el-table-column
-                    prop="TOP"
-                    label="是否顶置"
-                    :formatter="isTOP"
-                    width="80">
-            </el-table-column>
-            <el-table-column
-                    prop="TITLEBOLD"
-                    label="是否加粗"
-                    :formatter="isTITLEBOLD"
-                    width="80">
-            </el-table-column>
-            <el-table-column
-                    prop="TITLECOLOR"
-                    label="是否标红"
-                    :formatter="isTITLECOLOR"
-                    width="80">
-            </el-table-column>-->
             <el-table-column
                     prop="CONFIRMID"
                     label="是否发布"
@@ -149,12 +131,29 @@
     <!--编辑界面-->
     <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
         <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
-
             <el-form-item label="新闻标题">
                 <el-input v-model="editForm.NTITLE"></el-input>
             </el-form-item>
             <el-form-item label="新闻简介">
                 <el-input  v-model="editForm.NINTRO"></el-input>
+            </el-form-item>
+            <el-form-item label="新闻内容">
+                <el-input
+                    type="textarea"
+                    :rows="5"
+                    placeholder="请输入内容"
+                    v-model="editForm.NCLOB">
+                </el-input>
+            </el-form-item>
+            <el-form-item label="新闻类型" prop="NCID">
+                <el-select v-model="editForm.NCID" placeholder="请选择">
+                    <el-option
+                            v-for="item in newstype"
+                            :key="item.NCID"
+                            :label="item.NCNAME"
+                            :value="item.NCID">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="添加人部门" prop="SECTIONNAME">
                 <el-select v-model="editForm.SECTIONNAME" placeholder="请选择">
@@ -169,24 +168,6 @@
             <el-form-item label="添加人姓名">
                 <el-input  v-model="editForm.ADDEMPNAME"></el-input>
             </el-form-item>
-            <!--<el-form-item label="是否顶置">
-                <el-select v-model="editForm.TOP" placeholder="是否顶置">
-                    <el-option label="是" value="2" ></el-option>
-                    <el-option label="否" value="1"></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="是否加粗">
-                <el-select v-model="editForm.TITLEBOLD" placeholder="是否删除">
-                    <el-option label="是" value=2></el-option>
-                    <el-option label="否" value=1></el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="是否标红">
-                <el-select v-model="editForm.TITLECOLOR" placeholder="是否标红">
-                    <el-option label="是" value="2"></el-option>
-                    <el-option label="否" value="1"></el-option>
-                </el-select>
-            </el-form-item>-->
             <el-form-item v-if="isAdd" label="原图片" prop="COVERPLOTPATH">
                 <a :href="'/news/downloadPic?fileName='+editForm.COVERPLOTPATH"><img slot="reference" :src="path+editForm.COVERPLOTPATH" height="100" min-width="70"></a>
             </el-form-item>
@@ -224,14 +205,16 @@
         }
     });
 
+
     var tableView = new Vue({
         el: '#tableView',
         data: {
+
             imgList:[],
             isAdd:false,
             path:'/news/show?fileName=',
             optiondept:[],
-            //select
+            newstype:[],
             options:[{DSTATUS:1,value:'可用'},{DSTATUS:2,value:'不可用'}],
             //列表数据
             tableData: [],
@@ -264,11 +247,9 @@
             editForm: {
                 NTITLE: '',
                 NINTRO: '',
+                NCLOB:'',
                 ADDEMPNAME: '',
                 SECTIONNAME: '',
-                /*TOP: '',
-                TITLEBOLD: '',
-                TITLECOLOR: '',*/
                 COVERPLOTPATH: '',
                 ADDTIME: ''
             },
@@ -279,15 +260,14 @@
             var start =(this.currentPage-1)*this.pageSize;
             var end =this.currentPage*this.pageSize+1;
             axios.post('/news/page',{'start':start,'end':end}).then(function(response){
-                // console.log(response.data);
-                //alert(response.data.total);
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
-                // alert(JSON.stringify(response.data.pageData));
-                // self.multipleSelection=response.data.data;
             });
-            axios.post('/news/list').then(function(response){
+            axios.post('/dept/list').then(function(response){
                 self.optiondept=response.data;
+            })
+            axios.post('/news/list').then(function(response){
+                self.newstype=response.data;
             })
         },
 
@@ -306,15 +286,11 @@
                 var self = this;
                 var start =(this.currentPage-1)*this.pageSize;
                 var end =this.currentPage*this.pageSize+1;
-                //  alert(this.searchForm.id);
                 var searchForm={'start':start,'end':end,'ntitle':this.searchForm.ntitle};
-                //alert(JSON.stringify(searchForm));
                 axios.post('/news/page',searchForm).then(function(response){
                     console.log(response.data);
-                    //alert(2);
                     _self.total=response.data.total;
                     _self.tableData = response.data.pageData;
-                    //_self.multipleSelection=response.data.data;
                 })
                 console.log(_self.currentPage);
                 setTimeout(function(){
@@ -322,15 +298,6 @@
                     _self.loading = false;
                 },300);
             },
-            /*isTOP:function(row,colum){
-                return row.TOP === 1 ? '否' : row.TOP === 2 ? '是':'错误'
-            },
-            isTITLEBOLD:function(row,colum){
-                return row.TITLEBOLD === 1 ? '否' : row.TITLEBOLD === 2 ? '是':'错误'
-            },
-            isTITLECOLOR:function(row,colum){
-                return row.TITLECOLOR ==='1'? '否' : row.TITLECOLOR ==='2'? '是':'错误'
-            },*/
             isCONFIRMID:function(row,colum){
                 return row.CONFIRMID === 1 ? '否' : row.CONFIRMID === 2 ? '是':'错误'
             },
@@ -399,9 +366,6 @@
                     NINTRO: '',
                     ADDEMPNAME: '',
                     SECTIONNAME: '',
-                    /*TOP: '',
-                    TITLEBOLD: '',
-                    TITLECOLOR: '',*/
                     COVERPLOTPATH: '',
                     ADDTIME: ''
                 }

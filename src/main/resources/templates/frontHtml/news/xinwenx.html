@@ -1,90 +1,333 @@
-﻿<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="utf-8">
-    <title>新闻</title>
-    <meta name="keywords" content="[!--pagekey--]"/>
-    <meta name="description" content="[!--pagedes--]"/>
-    <link href="/css/master.css" type="text/css" rel="stylesheet"/>
-    <link href="/css/base.css" type="text/css" rel="stylesheet"/>
-    <script type="text/javascript" src="/js/jquery.js"></script>
-    <script type="text/javascript" src="/js/SuperSlide.js?v2.1"></script>
-    <script type="text/javascript" src="/js/jquery.jclock.js"></script>
-    <link rel="stylesheet" href="/css/style.css" type="text/css"></link>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+
+    <!-- Title -->
+    <title>瓜皮公司</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="../img/core-img/favicon.ico">
+
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- ##### All Javascript Files ##### -->
+    <!-- jQuery-2.2.4 js -->
+    <script src="../js/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="../js/bootstrap/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="../js/bootstrap/bootstrap.min.js"></script>
+    <!-- All Plugins js -->
+    <script src="../js/plugins/plugins.js"></script>
+    <!-- Active js -->
+    <script src="../js/active.js"></script>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!--<link rel="stylesheet" href="../css/elementui.css">-->
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!--<script src="../js/elementui.js"></script>-->
+
 </head>
 
-
 <body>
-<!--------------------------------------------头部开始-------------------------------------------->
-<div class="zxcf_top_wper">
-    <div class="zxcf_top px1000 clearfix" align="center">
-        <div class="zxcf_top_l fl">
-
-            <img src="">
-            +1 234 122 122(工作时间9:00-17:30)
-            
-        </div>
-        <div class="zxcf_top_r fr">
-            <a href="/qian/denglu" class="curspan">立即登录</a>
-            <span>|</span>
-            <a href="">免费注册</a>
-            <span>|</span>
-            <a href="">常见问题</a>
+    <!-- Preloader -->
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="preloader-circle"></div>
+        <div class="preloader-img">
+            <img src="../img/core-img/leaf.png" alt="">
         </div>
     </div>
-</div>
-<!-- end top -->
 
-<!--------------------------------------------头部结束-------------------------------------------->
+    <!-- ##### Header Area Start ##### -->
+    <header class="header-area">
 
-<div class="index-main clearfix">
+        <!-- ***** Top Header Area ***** -->
+        <div class="top-header-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="top-header-content d-flex align-items-center justify-content-between">
+                            <!-- Top Header Content -->
+                            <div class="top-header-meta">
+                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="infodeercreative@gmail.com"><i class="fa fa-envelope-o" aria-hidden="true"></i> <span>Email: infodeercreative@gmail.com</span></a>
+                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="+1 234 122 122"><i class="fa fa-phone" aria-hidden="true"></i> <span>Call Us: +1 234 122 122</span></a>
+                            </div>
 
-    <div class="newsnav yh"><a href="/qian/shouye">首页</a> > 新闻</div>
+                            <!-- Top Header Content -->
+                            <div class="top-header-meta d-flex">
+                                <!-- Language Dropdown -->
+                                <div class="language-dropdown">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle mr-30" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Language</button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">USA</a>
+                                            <a class="dropdown-item" href="#">UK</a>
+                                            <a class="dropdown-item" href="#">Bangla</a>
+                                            <a class="dropdown-item" href="#">Hindi</a>
+                                            <a class="dropdown-item" href="#">Spanish</a>
+                                            <a class="dropdown-item" href="#">Latin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Login -->
+                                <div class="login">
+                                    <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span>登录</span></a>
+                                </div>
+                                <!-- Cart -->
+                                <!-- <div class="cart">
+                                    <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i> <span>Cart <span class="cart-quantity">(1)</span></span></a>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div class="content clearfix">
-        <div class="biaoti">二手房贷款应提供的证明</div>
-        <div class="nr">
-            <p><img src="/images/6.jpg" style=" float:left; margin-right:20px;" width="207" height="276">
+        <!-- ***** Navbar Area ***** -->
+        <div class="alazea-main-menu">
+            <div class="classy-nav-container breakpoint-off">
+                <div class="container">
+                    <!-- Menu -->
+                    <nav class="classy-navbar justify-content-between" id="alazeaNav">
 
-                　
+                        <!-- Nav Brand -->
+                        <a href="index.html" class="nav-brand"><img src="../img/core-img/logo1.jpg" width="80px" height="22px" alt=""></a>
 
+                        <!-- Navbar Toggler -->
+                        <div class="classy-navbar-toggler">
+                            <span class="navbarToggler"><span></span><span></span><span></span></span>
+                        </div>
 
-                【先办理过户 再申请贷款】
+                        <!-- Menu -->
+                        <div class="classy-menu">
 
-                一、提供《新乡市个人住房公积金贷款申请表》1份。<br>
-                二、提供借款人及配偶身份证、户口本原件及2份复印件<br>。
-                ★户口本上不显示夫妻关系的要提供结婚证原件及2份复印件；<br>
-                ★借款人未婚的，提供未婚声明2份；<br>
-                ★借款人离异未再婚的，提供：⑴未再婚声明2份；⑵离婚证及离婚协议书或离婚判决书原件及2份复印件；<br>
-                ★借款人丧偶未再婚的，提供：⑴未再婚声明2份；⑵死亡证明原件及2份复印件。<br>
-                三、提供人行出具的借款人及配偶《个人信用报告》原件及1份复印件。<br>
-                四、提供所购住房《新乡市存量房买卖合同》或《房屋买卖契约》复印件2份并盖“新乡市不动产登记和交易中心”业务章及“此件与原件相符”长条章。<br>
-                五、提供所购住房《中华人民共和国税收缴款书》原件及2份复印件。<br>
-                六、提供所购住房《不动产权证书》（2个月内申请贷款有效）、《国有土地证》(单元房除外)原件及2份复印件。<br>
-                七、提供家庭成员（包括借款人、配偶及未成年子女）户口所在地和购房所在地县（市）级以上房管部门出具的《房产查询证明》原件及1份复印件。<br>
+                            <!-- Close Button -->
+                            <div class="classycloseIcon">
+                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                            </div>
 
-                温馨提示：若家庭成员户口所在地为两地及以上的，需出具每个户口所在地全部家庭成员（包括借款人、配偶及未成年子女）的《房产查询证明》 。<br>
-               
-            </p>
+                            <!-- Navbar Start -->
+                            <div class="classynav">
+                                <ul>
+                                    <li><a href="index.html">首页</a></li>
+                                    <li><a href="http://localhost:8888/news/aaa">新闻中心</a></li>
+									<li><a href="shop.html">车辆管理</a></li>
+									<li><a href="portfolio.html">培训计划与实施</a></li>
+									<li><a href="http://localhost:8888/user/toList">招聘信息</a></li>
+                                    <li><a href="#">个人中心</a></li>
+                                    
+                                </ul>
+
+                                <!-- Search Icon -->
+                                <div id="searchIcon">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </div>
+
+                            </div>
+                            <!-- Navbar End -->
+                        </div>
+                    </nav>
+
+                    <!-- Search Form -->
+                    <div class="search-form">
+                        <form action="#" method="get">
+                            <input type="search" name="search" id="search" placeholder="Type keywords &amp; press enter...">
+                            <button type="submit" class="d-none"></button>
+                        </form>
+                        <!-- Close Icon -->
+                        <div class="closeIcon"><i class="fa fa-times" aria-hidden="true"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ##### Header Area End ##### -->
+
+    <!-- ##### Breadcrumb Area Start ##### -->
+    <div class="breadcrumb-area">
+        <!-- Top Breadcrumb Area -->
+        <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(/img/bg-img/24.jpg);height: 130px;">
+
+        </div>
+        <div class="sidebar fl" align="center">
+            <dl class="border">
+                <dt>新闻内容</dt>
+            </dl>
+            <a href="" class="ad center mt10"><img src="http://www.chinaunicom.com/images/banner/1news.png" height="200"></a>
         </div>
     </div>
-</div>
-
-
-</div>
-
-<div class="zscf_bottom_wper" align="center">
-    <div class="zscf_bottom px1000 clearfix">
-        <p class="fl">© 2014 zhongxincaifu &nbsp; &nbsp;&nbsp; 瓜皮股份有限公司 &nbsp;&nbsp;&nbsp;</p>
-        <p class="fr">
-            <a href="#"><img src="http://www.10086.cn/ha_tail/images/knetSealLogo.png"></a>
-            <a href="#"><img src="" alt=""></a>
-           
-        </p>
+    <!-- ##### Breadcrumb Area End ##### -->
+<!--#####element内容开始#####-->
+    <center>
+    <div id = "element" style="width: 800px;" align="center">
+        {{message}}
     </div>
-</div>
+    <script>
+        var element = new Vue({
+            el: '#element',
+            data: {
+                message: [],
+            },
+            created:function(){
+                var _self = this;
+                axios.post('/news/selectNclobByNid',{'nid':[[${nnid}]]}).then(function(response){
+                    _self.message = response.data[0].NCLOB;
+                })
+            },
+        });
+    </script>
+    <!--#####element的script结束#####-->
+    
+
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="footer-area bg-img" style="background-image: url(/img/bg-img/3.jpg);">
+        <!-- Main Footer Area -->
+        <div class="main-footer-area">
+            <div class="container">
+                <div class="row">
+
+                    <!-- Single Footer Widget -->
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="single-footer-widget">
+                            <div class="footer-logo mb-30">
+                                <a href="#"><img src="../img/core-img/logo.png" alt=""></a>
+                            </div>
+                            <p>欢迎回家</p>
+                            <div class="social-info">
+                                <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                                <a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                                <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                                <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Single Footer Widget -->
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="single-footer-widget">
+                            <div class="widget-title">
+                                <h5>QUICK LINK</h5>
+                            </div>
+                            <nav class="widget-nav">
+                                <ul>
+                                    <li><a href="#">Purchase</a></li>
+                                    <li><a href="#">FAQs</a></li>
+                                    <li><a href="#">Payment</a></li>
+                                    <li><a href="#">News</a></li>
+                                    <li><a href="#">Return</a></li>
+                                    <li><a href="#">Advertise</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Career</a></li>
+                                    <li><a href="#">Orders</a></li>
+                                    <li><a href="#">Policities</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <!-- Single Footer Widget -->
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="single-footer-widget">
+                            <div class="widget-title">
+                                <h5>BEST SELLER</h5>
+                            </div>
+
+                            <!-- Single Best Seller Products -->
+                            <div class="single-best-seller-product d-flex align-items-center">
+                                <div class="product-thumbnail">
+                                    <a href="shop-details.html"><img src="../img/bg-img/4.jpg" alt=""></a>
+                                </div>
+                                <div class="product-info">
+                                    <a href="shop-details.html">Cactus Flower</a>
+                                    <p>$10.99</p>
+                                </div>
+                            </div>
+
+                            <!-- Single Best Seller Products -->
+                            <div class="single-best-seller-product d-flex align-items-center">
+                                <div class="product-thumbnail">
+                                    <a href="shop-details.html"><img src="../img/bg-img/5.jpg" alt=""></a>
+                                </div>
+                                <div class="product-info">
+                                    <a href="shop-details.html">Tulip Flower</a>
+                                    <p>$11.99</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Single Footer Widget -->
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="single-footer-widget">
+                            <div class="widget-title">
+                                <h5>CONTACT</h5>
+                            </div>
+
+                            <div class="contact-information">
+                                <p><span>地址:</span> 河南省-郑州市-金水区-杨金路-牛顿国际</p>
+                                <p><span>联系方式:</span> +1 234 122 122</p>
+                                <p><span>邮箱:</span> 好好学习@gmail.com</p>
+                                <p><span>Open hours:</span> Mon - Sun: 8 AM to 9 PM</p>
+                                <p><span>Happy hours:</span> Sat: 2 PM to 4 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bottom Area -->
+        <div class="footer-bottom-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="border-line"></div>
+                    </div>
+                    <!-- Copywrite Text -->
+                    <div class="col-12 col-md-6">
+                        <div class="copywrite-text">
+                            <p>&copy;
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> - Colorlib All rights reserved | More Templates <a href="http://www.cssmoban.com/" target="_blank" title="项目首页">项目首页</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
+
+</p>
+                        </div>
+                    </div>
+                    <!-- Footer Nav -->
+                    <div class="col-12 col-md-6">
+                        <div class="footer-nav">
+                            <nav>
+                                <ul>
+                                    <li><a href="#">Home</a></li>
+                                    <li><a href="#">About</a></li>
+                                    <li><a href="#">Service</a></li>
+                                    <li><a href="#">Portfolio</a></li>
+                                    <li><a href="#">Blog</a></li>
+                                    <li><a href="#">Contact</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ##### Footer Area End ##### -->
 
 
-<script src="/js/all.js" type="text/javascript"></script>
 </body>
+
 </html>

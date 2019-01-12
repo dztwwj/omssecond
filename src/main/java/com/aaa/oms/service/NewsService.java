@@ -18,6 +18,12 @@ public interface NewsService {
      * @return
      */
     List<Map> getPageParam(Map map);
+    /**
+     * 通过ni查询nclob
+     * @param map
+     * @return
+     */
+    List<Map> selectNclobByNid(Map map);
 
     /**
      * 查询分页总数量
@@ -25,6 +31,8 @@ public interface NewsService {
      * @return
      */
     int getPageCount(Map map);
+
+
     /**
      * 新闻的添加
      * @param map
@@ -52,4 +60,12 @@ public interface NewsService {
      * @return
      */
     int updateCon(int NID);
+
+    /**
+     * 根据ncid查询新闻分类
+     * @return
+     */
+    List<Map> getList(Map map);
+
+
 }

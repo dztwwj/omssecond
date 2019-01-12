@@ -18,7 +18,7 @@
     <!-- Core Stylesheet -->
     <link rel="stylesheet" href="../style.css">
 
-
+    <!-- ##### All Javascript Files ##### -->
     <!-- jQuery-2.2.4 js -->
     <script src="../js/jquery/jquery-2.2.4.min.js"></script>
     <!-- Popper js -->
@@ -123,14 +123,14 @@
                                 <ul>
                                     <li><a href="index.html">首页</a></li>
                                     <li><a href="http://localhost:8888/news/aaa">新闻中心</a></li>
-                                    <li><a href="shop.html">车辆管理</a></li>
-                                    <li><a href="portfolio.html">培训计划与实施</a></li>
-                                    <li><a href="http://localhost:8888/user/toList">招聘信息</a></li>
+									<li><a href="shop.html">车辆管理</a></li>
+									<li><a href="portfolio.html">培训计划与实施</a></li>
+									<li><a href="http://localhost:8888/user/toList">招聘信息</a></li>
                                     <li><a href="#">个人中心</a>
                                         <ul class="dropdown">
                                             <li><a href="index.html">请假</a></li>
                                             <li><a href="about.html">离职</a></li>
-                                            <li><a href="about.html">申请晋升</a></li>
+											<li><a href="about.html">申请晋升</a></li>
                                             <li><a href="shop.html">Shop</a>
                                                 <ul class="dropdown">
                                                     <li><a href="shop.html">Shop</a></li>
@@ -154,7 +154,7 @@
                                             <li><a href="contact.html">Contact</a></li>
                                         </ul>
                                     </li>
-
+                                    
                                 </ul>
 
                                 <!-- Search Icon -->
@@ -183,361 +183,442 @@
     <!-- ##### Header Area End ##### -->
 
     <!-- ##### Breadcrumb Area Start ##### -->
-    <div class="breadcrumb-area" align="center">
+    <div class="breadcrumb-area">
         <!-- Top Breadcrumb Area -->
-        <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(/img/bg-img/24.jpg); height: 130px;">
-
+        <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(../../../static/img/bg-img/24.jpg);">
+            <h2>Contact US</h2>
         </div>
-        <div class="sidebar fl" align="center">
-            <dl class="border">
-                <dt>新闻栏目</dt>
-            </dl>
-            <a href="" class="ad center mt10"><img src="http://www.chinaunicom.com/images/banner/1news.png" height="200"></a>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Contact</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
         </div>
     </div>
     <!-- ##### Breadcrumb Area End ##### -->
-    <!--#####element内容开始#####-->
+<!--#####element内容开始#####-->
+    <center>
+<div id = "element" style="width: 1500px;">
 
-    <div id="tableView" style="width: 100%;padding-bottom: 25px;padding-top: 15px;padding: 15px 300px 25px 300px;">
-        <!--列表1-->
+    <div id="app">
+        <h2>{{ message }}</h2>
+    </div>
+
+    <div id="tableView">
+        <!--列表顶部搜索和工具条-->
         <el-row>
-            <el-table
-                    :data="tableData1"
-                    v-loading.body="loading"
-                    border:0px
-                    style="width: 520px;float: left;margin-left: 250px;">
-                <el-table-column
-                        prop="ADDTIME"
-                        label="媒体聚焦"
-                        width="160">
-                </el-table-column>
-                <el-table-column
-                        prop="NTITLE"
-                        label=""
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="NCLOB"
-                        label=""
-                        width="180">
-                    <template scope="scopes">
-                        <el-button type="text" @click="open(scopes.row)">详情</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-col :span="15" >
-                <el-pagination
-                        style="width: 340px;float: left;margin-left: 250px;"
-                        layout="prev, pager, next"
-                        @current-change="currentPageChange1"
-                        :current-page="currentPage1"
-                        :page-size="pageSize1"
-                        :total="total1">
-                </el-pagination>
-            </el-col>
+            <el-form :inline="true" :model="searchForm" class="demo-form-inline">
+                <!--<el-form-item label="员工名称">-->
+                <!--<el-input v-model="searchForm.ENAME" placeholder="员工名称"></el-input>-->
+                <!--</el-form-item>-->
+                <!-- <el-form-item label="状态">
+                     <el-input v-model="searchForm.dstatus" placeholder="状态"></el-input>
+                 </el-form-item>
+                 <el-form-item label="描述">
+                     <el-input v-model="searchForm.describes" placeholder="描述"></el-input>
+                 </el-form-item>-->
+                <!--<template>
+                    <el-select v-model="searchForm.deptNo" placeholder="请选择所在员工">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.DEPTNO"
+                                :label="item.DNAME"
+                                :value="item.DEPTNO">
+                        </el-option>
+                    </el-select>
+                </template>
+            </el-form-item>-->
+                <el-form-item>
+                    <!--<el-button type="primary" icon="search" @click="searchClick">查询</el-button>-->
+                    <el-button type="success" icon="plus" @click="addClick">新增</el-button>
+                </el-form-item>
+            </el-form>
         </el-row>
-        <!--列表2-->
-        <el-row>
-            <el-table
-                    :data="tableData2"
-                    v-loading.body="loading"
-                    border:0px
-                    style="width: 520px;float: left;margin-left: 250px;">
-                <el-table-column
-                        prop="ADDTIME"
-                        label="公司新闻"
-                        width="160">
-                </el-table-column>
-                <el-table-column
-                        prop="NTITLE"
-                        label=""
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="NCLOB"
-                        label=""
-                        width="180">
-                    <template scope="scopes">
-                        <el-button type="text" @click="open(scopes.row)">详情</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-col :span="15" >
-                <el-pagination
-                        style="width: 340px;float: left;margin-left: 250px;"
-                        layout="prev, pager, next"
-                        @current-change="currentPageChange2"
-                        :current-page="currentPage2"
-                        :page-size="pageSize2"
-                        :total="total2">
-                </el-pagination>
-            </el-col>
-        </el-row>
-        <!--列表3-->
-        <el-row>
-            <el-table
-                    :data="tableData3"
-                    v-loading.body="loading"
-                    border:0px
-                    style="width: 520px;float: left;margin-left: 250px;">
-                <el-table-column
-                        prop="ADDTIME"
-                        label="公司相关培训"
-                        width="160">
-                </el-table-column>
-                <el-table-column
-                        prop="NTITLE"
-                        label=""
-                        width="180">
-                </el-table-column>
-                <el-table-column
-                        prop="NCLOB"
-                        label=""
-                        width="180">
-                    <template scope="scopes">
-                        <el-button type="text" @click="open(scopes.row)">详情</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-            <el-col :span="15" >
-                <el-pagination
-                        style="width: 340px;float: left;margin-left: 250px;"
-                        layout="prev, pager, next"
-                        @current-change="currentPageChange3"
-                        :current-page="currentPage3"
-                        :page-size="pageSize3"
-                        :total="total3">
-                </el-pagination>
-            </el-col>
-        </el-row>
-        <!--列表4-->
+        <!--列表-->
         <el-row>
             <el-table
                     :data="tableData"
                     v-loading.body="loading"
-                    border:0px
-                    style="width: 520px;float: left;margin-left: 250px;">
+                    border
+                    @selection-change="selectionChange"
+                    style="width: 100%">
                 <el-table-column
-                        prop="ADDTIME"
-                        label="国家动态"
-                        width="160">
+                        type="selection"
+                >
                 </el-table-column>
                 <el-table-column
-                        prop="NTITLE"
-                        label=""
-                        width="180">
+                        prop="ID"
+                        label="编号"
+                >
                 </el-table-column>
                 <el-table-column
-                        prop="NCLOB"
-                        label=""
-                        width="180">
-                    <template scope="scopes">
-                        <el-button type="text" @click="open(scopes.row)">详情</el-button>
+                        prop="POSITIONNAME"
+                        label="职位名称"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="EMPNAME"
+                        label="发布人姓名"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="ENDAPPLY"
+                        label="申请结束时间"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="JOBCONTENT"
+                        label="工作内容"
+                >
+                </el-table-column>
+
+                <el-table-column
+                        prop="DEMANDNUM"
+                        label="所需人数"
+                >
+                </el-table-column>
+                <el-table-column
+                        prop="REQUIREMENTS"
+                        label="职位要求"
+                >
+                </el-table-column>
+                </el-table-column>
+                <el-table-column
+                        label="操作">
+                    <template scope="scope">
+                        <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑</el-button>
+                        <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
-            <el-col :span="15" >
+        </el-row>
+
+        <!--列表底部工具条和分页符-->
+        <el-row style="margin-top: 20px" type="flex" justify="end">
+            <el-col :span="6" >
+                <el-button :plain="true" type="danger" size="small" icon="delete" @click="removeSelection">删除所选</el-button>
+            </el-col>
+            <el-col :span="18" >
                 <el-pagination
-                        style="width: 340px;float: left;margin-left: 250px;"
-                        layout="prev, pager, next"
+                        style="float: right"
+                        @size-change="pageSizeChange"
                         @current-change="currentPageChange"
                         :current-page="currentPage"
+                        :page-sizes="[5,10, 20, 30, 50]"
                         :page-size="pageSize"
+                        layout="total, sizes, prev, pager, next, jumper"
                         :total="total">
                 </el-pagination>
             </el-col>
         </el-row>
-    </div>
 
+        <!--编辑界面-->
+        <el-dialog title="编辑" :visible.sync="editFormVisible" :close-on-click-modal="false">
+            <el-form :model="editForm" label-width="80px" :rules="editFormRules" ref="editForm">
+                <!--<el-form-item label="职位名称" prop="POSITIONNAME">-->
+                <!--<el-input v-model="editForm.POSITIONNAME" auto-complete="off"></el-input>-->
+                <!--</el-form-item>-->
+
+                <!--<el-form-item label="编号" prop="ID">-->
+                <el-input v-model="editForm.ID" auto-complete="off" type="hidden" prop="ID"></el-input><!--disabled 禁用，不可编辑-->
+                <!--</el-form-item>-->
+                <el-form-item label="职位名称">
+                    <template>
+                        <el-select v-model="editForm.POSITIONNAME" placeholder="请选择角色">
+                            <el-option
+                                    v-for="item in options"
+                                    :key="item.ID"
+                                    :label="item.POSITIONNAME"
+                                    :value="item.ID">
+                            </el-option>
+                        </el-select>
+                    </template>
+                </el-form-item>
+
+                <el-form-item label="所需人数" prop="DEMANDNUM">
+                    <el-input v-model="editForm.DEMANDNUM" auto-complete="off" ></el-input><!--disabled 禁用，不可编辑-->
+                </el-form-item>
+                <!--<el-form-item label="生日" prop="EMPBIRTHDAY">-->
+                <!--<el-input v-model="editForm.EMPBIRTHDAY" auto-complete="off"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="申请期限" prop="DAY">-->
+                <!--<el-input v-model="editForm.DAY" auto-complete="off"></el-input>-->
+                <!--</el-form-item>-->
+                <el-form-item label="申请期限" prop="ENDAPPLY">
+                    <!--<el-date-picker-->
+                    <!--v-model="ENDAPPLY"-->
+                    <!--type="datetime"-->
+                    <!--placeholder="选择日期时间"-->
+                    <!--align="right">-->
+                    <!--</el-date-picker>-->
+                    <el-date-picker type="date"
+
+                                    placeholder="选择日期"
+                                    v-model="editForm.ENDAPPLY"
+                    ><!--:picker-options="pickerOptions"-->
+                    </el-date-picker>
+
+                </el-form-item>
+
+                <el-form-item label="工作内容" prop="JOBCONTENT">
+                    <el-input v-model="editForm.JOBCONTENT" auto-complete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="职位要求" prop="REQUIREMENTS">
+                    <el-input v-model="editForm.REQUIREMENTS" auto-complete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click.native="editFormVisible = false">取消</el-button>
+                <el-button type="primary" @click.native="editSubmit" :loading="editLoading">提交</el-button>
+            </div>
+        </el-dialog>
+    </div>
+</div>
+    </center>
+    <!--#####element内容结束#####-->
+    <!--#####element的script开始#####-->
     <script type="text/javascript">
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: '晋升发布管理'
+            }
+        });
 
         var tableView = new Vue({
             el: '#tableView',
             data: {
-                isAdd:false,
-                path:'/news/show?fileName=',
-                //select
-                options:[{DSTATUS:1,value:'可用'},{DSTATUS:2,value:'不可用'}],
+                //职位下拉框查询
+                options:[],
                 //列表数据
                 tableData: [],
-                tableData1: [],
-                tableData2: [],
-                tableData3: [],
                 //显示加载中样式
                 loading:false,
+                //搜索表单
+                searchForm: {
+                    ENAME: ''
+                },
+
+                //多选值
+                multipleSelection: [],
                 //当前页
-                currentPage1:1,
-                currentPage2:1,
-                currentPage3:1,
                 currentPage:1,
                 //分页大小
-                pageSize1:3,
-                pageSize2:3,
-                pageSize3:3,
-                pageSize:3,
+                pageSize:5,
                 //总记录数
                 total:800,
-                total1:800,
-                total2:800,
-                total3:800,
-
-
+                //删除的弹出框
+                deleteVisible:false,
+                //编辑界面是否显示
+                editFormVisible: false,
+                editLoading: false,
                 goUrl:'',
                 editFormRules: {
                     name: [
-                        { required: true, message: '请输入名称', trigger: 'blur' }
+                        { required: true, message: '请输入员工', trigger: 'blur' }
                     ]
                 },
                 //编辑界面数据
                 editForm: {
-                    NTITLE: '',
-                    NINTRO: '',
-                    ADDEMPNAME: '',
-                    SECTIONNAME: '',
-                    COVERPLOTPATH: '',
-                    ADDTIME: ''
+                    POSITIONNAME: '',
+                    DEMANDNUM: '',
+                    EMPNAME: '',
+                    ENDAPPLY:'',
+                    JOBCONTENT: '',
+                    REQUIREMENTS: ''
+
                 },
             },
             created:function(){
                 //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
                 var self = this;
-                var start =(this.currentPage1-1)*this.pageSize1;
-                var end =this.currentPage1*this.pageSize1+1;
-                axios.post('/news/page',{'start':start,'end':end,'nccid':1,'del':2,'con':1}).then(function(response){
-                    self.total1=response.data.total;
-                    self.tableData1 = response.data.pageData;
-
-                });
-                var start =(this.currentPage2-1)*this.pageSize2;
-                var end =this.currentPage2*this.pageSize2+1;
-                axios.post('/news/page',{'start':start,'end':end,'nccid':2,'del':2,'con':1}).then(function(response){
-                    self.total2=response.data.total;
-                    self.tableData2 = response.data.pageData;
-                });
-                var start =(this.currentPage3-1)*this.pageSize3;
-                var end =this.currentPage3*this.pageSize3+1;
-                axios.post('/news/page',{'start':start,'end':end,'nccid':3,'del':2,'con':1}).then(function(response){
-                    self.total3=response.data.total;
-                    self.tableData3 = response.data.pageData;
-                });
                 var start =(this.currentPage-1)*this.pageSize;
                 var end =this.currentPage*this.pageSize+1;
-                axios.post('/news/page',{'start':start,'end':end,'nccid':4,'del':2,'con':1}).then(function(response){
+                axios.post('/promote/page',{'start':start,'end':end,'STATE':'0'}).then(function(response){
+                    // console.log(response.data);
+                    //alert(response.data.total);
                     self.total=response.data.total;
                     self.tableData = response.data.pageData;
+                    // alert(JSON.stringify(response.data.pageData));
+                    // self.multipleSelection=response.data.data;
                 });
+                axios.post('/promote/selectPosition').then(function(response){
+                    self.options=response.data;
+                })
             },
-
             methods:{
-                open:function(row) {
-                    location.href="/news/tonewx?nid="+row.NID;
-                },
-
                 //表格重新加载数据
-                loadingData1:function() {
-                    var _self = this;
-                    _self.loading = true;
-                    var self = this;
-                    var start =(this.currentPage1-1)*this.pageSize1;
-                    var end =this.currentPage1*this.pageSize1+1;
-                    axios.post('/news/page',{'start':start,'end':end,'nccid':1,'del':2,'con':1}).then(function(response){
-                        self.total1=response.data.total;
-                        self.tableData1 = response.data.pageData;
-                    });
-                    console.log(_self.currentPage1);
-                    setTimeout(function(){
-                        console.info("加载数据成功");
-                        _self.loading = false;
-                    },300);
-                },
-                loadingData2:function() {
-                    var _self = this;
-                    _self.loading = true;
-                    var self = this;
-                    var start =(this.currentPage2-1)*this.pageSize2;
-                    var end =this.currentPage2*this.pageSize2+1;
-                    axios.post('/news/page',{'start':start,'end':end,'nccid':2,'del':2,'con':1}).then(function(response){
-                        self.total2=response.data.total;
-                        self.tableData2 = response.data.pageData;
-                    });
-                    console.log(_self.currentPage2);
-                    setTimeout(function(){
-                        console.info("加载数据成功");
-                        _self.loading = false;
-                    },300);
-                },
-                loadingData3:function() {
-                    var _self = this;
-                    _self.loading = true;
-                    var self = this;
-                    var start =(this.currentPage3-1)*this.pageSize3;
-                    var end =this.currentPage3*this.pageSize3+1;
-                    axios.post('/news/page',{'start':start,'end':end,'nccid':3,'del':2,'con':1}).then(function(response){
-                        self.total3=response.data.total;
-                        self.tableData3 = response.data.pageData;
-                    });
-                    console.log(_self.currentPage3);
-                    setTimeout(function(){
-                        console.info("加载数据成功");
-                        _self.loading = false;
-                    },300);
-                },
                 loadingData:function() {
                     var _self = this;
                     _self.loading = true;
                     var self = this;
                     var start =(this.currentPage-1)*this.pageSize;
                     var end =this.currentPage*this.pageSize+1;
-                    axios.post('/news/page',{'start':start,'end':end,'nccid':4,'del':2,'con':1}).then(function(response){
-                        self.total=response.data.total;
-                        self.tableData = response.data.pageData;
-                    });
+                    //  alert(this.searchForm.id);
+                    var searchForm={'start':start,'end':end,'STATE':'0'};
+                    //alert(JSON.stringify(searchForm));
+                    axios.post('/promote/page',searchForm).then(function(response){
+                        console.log(response.data);
+                        // alert(222);
+                        _self.total=response.data.total;
+                        _self.tableData = response.data.pageData;
+                        //_self.multipleSelection=response.data.data;
+                    })
                     console.log(_self.currentPage);
                     setTimeout(function(){
                         console.info("加载数据成功");
                         _self.loading = false;
                     },300);
                 },
-//                //分页大小修改事件
-//                pageSizeChange:function(val) {
-//                    console.log('每页 ' + val +' 条');
-//                    this.pageSize1 = val;
-//                    var _self = this;
-//                    _self.loadingData1();//重新加载数据
-//                },
+                //表格编辑事件
+                editClick:function(row) {
+                    this.goUrl="/promote/update";
+                    this.editFormVisible = true;
+                    this.editForm = Object.assign({}, row);
+                },
+
+                deleteClick:function(row) {
+                    //alert(JSON.stringify(row));
+                    alert(row.ID);
+                    var _self = this;
+                    this.$confirm('确认删除' + row.ID +'吗?', '提示', {
+                        type: 'warning'
+                    }).then(function(){
+                        var  url="/promote/delete/"+row.ID;
+                        axios.get(url).then(function (response) {
+                            //alert(url);
+                            if(response.data>0){
+                                _self.$message({
+                                    message: row.ID + '删除成功',
+                                    type: 'success'
+                                });
+                                _self.loadingData();//重新加载数据
+                            }
+                        });
+                    }).catch(function(e){
+                        if(e != "cancel")
+                            console.log("出现错误：" + e);
+                    });
+                },
+                //新建事件
+                addClick:function() {
+                    this.goUrl="/promote/add";
+                    var _self = this;
+                    //清空缓冲数据
+                    this.editForm={
+                        POSITIONNAME: '',
+                        DEMANDNUM: '',
+                        EMPNAME: '',
+                        ENDAPPLY:'',
+                        JOBCONTENT: '',
+                        REQUIREMENTS: ''
+                    }
+                    //显示隐藏的form表单
+                    this.editFormVisible = true;
+                    _self.loadingData();//重新加载数据
+                },
+                //表格查询事件
+                // searchClick:function() {
+                //     var self = this;
+                //     self.loadingData();//重新加载数据
+                // },
+                //表格勾选事件
+                selectionChange:function(val) {
+                    for(var i=0;i<val.length;i++) {
+                        var row = val[i];
+                    }
+                    this.multipleSelection = val;
+                    console.info(val);
+                },
+                //删除所选，批量删除
+                removeSelection:function() {
+                    var _self = this;
+                    var multipleSelection = this.multipleSelection;
+                    if(multipleSelection.length < 1) {
+                        _self.$message({
+                            message: '请至少选中一条记录',
+                            type: 'error'
+                        });
+                        return;
+                    }
+                    var ids = "";
+                    for(var i=0;i<multipleSelection.length;i++) {
+                        var row = multipleSelection[i];
+                        ids += row.ID + ","
+
+                    }
+                    this.$confirm('确认删除' + ids +'吗?', '提示', {
+                        type: 'warning'
+                    }).then(function(){
+                        var  url="/promote/delete/"+ids;
+                        axios.get(url).then(function (response) {
+                            //alert(response.data);
+                            var temp="";
+                            if(response.data>0){
+                                temp="删除成功";
+                            }else {
+                                temp="删除失败";
+                            }
+                            _self.$message({
+                                message: ids + temp,
+                                type: 'success'
+                            });
+                            _self.loadingData();//重新加载数据
+                        });
+
+                    }).catch(function(e){
+                        if(e != "cancel")
+                            console.log("出现错误：" + e);
+                    });
+                },
+                //分页大小修改事件
+                pageSizeChange:function(val) {
+                    console.log('每页 ' + val +' 条');
+                    this.pageSize = val;
+                    var _self = this;
+                    _self.loadingData();//重新加载数据
+                },
                 //当前页修改事件
-                currentPageChange1:function(val) {
-                    this.currentPage1 = val;
-                    console.log('当前页: ' + val);
-                    var _self = this;
-                    _self.loadingData1();//重新加载数据
-                },
-                currentPageChange2:function(val) {
-                    this.currentPage2 = val;
-                    console.log('当前页: ' + val);
-                    var _self = this;
-                    _self.loadingData2();//重新加载数据
-                },
-                currentPageChange3:function(val) {
-                    this.currentPage3 = val;
-                    console.log('当前页: ' + val);
-                    var _self = this;
-                    _self.loadingData3();//重新加载数据
-                },
                 currentPageChange:function(val) {
                     this.currentPage = val;
                     console.log('当前页: ' + val);
                     var _self = this;
                     _self.loadingData();//重新加载数据
                 },
+                //保存点击事件
+                editSubmit:function(){
+                    var _self = this;
+                    _self.loading = true;
+                    var formData =this.editForm;
+                    //alert(formData);
+                    var goUrl=this.goUrl;
+                    alert(goUrl);
+                    //alert(JSON.stringify(formData));
+                    axios.post(goUrl,formData).then(function(response){
+                        // console.log(response.data);
+                        //alert(222);
+                        // self.total=response.data.total;
+                        if(response.data>0){
+                            _self.editFormVisible = false;
+                            _self.loadingData();//重新加载数据
+                        }
+                    })
+                    console.info(this.editForm);
+                }
             }
         })
     </script>
-
     <!--#####element的script结束#####-->
+    
 
     <!-- ##### Footer Area Start ##### -->
-    <footer class="footer-area bg-img" style="background-image: url(/img/bg-img/3.jpg);">
+    <footer class="footer-area bg-img" style="background-image: url(../../../static/img/bg-img/3.jpg);">
         <!-- Main Footer Area -->
         <div class="main-footer-area">
             <div class="container">
