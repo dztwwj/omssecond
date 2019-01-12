@@ -12,7 +12,7 @@ import java.util.Map;
  * author:HPY
  * createTime:2018-12-11 10:24
  */
-//@CacheNamespace(implementation = RedisCache.class)
+@CacheNamespace(implementation = RedisCache.class)
 public interface NewsTypeDao {
     /**
      * 带参分页查询
@@ -36,7 +36,7 @@ public interface NewsTypeDao {
             " </where></script>")
     int getPageCount(Map map);
     /**
-     * 附件的添加
+     * 新闻类型的添加
      * @param map
      * @return
      */
@@ -46,7 +46,7 @@ public interface NewsTypeDao {
 
 
     /**
-     * 附件的更新
+     * 新闻类型的更新
      * @param map
      * @return
      */
@@ -54,7 +54,7 @@ public interface NewsTypeDao {
     int update(Map map);
 
     /**
-     * 附件的删除
+     * 新闻类型的删除
      * @param ncid
      * @return
      */
