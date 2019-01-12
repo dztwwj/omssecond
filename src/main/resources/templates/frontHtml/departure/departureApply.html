@@ -80,8 +80,8 @@
                                     </div>
                                 </div>
                                 <!-- Login -->
-                                <div class="login">
-                                    <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span>登录</span></a>
+                                <div class="login" id ="login">
+                                    <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span>{{message.ename}}</span></a>
                                 </div>
                                 <!-- Cart -->
                                 <!-- <div class="cart">
@@ -158,7 +158,7 @@
     <div class="breadcrumb-area">
         <!-- Top Breadcrumb Area -->
         <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(../../../static/img/bg-img/24.jpg);">
-            <h2>Contact US</h2>
+            <h2>离职申请</h2>
         </div>
 
         <!--<div class="container">-->
@@ -180,7 +180,6 @@
     <div id="departureForm" style="margin:auto;width:520px;height:550px;padding:30px;border:1px black solid" >
         <el-row>
             <el-form :inline="true" :model="searchForm" class="demo-form-inline">
-                <h1>离职申请</h1><br>
                 <el-form-item label="申请理由:" >
                     <el-input v-model="searchForm.DEPARTUREREASON" placeholder="请输入申请理由" type="textarea"></el-input>
                 </el-form-item>
@@ -201,6 +200,19 @@
     </div>
 
     <script type="text/javascript">
+        var login = new Vue({
+            el: '#login',
+            data: {
+                message: [],
+            },
+            created:function(){
+                //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+                var self = this;
+                axios.post('/user/selectEname').then(function(response){
+                    self.message=response.data;
+                });
+            },
+        });
         var departureForm = new Vue({
             el:'#departureForm',
             data:{

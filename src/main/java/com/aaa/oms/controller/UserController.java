@@ -138,5 +138,19 @@ public class UserController {
 
         return userService.selectG(id);
     }
+    /**
+         * 根据session查询当前登录的姓名和工号
+         * @return
+         */
+        @ResponseBody
+        @RequestMapping("/selectEname")
+        public Object selectEname(){
+            Map map = new HashMap();
+            User user=(User)session.getAttribute("user");
+            map.put("empnum",user.getEmpnum());
+            map.put("ename",user.getEname());
+            System.out.println(map);
+            return map;
+        }
 
 }

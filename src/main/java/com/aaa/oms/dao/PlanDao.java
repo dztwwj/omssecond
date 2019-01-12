@@ -22,7 +22,7 @@ public interface PlanDao {
      * @param map
      * @return
      */
-    @Select("<script> select rownum rn,p.p_id,p.tid,t.name,j.pname,j.ptype,j.pdirection,e.ename,e.empnum,to_char(p.p_begin,'yyyy-mm-dd') P_BEGIN,\n" +
+    @Select("<script> select rownum rn,p.p_id,p.tid,t.name,j.pid,e.eid,j.pname,j.ptype,j.pdirection,e.ename,e.empnum,to_char(p.p_begin,'yyyy-mm-dd') P_BEGIN,\n" +
             "to_char(p.p_end,'yyyy-mm-dd') P_END from cu_plan p left join cu_teacher t \n" +
             "on p.tid=t.id left join cu_project j on t.pid=j.pid left join cu_emp e on p.batch=e.eid \n" +
             "<where>\n" +

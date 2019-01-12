@@ -22,39 +22,12 @@ import javax.servlet.http.HttpSession;
  * createTime:2018-12-22 09:30
  */
 @Controller
-//@RequestMapping("/shiro")
 public class LoginController {
 
     @Autowired
     private LoginService loginService;
 
-    /**
-     * 测试方法
-     * @return
-     */
-    /*@ResponseBody
-    @RequestMapping("/hello")
-    public String hello(){
-        System.out.println("LoginController.hello()");
-        return "ok";
-    }*/
 
-    /*@RequestMapping("/testThymeleaf")
-    public String testThymeleaf(){
-        return "power/tree";
-    }*/
-    /**
-     * 测试方法
-     * @return
-     */
-    /*@RequestMapping("/add")
-    public String add(){
-        return "/user/add";
-    }*/
-    /**
-     * 测试方法
-     * @return
-     */
 
     /**
      * 跳转前台页面
@@ -96,11 +69,11 @@ public class LoginController {
         } catch (UnknownAccountException e) {
             //e.printStackTrace();
             //登录失败:用户不存在
-            model.addAttribute("msg","用户名不存在");
+            model.addAttribute("msg","用户名or密码错误");
             return "indexht";
         }catch (IncorrectCredentialsException e){
             //登录失败:密码不存在
-            model.addAttribute("msg","密码错误");
+            model.addAttribute("msg","用户名or密码错误");
             return "indexht";
         }
     }
