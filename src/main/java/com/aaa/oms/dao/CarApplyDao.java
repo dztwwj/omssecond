@@ -20,7 +20,7 @@ public interface CarApplyDao {
      * @return
      */
     @Select("<script>" +
-            "select * from (select  rownum rn,c.id,c.dname ,c.empno,c.empname,to_char(c.applytime,'yyyy-mm-dd') applytime,\n" +
+            "select * from (select  rownum rn,c.id,c.dname ,c.empno,c.empname,to_char(c.applytime,'yyyy-mm-dd') applytime,to_char(c.endtime,'yyyy-mm-dd') endtime,\n" +
             "c.startplace,c.endplace,\n" +
             "c.carid,\n" +
             "(select ci.lsicense from cu_carinfo ci where c.carid = ci.id) lsicense,\n" +
@@ -76,7 +76,7 @@ public interface CarApplyDao {
     int getCarCountQian(Map map);
 
     @Insert("insert into cu_carapplicatinon(id,dname,empno,empname,applytime,startplace,endplace,carid,peoplenumber,tell,reasons,result) values(" +
-            "seq_CU_CARINFO_id.nextval,'开发部','55','刘谦'," +
+            "seq_CU_CARINFO_id.nextval,#{dname},#{empno},#{empname}," +
             "sysdate," +
             "#{STARTPLACE},#{ENDPLACE}," +
             "#{ID},#{PEOPLENUMBER},#{TELL},#{REASONS},'0')")
@@ -97,14 +97,14 @@ public interface CarApplyDao {
     @Update(value ="update cu_carapplicatinon set result = 1 where id = #{ID}")
     int updateCaraToTG(Map map);
     /**
-     *
+     *更新汽车申请表的状态为审核驳回
      * @param map
      * @return
      */
     @Update(value ="update cu_carinfo set state =2 where id= #{CARID}")
     int turnCarToUse(Map map);
     /**
-     *
+     *还车失败
      * @param map
      * @return
      */
@@ -119,5 +119,13 @@ public interface CarApplyDao {
      */
     @Select(value = "select id, lsicense, cartype,saddle,applicationtype,driver,state,insurancetimr,mileage,remark from cu_carinfo where state =1 ")
     List<Map> getLiscense();
+
+    /**
+     * 获得部门名称
+     * @param position
+     * @return
+     */
+    @Select("select d.dname as dname from dept d left join cu_position c on c.deptid=d.id where c.id=#{position}")
+    String getDname(String position);
 
 }

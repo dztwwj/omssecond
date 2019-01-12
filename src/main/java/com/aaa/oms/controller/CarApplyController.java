@@ -1,5 +1,6 @@
 package com.aaa.oms.controller;
 
+import com.aaa.oms.entity.User;
 import com.aaa.oms.service.CarApplyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +47,15 @@ public class CarApplyController {
         return "car/applylistQian";
     }
     /**
-     * 跳转审核历史记录
+     * 跳转前台申请车辆页面
+     * @return
+     */
+    @RequestMapping("carone")
+    public String carone(){
+        return "frontHtml/car/carone";
+    }
+    /**
+     * 跳转历史记录
      * @return
      */
     @RequestMapping("carApplyHis")
@@ -81,7 +91,14 @@ public class CarApplyController {
      */
     @ResponseBody
     @RequestMapping("add")
-    public Object addcarm(@RequestBody Map paraddMap){
+    public Object addcarm(@RequestBody Map paraddMap, HttpSession session){
+        User user=(User)session.getAttribute("user");
+        paraddMap.put("empname",user.getEname());
+        paraddMap.put("empno",user.getEid());
+
+        paraddMap.put("dname",carApplyService.getDname(user.getPosition()));
+       //user.getEmpnum()
+        System.out.println(user.getEmpnum());
         return carApplyService.add(paraddMap);
     }
     /**

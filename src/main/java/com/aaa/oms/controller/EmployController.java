@@ -64,15 +64,6 @@ public class EmployController {
     }
 
     /**
-     * 跳转到
-     * @return
-     */
-    @RequestMapping("/zhaopin")
-    public String zhaopin(){
-        return "/zhaopin";
-    }
-
-    /**
      * 分页
      * @param map
      * @return
@@ -87,36 +78,28 @@ public class EmployController {
         return resultmap;
     }
 
+
     @ResponseBody
     @RequestMapping("/tgupdate")
     public Object tgupdate(@RequestBody Map map){
-        System.out.println("dddddddddd"+map);
         return employService.tgupdate(map);
     }
-   /* @ResponseBody
-    @RequestMapping("/add")
-    public Object add(@RequestBody Map map){
-        return employService.add(map);
-    }*/
 
     @ResponseBody
     @RequestMapping("/rsupdate")
     public Object rsupdate(@RequestBody Map map){
-        System.out.println(employService.rsupdate(map));
         return employService.rsupdate(map);
     }
 
     @ResponseBody
     @RequestMapping("/chaxun")
     public Object chaxun(@RequestBody Map map){
-        System.out.println(map+"......");
         return employService.chaxun(map);
     }
 
     @ResponseBody
     @RequestMapping("/deptt")
     public Object getdept(Map map){
-        //System.out.println(map+"......");
         return employService.getdept(map);
     }
     /**
@@ -127,9 +110,7 @@ public class EmployController {
    @ResponseBody
     @RequestMapping("/upLoadPic")
     public Object upLoadPic(@RequestParam MultipartFile file){
-        System.out.println(file);
         String s = ftpUtil.upLoad(file);//调用上传方法
-       System.out.println("新文件的名称："+s);
         return s;
     }
     /**
@@ -156,7 +137,7 @@ public class EmployController {
     @ResponseBody
     @RequestMapping("/perfect")
     public Object perfectadd(@RequestBody Map map){
-        //System.out.println(map+"......");
+        System.out.println(map);
         return employService.perfectadd(map);
     }
 
@@ -169,14 +150,11 @@ public class EmployController {
     @ResponseBody
     @RequestMapping("/addEmploy")
     public Object addemploy(@RequestBody Map map){
-        System.out.println(map);
         return employService.addEmploy(map);
     }
 
     /**
      * 班组查询
-     * @param
-     * @return
      */
     @ResponseBody
     @RequestMapping("/gid")

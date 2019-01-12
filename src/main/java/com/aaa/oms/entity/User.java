@@ -12,7 +12,8 @@ public class User {
     private String empnum;
     private String epassword;
     private String ename;
-
+    private Integer iseffective;
+    private String position;
 
     public Integer getEid() {
         return eid;
@@ -44,5 +45,21 @@ public class User {
 
     public void setEname(String ename) {
         this.ename = ename;
+    }
+
+    public Integer getIseffective() {
+        return iseffective;
+    }
+
+    public void setIseffective(Integer iseffective) {
+        this.iseffective = iseffective;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 }

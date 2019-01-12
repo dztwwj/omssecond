@@ -71,13 +71,6 @@ public interface RecruitDao {
     @Delete(value = "delete from recruit where id=#{id}")
     int delete(int id);
 
-    /**
-     * 更改招聘信息状态
-     * @param map
-     * @return
-     */
-    /*@Update(value = "update dept set state=#{STATE} where stid=#{STID}")
-    List<Map> getnum(Map map);*/
 
     /**
      * 根据部门ID查询数据
@@ -86,13 +79,4 @@ public interface RecruitDao {
      */
     @Select(value = "select * from CU_POSITION where deptid=#{id}")
     List<Map> chaxun(Integer id);
-
-    /**
-     * 审核状态通过
-     * @param map
-     * @return
-     */
-    /*@Update(value = "update resuit set numbers=numbers-1 where id=#{ID}")
-    int tgupdate1(Map map);*/
-
 }

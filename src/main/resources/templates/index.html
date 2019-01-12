@@ -78,9 +78,10 @@
                     <div class="grid-content bg-purple" align="center" style="color:#1a1719;font-size: 32px;">运营管理平台</div>
                 </el-col>
                 <el-col :span="4">
-                    <div class="grid-content bg-purple" align="center">
-                        <!--<span th:text="${empnum}" style="font-size: 20px;"></span>&nbsp;&nbsp;&nbsp;&nbsp;-->
-                        <a href="/toLogin">退出</a>
+                    <div class="grid-content bg-purple" align="center" id="login">
+                        {{session.ename}}<a href="/toLogin">退出</a>&nbsp;&nbsp;
+                        <a href="/user/toListQian">进入前台</a>
+
                     </div>
                 </el-col>
             </el-row>
@@ -114,10 +115,15 @@
     </el-container>
 </div>
 <script>
+
+
+
+
     var vm = new Vue({
         el:".diva",
 
         data:{
+            session: [],
             icon:'el-icon-menu',
             treeData:[],
             editableTabsValue2: '2',
@@ -132,7 +138,10 @@
             var _self =this
             axios.post("/treee/powertree").then(function(response){
                 _self.treeData = response.data;
-            })
+            });
+            axios.post('/user/selectEname').then(function(response){
+                _self.session=response.data;
+            });
         },
         methods: {
             handleNodeClick: function (n) {

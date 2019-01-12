@@ -25,13 +25,4 @@ public class LoginServiceImpl implements LoginService {
         return loginDao.findByName(empnum);
     }
 
-   /* @Override
-    public List<User> findByName(String empnum) {
-        return loginDao.findByName(empnum);
-    }
-
-    @Override
-    public List<User> findByid(Integer eid) {
-        return loginDao.findByid(eid);
-    }*/
 }

@@ -29,22 +29,6 @@ public interface TreeDao {
     List<Node> getpowertree(Integer empnum);
 
 
-    /**
-     * 获取权限数据(所有树节点，但是没个节点根据判断，带上checked:true)
-     * @return
-     * @Select("select * from tb_power where id in"(select powerid from tb_role_power where roleid(select roleid from emp where adminid=(select id from admin where id=#{userid})))")
-     */
-    /*@Select(value = "")
-    List<Node> getcheckedList(String id);*/
-
-    /**
-     * 根据ID获取集合对象
-     * @param
-     * @return
-     *
-     */
-    /*@Select(value = "select * from power where id in(select powerid from cu_role_power where  roleid=#{roleid})")
-    List<Map<String,Object>> getById(int roleid);*/
 
     /**
      * 父节点查询

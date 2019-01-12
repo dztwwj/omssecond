@@ -51,7 +51,6 @@ public class PowerController {
     @ResponseBody
     @RequestMapping("/checktree")
     public Object checktree(@RequestBody Map map){
-        System.out.println(map);
        List<Node> treeList= powerService.getChecktree(map);
         return treeList;
     }

@@ -38,65 +38,14 @@ public class TreeController {
         return treeService.getpowertree();
     }
 
+    /**
+     * 跳转到权限页面
+     * @return
+     */
     @RequestMapping("/toPowertree")
     public String toPowertree(){
         return "/power/powerList";
     }
-
-    /**
-     * 权限树json数据
-     * @return
-     */
-    /*@ResponseBody
-    @RequestMapping("/checkedTree")
-    public Object checkedTree(String roleid){
-        //System.out.println("parentid:"+roleid);
-        return treeService.getcheckedList(roleid);
-    }*/
-    /**
-     * 跳转更新页面
-     * @param roleid
-     * @return
-     */
-   /* @RequestMapping("/toUpdate")
-    public String toUpdate(Integer roleid,Model model){
-        model.addAttribute("power", treeService.getById(roleid));
-        return "tree/update";
-    }*/
-    /**
-     * 权限菜单修改
-     * @param paramMap
-     * @param response
-     * @throws IOException
-     */
-   /* @RequestMapping("/update")
-    public void update(@RequestParam Map paramMap, HttpServletResponse response) throws IOException{
-        int update = treeService.update(paramMap);
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("text/html");
-        if(update==-1)
-            response.getWriter().print("修改失败！");
-        else
-            response.getWriter().print("<script>window.parent.parent.location.href=window.parent.parent.location.href; </script>");
-    }*/
-
-    /**
-     * 权限菜单添加
-     * @param paramMap
-     * @param response
-     * @throws IOException
-     */
-    /*@RequestMapping("/add")
-    public void add(@RequestParam Map paramMap,HttpServletResponse response) throws IOException{
-        int update = treeService.add(paramMap);
-        response.setCharacterEncoding("utf-8");
-        response.setContentType("text/html");
-        if(update==-1)
-            response.getWriter().print("添加失败！");
-        else
-            response.getWriter().print("<script>window.parent.parent.location.href=window.parent.parent.location.href; </script>");
-    }*/
-
     /**
      * 父节点查询
      * @param
@@ -105,7 +54,6 @@ public class TreeController {
     @ResponseBody
     @RequestMapping("/fucha")
     public Object fucha(){
-        //System.out.println();
         return treeService.getfucha();
     }
 
@@ -117,7 +65,6 @@ public class TreeController {
     @ResponseBody
     @RequestMapping("/add")
     public Object add(@RequestBody Map map){
-        System.out.println(map);
         return treeService.add(map);
     }
 
@@ -129,7 +76,6 @@ public class TreeController {
     @ResponseBody
     @RequestMapping("/update")
     public Object update(@RequestBody Map map){
-        System.out.println(map);
         return treeService.update(map);
     }
 
@@ -141,7 +87,6 @@ public class TreeController {
     @ResponseBody
     @RequestMapping("/delete")
     public Object delete(@RequestBody Map map){
-        System.out.println(map);
         return treeService.delete(map);
     }
 
