@@ -135,7 +135,7 @@
             </el-form-item>
             <el-form-item label="教师ID">
                 <template>
-                    <el-select v-model="editForm.TID" placeholder="请选教师姓名">
+                    <el-select v-model="editForm.ID" placeholder="请选教师姓名">
                         <el-option
                                 v-for="item in optss"
                                 :key="item.ID"
@@ -193,7 +193,7 @@
     var app = new Vue({
         el: '#app',
         data: {
-            message: '课程列表'
+            message: '计划与实施'
         }
     });
 
@@ -235,7 +235,6 @@
             },
             //编辑界面数据
             editForm: {
-                PID:"",
                 TID:'',
                 NAME: '',
                 P_BEGIN: '',
@@ -254,7 +253,6 @@
                 //alert(JSON.stringify(response.data.pageData));
             });
             axios.post('/plan/courseList1').then(function(response) {
-                alert(JSON.stringify(response.data));
                 self.opts = response.data;
             });
 
@@ -300,11 +298,6 @@
                 this.goUrl="/plan/update";
                 this.editFormVisible = true;
                 this.editForm = Object.assign({}, row);
-                var self=this;
-                var url="/plan/courseList/"+this.editForm.PID;
-                axios.post(url).then(function(response) {
-                    self.optss = response.data;
-                });
             },
             //单条删除
             deleteClick:function(row) {

@@ -31,6 +31,12 @@ public class PlanController {
         return "train/plan";
     }
 
+    @RequestMapping("toplantwo")
+    public String toPlantwo()
+    {
+        return "frontHtml/train/plan";
+    }
+
     @ResponseBody
     @RequestMapping("/toList")
     public  Object toList(@RequestBody Map map){
