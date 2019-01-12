@@ -239,7 +239,6 @@
                     return time.getTime() > Date.now() - 8.64e6
                 }
             },
-            //deptNo:'',
             //部门select
             options:[],
             //列表数据
@@ -292,12 +291,8 @@
             var start =(this.currentPage-1)*this.pageSize;
             var end =this.currentPage*this.pageSize+1;
             axios.post('/car/carlist',{'start':start,'end':end}).then(function(response){
-                // console.log(response.data);
-                //alert(response.data.total);
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
-                // alert(JSON.stringify(response.data.pageData));
-                // self.multipleSelection=response.data.data;
             });
             axios.post('/car/list').then(function(response){
                 self.options = response.data;
@@ -313,15 +308,10 @@
                 var self = this;
                 var start =(this.currentPage-1)*this.pageSize;
                 var end =this.currentPage*this.pageSize+1;
-                //  alert(this.searchForm.id);
                 var searchForm={'start':start,'end':end,'ID':this.searchForm.id};
-                //   alert(JSON.stringify(searchForm));
                 axios.post('/car/carlist',searchForm).then(function(response){
-                    // console.log(response.data);
-
                     _self.total=response.data.total;
                     _self.tableData = response.data.pageData;
-                    //_self.multipleSelection=response.data.data;
                 })
                 console.log(_self.currentPage);
                 setTimeout(function(){
@@ -333,7 +323,6 @@
             editClick:function(row) {
                 this.goUrl="/car/update";
                 this.editFormVisible = true;
-                //  alert(JSON.stringify(row));
                 this.editForm = Object.assign({}, row);
             },
             //表格删除事件
@@ -343,9 +332,7 @@
                     type: 'warning'
                 }).then(function(){
                     var  url="/car/delete/?id="+row.ID;
-
                     axios.get(url).then(function (response) {
-                        //alert(response.data);
                         if(response.data>0){
                             _self.$message({
                                 message: row.ID + '删除成功',
@@ -395,23 +382,14 @@
                  var searchForm =this.searchForm;
 
                  var searchForm={'start':start,'end':end,'ID':this.ID,'LSICENSE':self.searchForm.LSICENSE,'CARTYPE':self.searchForm.CARTYPE};
-                 //alert(JSON.stringify(searchForm));
-                 //formData.push({'start':start}).push({'end':end})
                  axios.post('/car/carlist',searchForm).then(function(response){
-                     // console.log(response.data);
-                     //alert(response.data.total);
                      self.total=response.data.total;
                      self.tableData = response.data.pageData;
-                     // self.multipleSelection=response.data.data;
                  })
                 self.loadingData();//重新加载数据
             },
             //表格勾选事件
             selectionChange:function(val) {
-                /*  for(var i=0;i<val.length;i++) {
-                      var row = val[i];
-                      alert(JSON.stringify(row));
-                  }*/
                 this.multipleSelection = val;
                 // alert(JSON.stringify(val));
                 console.info(val);
@@ -470,14 +448,8 @@
                 var _self = this;
                 _self.loading = true;
                 var formData =this.editForm;
-                //alert(formData);
                 var goUrl=this.goUrl;
-                //alert(goUrl);
-                //alert(JSON.stringify(formData));
                 axios.post(goUrl,formData).then(function(response){
-                    // console.log(response.data);
-                    // alert(222);
-                    // self.total=response.data.total;
                     if(response.data>0){
                         _self.editFormVisible = false;
                     }else{
