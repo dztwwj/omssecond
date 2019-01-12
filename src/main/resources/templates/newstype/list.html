@@ -54,14 +54,13 @@
             </el-table-column>
             <el-table-column
                     prop="DESCRIBE"
-                    label="新闻简介"
+                    label="简介"
                     width="150">
             </el-table-column>
             <el-table-column
                     label="操作">
                 <template scope="scope">
                     <el-button :plain="true" type="success" size="small" icon="edit" @click="editClick(scope.row)">编辑</el-button>
-                    <el-button :plain="true" type="danger" size="small" icon="delete" @click="deleteClick(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -92,7 +91,7 @@
             <el-form-item label="新闻类型" prop="NCNAME">
                 <el-input v-model="editForm.NCNAME" auto-complete="off"></el-input>
             </el-form-item>
-            <el-form-item label="新闻简介" prop="DESCRIBE">
+            <el-form-item label="简介" prop="DESCRIBE">
                 <el-input v-model="editForm.DESCRIBE" auto-complete="off"></el-input>
             </el-form-item>
         </el-form>
@@ -158,16 +157,9 @@
             var start =(this.currentPage-1)*this.pageSize;
             var end =this.currentPage*this.pageSize+1;
             axios.post('/newstype/page',{'start':start,'end':end}).then(function(response){
-                // console.log(response.data);
-                //alert(response.data.total);
                 self.total=response.data.total;
                 self.tableData = response.data.pageData;
-                // alert(JSON.stringify(response.data.pageData));
-                // self.multipleSelection=response.data.data;
             });
-            /*axios.post('/newstype/list').then(function(response){
-                self.options=response.data;
-            })*/
         },
         methods:{
             //表格重新加载数据
@@ -223,11 +215,10 @@
                 });
             },
 
-
             //新建事件
             addClick:function() {
                 this.isAdd=false;
-                this.goUrl="/news/add";
+                this.goUrl="/newstype/add";
                 var _self = this;
                 //清空缓冲数据
                 this.editForm={
@@ -238,7 +229,6 @@
                 this.editFormVisible = true;
                 _self.loadingData();//重新加载数据
             },
-
 
             //表格查询事件
             searchClick:function() {
@@ -317,18 +307,20 @@
                 var formData =this.editForm;
                 //alert(formData);
                 var goUrl=this.goUrl;
-                //alert(goUrl);
-                //alert(JSON.stringify(formData));
                 axios.post(goUrl,formData).then(function(response){
-                    // console.log(response.data);
-                    //alert(222);
-                    // self.total=response.data.total;
                     if(response.data>0){
                         _self.editFormVisible = false;
                         _self.loadingData();//重新加载数据
                     }
                 })
                 console.info(this.editForm);
+            },
+            //上传成功后的方法
+            uploadSuc:function(response, file, fileList){
+                this.editForm.COVERPLOTPATH=response;
+            },
+            downLoad:function(row){
+                location.href="/news/downloadPic?fileName="+row.COVERPLOTPATH
             }
         }
     })

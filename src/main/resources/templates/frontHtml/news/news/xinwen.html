@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+
+    <!-- Title -->
+    <title>瓜皮公司</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="../img/core-img/favicon.ico">
+
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="../style.css">
+
+
+    <!-- jQuery-2.2.4 js -->
+    <script src="../js/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="../js/bootstrap/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="../js/bootstrap/bootstrap.min.js"></script>
+    <!-- All Plugins js -->
+    <script src="../js/plugins/plugins.js"></script>
+    <!-- Active js -->
+    <script src="../js/active.js"></script>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript" src="../js/axios.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!--<link rel="stylesheet" href="../css/elementui.css">-->
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!--<script src="../js/elementui.js"></script>-->
+
+</head>
+
+<body>
+    <!-- Preloader -->
+    <div class="preloader d-flex align-items-center justify-content-center">
+        <div class="preloader-circle"></div>
+        <div class="preloader-img">
+            <img src="../img/core-img/leaf.png" alt="">
+        </div>
+    </div>
+
+    <!-- ##### Header Area Start ##### -->
+    <header class="header-area">
+
+        <!-- ***** Top Header Area ***** -->
+        <div class="top-header-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="top-header-content d-flex align-items-center justify-content-between">
+                            <!-- Top Header Content -->
+                            <div class="top-header-meta">
+                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="infodeercreative@gmail.com"><i class="fa fa-envelope-o" aria-hidden="true"></i> <span>Email: infodeercreative@gmail.com</span></a>
+                                <a href="#" data-toggle="tooltip" data-placement="bottom" title="+1 234 122 122"><i class="fa fa-phone" aria-hidden="true"></i> <span>Call Us: +1 234 122 122</span></a>
+                            </div>
+
+                            <!-- Top Header Content -->
+                            <div class="top-header-meta d-flex">
+                                <!-- Language Dropdown -->
+                                <div class="language-dropdown">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle mr-30" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Language</button>
+                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                            <a class="dropdown-item" href="#">USA</a>
+                                            <a class="dropdown-item" href="#">UK</a>
+                                            <a class="dropdown-item" href="#">Bangla</a>
+                                            <a class="dropdown-item" href="#">Hindi</a>
+                                            <a class="dropdown-item" href="#">Spanish</a>
+                                            <a class="dropdown-item" href="#">Latin</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Login -->
+                                <div class="login">
+                                    <a href="#"><i class="fa fa-user" aria-hidden="true"></i> <span>登录</span></a>
+                                </div>
+                                <!-- Cart -->
+                                <!-- <div class="cart">
+                                    <a href="#"><i class="fa fa-shopping-cart" aria-hidden="true"></i> <span>Cart <span class="cart-quantity">(1)</span></span></a>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ***** Navbar Area ***** -->
+        <div class="alazea-main-menu">
+            <div class="classy-nav-container breakpoint-off">
+                <div class="container">
+                    <!-- Menu -->
+                    <nav class="classy-navbar justify-content-between" id="alazeaNav">
+
+                        <!-- Nav Brand -->
+                        <a href="index.html" class="nav-brand"><img src="../img/core-img/logo1.jpg" width="80px" height="22px" alt=""></a>
+
+                        <!-- Navbar Toggler -->
+                        <div class="classy-navbar-toggler">
+                            <span class="navbarToggler"><span></span><span></span><span></span></span>
+                        </div>
+
+                        <!-- Menu -->
+                        <div class="classy-menu">
+
+                            <!-- Close Button -->
+                            <div class="classycloseIcon">
+                                <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                            </div>
+
+                            <!-- Navbar Start -->
+                            <div class="classynav">
+                                <ul>
+                                    <li><a href="index.html">首页</a></li>
+                                    <li><a href="http://localhost:8888/news/aaa">新闻中心</a></li>
+                                    <li><a href="shop.html">车辆管理</a></li>
+                                    <li><a href="portfolio.html">培训计划与实施</a></li>
+                                    <li><a href="http://localhost:8888/user/toList">招聘信息</a></li>
+                                    <li><a href="#">个人中心</a>
+                                        <ul class="dropdown">
+                                            <li><a href="index.html">请假</a></li>
+                                            <li><a href="about.html">离职</a></li>
+                                            <li><a href="about.html">申请晋升</a></li>
+                                            <li><a href="shop.html">Shop</a>
+                                                <ul class="dropdown">
+                                                    <li><a href="shop.html">Shop</a></li>
+                                                    <li><a href="shop-details.html">Shop Details</a></li>
+                                                    <li><a href="cart.html">Shopping Cart</a></li>
+                                                    <li><a href="checkout.html">Checkout</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="portfolio.html">Portfolio</a>
+                                                <ul class="dropdown">
+                                                    <li><a href="portfolio.html">Portfolio</a></li>
+                                                    <li><a href="single-portfolio.html">Portfolio Details</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="blog.html">Blog</a>
+                                                <ul class="dropdown">
+                                                    <li><a href="blog.html">Blog</a></li>
+                                                    <li><a href="single-post.html">Blog Details</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="contact.html">Contact</a></li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+
+                                <!-- Search Icon -->
+                                <div id="searchIcon">
+                                    <i class="fa fa-search" aria-hidden="true"></i>
+                                </div>
+
+                            </div>
+                            <!-- Navbar End -->
+                        </div>
+                    </nav>
+
+                    <!-- Search Form -->
+                    <div class="search-form">
+                        <form action="#" method="get">
+                            <input type="search" name="search" id="search" placeholder="Type keywords &amp; press enter...">
+                            <button type="submit" class="d-none"></button>
+                        </form>
+                        <!-- Close Icon -->
+                        <div class="closeIcon"><i class="fa fa-times" aria-hidden="true"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ##### Header Area End ##### -->
+
+    <!-- ##### Breadcrumb Area Start ##### -->
+    <div class="breadcrumb-area" align="center">
+        <!-- Top Breadcrumb Area -->
+        <div class="top-breadcrumb-area bg-img bg-overlay d-flex align-items-center justify-content-center" style="background-image: url(/img/bg-img/24.jpg); height: 130px;">
+
+        </div>
+        <div class="sidebar fl" align="center">
+            <dl class="border">
+                <dt>新闻栏目</dt>
+            </dl>
+            <a href="" class="ad center mt10"><img src="http://www.chinaunicom.com/images/banner/1news.png" height="200"></a>
+        </div>
+    </div>
+    <!-- ##### Breadcrumb Area End ##### -->
+    <!--#####element内容开始#####-->
+
+    <div id="tableView" style="width: 100%;padding-bottom: 25px;padding-top: 15px;padding: 15px 300px 25px 300px;">
+        <!--列表1-->
+        <el-row>
+            <el-table
+                    :data="tableData1"
+                    v-loading.body="loading"
+                    border:0px
+                    style="width: 520px;float: left;margin-left: 250px;">
+                <el-table-column
+                        prop="ADDTIME"
+                        label="媒体聚焦"
+                        width="160">
+                </el-table-column>
+                <el-table-column
+                        prop="NTITLE"
+                        label=""
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="NCLOB"
+                        label=""
+                        width="180">
+                    <template scope="scopes">
+                        <el-button type="text" @click="open(scopes.row)">详情</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-col :span="15" >
+                <el-pagination
+                        style="width: 340px;float: left;margin-left: 250px;"
+                        layout="prev, pager, next"
+                        @current-change="currentPageChange1"
+                        :current-page="currentPage1"
+                        :page-size="pageSize1"
+                        :total="total1">
+                </el-pagination>
+            </el-col>
+        </el-row>
+        <!--列表2-->
+        <el-row>
+            <el-table
+                    :data="tableData2"
+                    v-loading.body="loading"
+                    border:0px
+                    style="width: 520px;float: left;margin-left: 250px;">
+                <el-table-column
+                        prop="ADDTIME"
+                        label="公司新闻"
+                        width="160">
+                </el-table-column>
+                <el-table-column
+                        prop="NTITLE"
+                        label=""
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="NCLOB"
+                        label=""
+                        width="180">
+                    <template scope="scopes">
+                        <el-button type="text" @click="open(scopes.row)">详情</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-col :span="15" >
+                <el-pagination
+                        style="width: 340px;float: left;margin-left: 250px;"
+                        layout="prev, pager, next"
+                        @current-change="currentPageChange2"
+                        :current-page="currentPage2"
+                        :page-size="pageSize2"
+                        :total="total2">
+                </el-pagination>
+            </el-col>
+        </el-row>
+        <!--列表3-->
+        <el-row>
+            <el-table
+                    :data="tableData3"
+                    v-loading.body="loading"
+                    border:0px
+                    style="width: 520px;float: left;margin-left: 250px;">
+                <el-table-column
+                        prop="ADDTIME"
+                        label="公司相关培训"
+                        width="160">
+                </el-table-column>
+                <el-table-column
+                        prop="NTITLE"
+                        label=""
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="NCLOB"
+                        label=""
+                        width="180">
+                    <template scope="scopes">
+                        <el-button type="text" @click="open(scopes.row)">详情</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-col :span="15" >
+                <el-pagination
+                        style="width: 340px;float: left;margin-left: 250px;"
+                        layout="prev, pager, next"
+                        @current-change="currentPageChange3"
+                        :current-page="currentPage3"
+                        :page-size="pageSize3"
+                        :total="total3">
+                </el-pagination>
+            </el-col>
+        </el-row>
+        <!--列表4-->
+        <el-row>
+            <el-table
+                    :data="tableData"
+                    v-loading.body="loading"
+                    border:0px
+                    style="width: 520px;float: left;margin-left: 250px;">
+                <el-table-column
+                        prop="ADDTIME"
+                        label="国家动态"
+                        width="160">
+                </el-table-column>
+                <el-table-column
+                        prop="NTITLE"
+                        label=""
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="NCLOB"
+                        label=""
+                        width="180">
+                    <template scope="scopes">
+                        <el-button type="text" @click="open(scopes.row)">详情</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-col :span="15" >
+                <el-pagination
+                        style="width: 340px;float: left;margin-left: 250px;"
+                        layout="prev, pager, next"
+                        @current-change="currentPageChange"
+                        :current-page="currentPage"
+                        :page-size="pageSize"
+                        :total="total">
+                </el-pagination>
+            </el-col>
+        </el-row>
+    </div>
+
+    <script type="text/javascript">
+
+        var tableView = new Vue({
+            el: '#tableView',
+            data: {
+                isAdd:false,
+                path:'/news/show?fileName=',
+                //select
+                options:[{DSTATUS:1,value:'可用'},{DSTATUS:2,value:'不可用'}],
+                //列表数据
+                tableData: [],
+                tableData1: [],
+                tableData2: [],
+                tableData3: [],
+                //显示加载中样式
+                loading:false,
+                //当前页
+                currentPage1:1,
+                currentPage2:1,
+                currentPage3:1,
+                currentPage:1,
+                //分页大小
+                pageSize1:3,
+                pageSize2:3,
+                pageSize3:3,
+                pageSize:3,
+                //总记录数
+                total:800,
+                total1:800,
+                total2:800,
+                total3:800,
+
+
+                goUrl:'',
+                editFormRules: {
+                    name: [
+                        { required: true, message: '请输入名称', trigger: 'blur' }
+                    ]
+                },
+                //编辑界面数据
+                editForm: {
+                    NTITLE: '',
+                    NINTRO: '',
+                    ADDEMPNAME: '',
+                    SECTIONNAME: '',
+                    COVERPLOTPATH: '',
+                    ADDTIME: ''
+                },
+            },
+            created:function(){
+                //在 then的内部不能使用Vue的实例化的this, 因为在内部 this 没有被绑定。
+                var self = this;
+                var start =(this.currentPage1-1)*this.pageSize1;
+                var end =this.currentPage1*this.pageSize1+1;
+                axios.post('/news/page',{'start':start,'end':end,'nccid':1,'del':1,'con':2}).then(function(response){
+                    self.total1=response.data.total;
+                    self.tableData1 = response.data.pageData;
+
+                });
+                var start =(this.currentPage2-1)*this.pageSize2;
+                var end =this.currentPage2*this.pageSize2+1;
+                axios.post('/news/page',{'start':start,'end':end,'nccid':2,'del':1,'con':2}).then(function(response){
+                    self.total2=response.data.total;
+                    self.tableData2 = response.data.pageData;
+                });
+                var start =(this.currentPage3-1)*this.pageSize3;
+                var end =this.currentPage3*this.pageSize3+1;
+                axios.post('/news/page',{'start':start,'end':end,'nccid':3,'del':1,'con':2}).then(function(response){
+                    self.total3=response.data.total;
+                    self.tableData3 = response.data.pageData;
+                });
+                var start =(this.currentPage-1)*this.pageSize;
+                var end =this.currentPage*this.pageSize+1;
+                axios.post('/news/page',{'start':start,'end':end,'nccid':4,'del':1,'con':2}).then(function(response){
+                    self.total=response.data.total;
+                    self.tableData = response.data.pageData;
+                });
+            },
+
+            methods:{
+                open:function(row) {
+                    location.href="/news/tonewx?nid="+row.NID;
+                },
+
+                //表格重新加载数据
+                loadingData1:function() {
+                    var _self = this;
+                    _self.loading = true;
+                    var self = this;
+                    var start =(this.currentPage1-1)*this.pageSize1;
+                    var end =this.currentPage1*this.pageSize1+1;
+                    axios.post('/news/page',{'start':start,'end':end,'nccid':1,'del':1,'con':2}).then(function(response){
+                        self.total1=response.data.total;
+                        self.tableData1 = response.data.pageData;
+                    });
+                    console.log(_self.currentPage1);
+                    setTimeout(function(){
+                        console.info("加载数据成功");
+                        _self.loading = false;
+                    },300);
+                },
+                loadingData2:function() {
+                    var _self = this;
+                    _self.loading = true;
+                    var self = this;
+                    var start =(this.currentPage2-1)*this.pageSize2;
+                    var end =this.currentPage2*this.pageSize2+1;
+                    axios.post('/news/page',{'start':start,'end':end,'nccid':2,'del':1,'con':2}).then(function(response){
+                        self.total2=response.data.total;
+                        self.tableData2 = response.data.pageData;
+                    });
+                    console.log(_self.currentPage2);
+                    setTimeout(function(){
+                        console.info("加载数据成功");
+                        _self.loading = false;
+                    },300);
+                },
+                loadingData3:function() {
+                    var _self = this;
+                    _self.loading = true;
+                    var self = this;
+                    var start =(this.currentPage3-1)*this.pageSize3;
+                    var end =this.currentPage3*this.pageSize3+1;
+                    axios.post('/news/page',{'start':start,'end':end,'nccid':3,'del':1,'con':2}).then(function(response){
+                        self.total3=response.data.total;
+                        self.tableData3 = response.data.pageData;
+                    });
+                    console.log(_self.currentPage3);
+                    setTimeout(function(){
+                        console.info("加载数据成功");
+                        _self.loading = false;
+                    },300);
+                },
+                loadingData:function() {
+                    var _self = this;
+                    _self.loading = true;
+                    var self = this;
+                    var start =(this.currentPage-1)*this.pageSize;
+                    var end =this.currentPage*this.pageSize+1;
+                    axios.post('/news/page',{'start':start,'end':end,'nccid':4,'del':1,'con':2}).then(function(response){
+                        self.total=response.data.total;
+                        self.tableData = response.data.pageData;
+                    });
+                    console.log(_self.currentPage);
+                    setTimeout(function(){
+                        console.info("加载数据成功");
+                        _self.loading = false;
+                    },300);
+                },
+//                //分页大小修改事件
+//                pageSizeChange:function(val) {
+//                    console.log('每页 ' + val +' 条');
+//                    this.pageSize1 = val;
+//                    var _self = this;
+//                    _self.loadingData1();//重新加载数据
+//                },
+                //当前页修改事件
+                currentPageChange1:function(val) {
+                    this.currentPage1 = val;
+                    console.log('当前页: ' + val);
+                    var _self = this;
+                    _self.loadingData1();//重新加载数据
+                },
+                currentPageChange2:function(val) {
+                    this.currentPage2 = val;
+                    console.log('当前页: ' + val);
+                    var _self = this;
+                    _self.loadingData2();//重新加载数据
+                },
+                currentPageChange3:function(val) {
+                    this.currentPage3 = val;
+                    console.log('当前页: ' + val);
+                    var _self = this;
+                    _self.loadingData3();//重新加载数据
+                },
+                currentPageChange:function(val) {
+                    this.currentPage = val;
+                    console.log('当前页: ' + val);
+                    var _self = this;
+                    _self.loadingData();//重新加载数据
+                },
+            }
+        })
+    </script>
+
+    <!--#####element的script结束#####-->
+
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="footer-area bg-img" style="background-image: url(/img/bg-img/3.jpg);">
+        <!-- Main Footer Area -->
+        <div class="main-footer-area">
+            <div class="container">
+                <div class="row">
+
+                    <!-- Single Footer Widget -->
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="single-footer-widget">
+                            <div class="footer-logo mb-30">
+                                <a href="#"><img src="../img/core-img/logo.png" alt=""></a>
+                            </div>
+                            <p>欢迎回家</p>
+                            <div class="social-info">
+                                <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                                <a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                                <a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                                <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Single Footer Widget -->
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="single-footer-widget">
+                            <div class="widget-title">
+                                <h5>QUICK LINK</h5>
+                            </div>
+                            <nav class="widget-nav">
+                                <ul>
+                                    <li><a href="#">Purchase</a></li>
+                                    <li><a href="#">FAQs</a></li>
+                                    <li><a href="#">Payment</a></li>
+                                    <li><a href="#">News</a></li>
+                                    <li><a href="#">Return</a></li>
+                                    <li><a href="#">Advertise</a></li>
+                                    <li><a href="#">Shipping</a></li>
+                                    <li><a href="#">Career</a></li>
+                                    <li><a href="#">Orders</a></li>
+                                    <li><a href="#">Policities</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <!-- Single Footer Widget -->
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="single-footer-widget">
+                            <div class="widget-title">
+                                <h5>BEST SELLER</h5>
+                            </div>
+
+                            <!-- Single Best Seller Products -->
+                            <div class="single-best-seller-product d-flex align-items-center">
+                                <div class="product-thumbnail">
+                                    <a href="shop-details.html"><img src="../img/bg-img/4.jpg" alt=""></a>
+                                </div>
+                                <div class="product-info">
+                                    <a href="shop-details.html">Cactus Flower</a>
+                                    <p>$10.99</p>
+                                </div>
+                            </div>
+
+                            <!-- Single Best Seller Products -->
+                            <div class="single-best-seller-product d-flex align-items-center">
+                                <div class="product-thumbnail">
+                                    <a href="shop-details.html"><img src="../img/bg-img/5.jpg" alt=""></a>
+                                </div>
+                                <div class="product-info">
+                                    <a href="shop-details.html">Tulip Flower</a>
+                                    <p>$11.99</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Single Footer Widget -->
+                    <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="single-footer-widget">
+                            <div class="widget-title">
+                                <h5>CONTACT</h5>
+                            </div>
+
+                            <div class="contact-information">
+                                <p><span>地址:</span> 河南省-郑州市-金水区-杨金路-牛顿国际</p>
+                                <p><span>联系方式:</span> +1 234 122 122</p>
+                                <p><span>邮箱:</span> 好好学习@gmail.com</p>
+                                <p><span>Open hours:</span> Mon - Sun: 8 AM to 9 PM</p>
+                                <p><span>Happy hours:</span> Sat: 2 PM to 4 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Bottom Area -->
+        <div class="footer-bottom-area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="border-line"></div>
+                    </div>
+                    <!-- Copywrite Text -->
+                    <div class="col-12 col-md-6">
+                        <div class="copywrite-text">
+                            <p>&copy;
+Copyright &copy;<script>document.write(new Date().getFullYear());</script> - Colorlib All rights reserved | More Templates <a href="http://www.cssmoban.com/" target="_blank" title="项目首页">项目首页</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
+
+</p>
+                        </div>
+                    </div>
+                    <!-- Footer Nav -->
+                    <div class="col-12 col-md-6">
+                        <div class="footer-nav">
+                            <nav>
+                                <ul>
+                                    <li><a href="#">Home</a></li>
+                                    <li><a href="#">About</a></li>
+                                    <li><a href="#">Service</a></li>
+                                    <li><a href="#">Portfolio</a></li>
+                                    <li><a href="#">Blog</a></li>
+                                    <li><a href="#">Contact</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ##### Footer Area End ##### -->
+
+
+</body>
+
+</html>

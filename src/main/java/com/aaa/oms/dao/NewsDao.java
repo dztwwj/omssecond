@@ -12,7 +12,7 @@ import java.util.Map;
  * author:
  * createTime:2018-12-11 10:24
  */
-//@CacheNamespace(implementation = RedisCache.class)
+@CacheNamespace(implementation = RedisCache.class)
 public interface NewsDao {
     /**
      * 带参分页查询
