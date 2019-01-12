@@ -60,4 +60,5 @@ public interface CarApplyService {
      */
     int updateCarToUse(Map map);
 
+    String getDname(String position);
 }

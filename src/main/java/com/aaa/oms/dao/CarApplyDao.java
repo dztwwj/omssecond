@@ -76,7 +76,7 @@ public interface CarApplyDao {
     int getCarCountQian(Map map);
 
     @Insert("insert into cu_carapplicatinon(id,dname,empno,empname,applytime,startplace,endplace,carid,peoplenumber,tell,reasons,result) values(" +
-            "seq_CU_CARINFO_id.nextval,'开发部','55','刘谦'," +
+            "seq_CU_CARINFO_id.nextval,#{dname},#{empno},#{empname}," +
             "sysdate," +
             "#{STARTPLACE},#{ENDPLACE}," +
             "#{ID},#{PEOPLENUMBER},#{TELL},#{REASONS},'0')")
@@ -119,5 +119,13 @@ public interface CarApplyDao {
      */
     @Select(value = "select id, lsicense, cartype,saddle,applicationtype,driver,state,insurancetimr,mileage,remark from cu_carinfo where state =1 ")
     List<Map> getLiscense();
+
+    /**
+     * 获得部门名称
+     * @param position
+     * @return
+     */
+    @Select("select d.dname as dname from dept d left join cu_position c on c.deptid=d.id where c.id=#{position}")
+    String getDname(String position);
 
 }
