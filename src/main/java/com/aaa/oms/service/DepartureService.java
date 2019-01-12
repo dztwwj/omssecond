@@ -36,6 +36,12 @@ public interface DepartureService {
      */
     int updateTG(Map map);
     /**
+     * 一级审核变为二级
+     * @param map
+     * @return
+     */
+    int updateTo2(Map map);
+    /**
      * 离职驳回
      * @param map
      * @return

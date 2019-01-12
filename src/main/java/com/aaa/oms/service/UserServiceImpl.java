@@ -60,5 +60,13 @@ public class UserServiceImpl implements UserService {
         return userDao.updateQian(map);
     }
 
+    @Override
+    public List<Map> selectEvery(Map map) {
+        return userDao.selectEvery(map);
+    }
 
+    @Override
+    public int selectRank(Object pid) {
+        return userDao.selectRank(pid);
+    }
 }

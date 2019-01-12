@@ -29,7 +29,10 @@ public interface LeaveDao {
             "(select dname from dept where id = (select deptid from cu_position where id = (select position from cu_emp where empnum = la.empnumb))) dname,"+
             "(select deptid from cu_position where id = (select position from cu_emp where empnum = la.empnumb)) deptid,\n"+
             "(select positionname from cu_position where id = (select position from cu_emp where empnum = la.auditornum)) aupositionname \n" +
-            "from cu_leave_apply la where la.isallow in (${isallow}) and rownum &lt; #{end} <if test=\"STATE!=null and STATE!=''\"> and la.ISALLOW = #{STATE}</if>) a " +
+            "from cu_leave_apply la where la.isallow in (${isallow}) and rownum &lt; #{end} <if test=\"STATE!=null and STATE!=''\"> and la.ISALLOW = #{STATE}</if> " +
+            "<if test=\"gid!=null and gid!=''\"> and gid = #{gid}</if>" +
+            "<if test=\"grade!=null and grade!=''\"> and grade = #{grade}</if>" +
+            "<if test=\"EMPNUMQ!=null and EMPNUMQ!=''\"> and la.EMPNUMB = #{EMPNUMQ}</if>) a " +
             "where a.rn &gt; #{start}</script>")
     List<Map> getPageParam(Map map);
     /**
@@ -37,7 +40,10 @@ public interface LeaveDao {
      * @param map
      * @return
      */
-    @Select("<script>select count(*)  from cu_leave_apply la where la.isallow in (${isallow}) <if test=\"STATE!=null and STATE!=''\"> and ISALLOW = #{STATE}</if> </script>")
+    @Select("<script>select count(*)  from cu_leave_apply la where la.isallow in (${isallow}) <if test=\"STATE!=null and STATE!=''\"> and ISALLOW = #{STATE}</if> <if test=\"EMPNUMQ!=null and EMPNUMQ!=''\"> and la.EMPNUMB = #{EMPNUMQ}</if>" +
+            "<if test=\"gid!=null and gid!=''\"> and gid = #{gid}</if>" +
+            "<if test=\"grade!=null and grade!=''\"> and grade = #{grade}</if>" +
+            " </script>")
     int getPageCount(Map map);
 
     /**
@@ -47,6 +53,13 @@ public interface LeaveDao {
      */
     @Update(value = "update cu_leave_apply set isallow = 1,aopinion = #{AOPINIONA} where id = ${ID}")
     int updateTG(Map map);
+    /**
+     * 请假通过
+     * @param map
+     * @return
+     */
+    @Update(value = "update cu_leave_apply set grade=2 where id = ${ID}")
+    int updateTGTo2(Map map);
 
 
     /**
@@ -56,5 +69,14 @@ public interface LeaveDao {
      */
     @Update(value = "update cu_leave_apply set isallow = 2,aopinion = #{AOPINIONA} where id = #{ID}")
     int updateNoTG(Map map);
+
+    /**
+     * 请假添加
+     * @param map
+     * @return
+     */
+    @Insert(value = "insert into cu_leave_apply(EMPNUMB,ID,BEGINTIME,ENDTIME,LEAVETYPEID,LEAVECAUSE,APPLYTIME,LEAVEDAYSUM,grade,gid) " +
+            "values(#{EMPNUM},seq_cu_leave.nextval,to_date(substr(#{BEGINTIME},1,10),'yyyy/mm/dd'),to_date(substr(#{BEGINTIME},1,10),'yyyy/mm/dd')+#{LEAVEDAYSUM},#{LEAVETYPEID},#{LEAVECAUSE},sysdate,#{LEAVEDAYSUM},#{grade},#{gid})")
+    int add(Map map);
 
 }

@@ -17,6 +17,7 @@ public interface PromoteService {
      */
     List<Map> getPageParam(Map map);
 
+
     /**
      * 查询分页总数量
      * @param map
@@ -71,8 +72,20 @@ public interface PromoteService {
      */
     int delete(int id);
     /**
+     * 申请晋升
+     * @param map
+     * @return
+     */
+    int apply(Map map);
+    /**
      * 职位查询
      * @return
      */
     List<Map> selectPosition();
+
+    /**
+     * 查询当前empnum有无申请国晋升
+     * @return
+     */
+    List<Map> selectPromote(Map map);
 }

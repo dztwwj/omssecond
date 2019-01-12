@@ -239,7 +239,7 @@
                     axios.post(goUrl,formData).then(function(response){
                         if(response.data>0){
                             // alert("离职申请成功");
-                            location.href="/user/toListQian";
+                            location.href="/departure/departureQian";
                         }
                     })
                     this.$refs.upload.clearFiles();

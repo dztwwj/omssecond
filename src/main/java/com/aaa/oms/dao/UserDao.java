@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import sun.java2d.pipe.PixelDrawPipe;
 
 import java.util.List;
 import java.util.Map;
@@ -90,4 +91,20 @@ public interface UserDao {
      */
     @Select(value = "select * from cu_group where deptid=( select deptid from cu_position where id = #{id})")
     List<Map> selectG(Integer id);
+
+    /**
+     * 根据empnum查询员工信息
+     * @param map
+     * @return
+     */
+    @Select(value = "select * from cu_emp where empnum=#{dempnum}")
+    List<Map> selectEvery(Map map);
+
+    /**
+     * 根据session的职位id查询职级
+     * @param pid
+     * @return
+     */
+    @Select(value = "select rank from cu_position where id = #{pid}")
+    int selectRank(Object pid);
 }

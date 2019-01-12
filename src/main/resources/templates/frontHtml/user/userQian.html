@@ -124,9 +124,9 @@
                                     <li><a href="index.html">首页</a></li>
                                     <li><a href="about.html">新闻中心</a></li>
 									<li><a href="shop.html">车辆管理</a></li>
-									<li><a href="portfolio.html">培训计划与实施</a></li>
-									<li><a href="http://localhost:8888/user/toList">招聘信息</a></li>
-                                    <li><a href="http://localhost:8888/user/toListQian">个人中心</a></li>
+									<li><a href="/plan/toplantwo">培训计划与实施</a></li>
+									<li><a href="/user/toList">招聘信息</a></li>
+                                    <li><a href="/user/toListQian">个人中心</a></li>
                                 </ul>
 
                                 <!-- Search Icon -->
@@ -461,6 +461,12 @@
                 //点击部门之后查看对应的职位
                 departure:function(row){
                     location.href="/departure/departureQian"
+                },
+                leave:function(row){
+                    location.href="/leave/leaveQian"
+                },
+                promote:function(row){
+                    location.href="/promote/promoteQian"
                 },
                 //格式化状态
                 formatState: function (row, column) {

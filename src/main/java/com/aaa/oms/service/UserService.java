@@ -59,4 +59,20 @@ public interface UserService {
      */
     List<Map> selectG(Integer id);
 
+    /**
+     * 根据session的empnum 查询员工信息
+     * @param map
+     * @return
+     */
+    List<Map> selectEvery(Map map);
+
+    /**
+     * 根据session的职位id查询职级
+     * @param pid
+     * @return
+     */
+    int selectRank(Object pid);
+
+
+
 }

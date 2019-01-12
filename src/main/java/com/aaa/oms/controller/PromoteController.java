@@ -1,18 +1,15 @@
 package com.aaa.oms.controller;
 
+import com.aaa.oms.entity.User;
 import com.aaa.oms.service.PromoteService;
 
+import com.aaa.oms.service.UserService;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +26,10 @@ public class PromoteController {
 
     @Autowired
     private PromoteService promoteService;
+    @Autowired
+    private HttpSession session;
+    @Autowired
+    private UserService userService;
 
     /**
      * 跳转晋升发布页面
@@ -39,6 +40,7 @@ public class PromoteController {
 
         return "promote/promote";
     }
+
     /**
      * 跳转晋升发布历史页面
      * @return
@@ -67,6 +69,23 @@ public class PromoteController {
         return "promote/auditHistory";
     }
 
+    /**
+     * 跳转前台晋升页面
+     * @return
+     */
+    @RequestMapping("/promoteQian")
+    public String promoteQian(){
+        return "frontHtml/promote/promoteApply";
+    }
+    /**
+     * 跳转等待页面
+     * @return
+     */
+    @RequestMapping("/waitQian")
+    public String waitQian(){
+        return "frontHtml/promote/wait";
+    }
+
 
     /**
      * 晋升发布页面分页
@@ -75,13 +94,28 @@ public class PromoteController {
      */
     @ResponseBody
     @RequestMapping("/page")
-    public Object page(@RequestBody Map map, Model model, HttpSession session){
-        model.addAttribute("aaa","abababababab");
+    public Object page(@RequestBody Map map){
         Map resultmap = new HashMap();
         resultmap.put("pageData",promoteService.getPageParam(map));
         resultmap.put("total",promoteService.getPageCount(map));//total 当前分页的总数量
-        resultmap.put("aaaa","ssssssss");
-        session.setAttribute("empnum","empnum");
+        return resultmap;
+    }
+    /**
+     * 晋升前台分页
+     * @param map
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/page1")
+    public Object page1(@RequestBody Map map){
+        User user=(User)session.getAttribute("user");
+        map.put("dempnum",user.getEmpnum());
+        Object pid = (userService.selectEvery(map)).get(0).get("POSITION");
+        int rank = userService.selectRank(pid);
+        map.put("rankQian",rank);
+        Map resultmap = new HashMap();
+        resultmap.put("pageData",promoteService.getPageParam(map));
+        resultmap.put("total",promoteService.getPageCount(map));//total 当前分页的总数量
         return resultmap;
     }
     /**
@@ -117,6 +151,9 @@ public class PromoteController {
     @ResponseBody
     @RequestMapping("/add")
     public int add(@RequestBody Map map){
+        User user=(User)session.getAttribute("user");
+        map.put("dempnum",user.getEmpnum());
+
        // System.out.println(map);
         return promoteService.add(map);
     }
@@ -146,13 +183,33 @@ public class PromoteController {
         System.out.println("驳回"+map);
         return promoteService.updateNoTG(map);
     }
+//    /**
+//     * 删除晋升信息
+//     */
+//    @ResponseBody
+//    @RequestMapping("/delete/{ID}")
+//    public int delete(@PathVariable("ID") int id){//@PathVariable可以用来映射URL中的占位符到目标方法的参数中
+//        //System.out.println(id+"idididididididididiiddiidid");
+//        return promoteService.delete(id);
+//    }
+
     /**
-     * 删除晋升信息
+     * 申请晋升
+     * @return
      */
     @ResponseBody
-    @RequestMapping("/delete/{ID}")
-    public int delete(@PathVariable("ID") int id){//@PathVariable可以用来映射URL中的占位符到目标方法的参数中
-        //System.out.println(id+"idididididididididiiddiidid");
-        return promoteService.delete(id);
+    @RequestMapping("/apply")
+    public Object apply(@RequestBody Map map){
+//        System.out.println(id+"ddddddddddddddddddddd");
+        User user=(User)session.getAttribute("user");
+        map.put("dempnum",user.getEmpnum());
+        List<Map> maps = promoteService.selectPromote(map);
+        System.out.println(maps+"maps");
+        if(maps.size() == 0){
+            return promoteService.apply(map);
+        }else{
+            return 0;
+        }
+
     }
 }
